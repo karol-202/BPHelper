@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">BP Helper</string>
+
+    <string name="text_no_member">Dodaj członka</string>
 </resources>

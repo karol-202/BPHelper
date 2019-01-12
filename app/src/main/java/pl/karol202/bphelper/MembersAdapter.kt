@@ -22,6 +22,8 @@ class MembersAdapter(private val members: MutableList<Member>) : RecyclerView.Ad
 			linearLayout {
 				lparams(width = MATCH_PARENT, height = dip(56))
 				orientation = LinearLayout.HORIZONTAL
+				gravity = Gravity.CENTER_VERTICAL
+				backgroundResource = ctx.attr(R.attr.selectableItemBackground).resourceId
 
 				checkBox {
 					present = this
@@ -31,13 +33,18 @@ class MembersAdapter(private val members: MutableList<Member>) : RecyclerView.Ad
 
 				textView {
 					name = this
-					textSize = 16f
-				}.lparams(width = MATCH_PARENT) {
-					marginStart = dip(32)
+					textSize = 20f
+				}.lparams {
+					marginStart = dip(24)
+				}
+
+				space().lparams {
+					weight = 1f
 				}
 
 				imageButton(R.drawable.ic_delete_white_24dp) {
 					delete = this
+					backgroundResource = ctx.attr(R.attr.selectableItemBackgroundBorderless).resourceId
 				}.lparams(width = dip(24), height = dip(24)) {
 					marginEnd = dip(16)
 				}
@@ -51,17 +58,19 @@ class MembersAdapter(private val members: MutableList<Member>) : RecyclerView.Ad
 	{
 		override fun createView(ui: AnkoContext<View>) = with(ui) {
 			linearLayout {
-				lparams(width = MATCH_PARENT, height = dip(56)) {
-					gravity = Gravity.CENTER_VERTICAL
-				}
+				lparams(width = MATCH_PARENT, height = dip(56))
 				orientation = LinearLayout.HORIZONTAL
+				gravity = Gravity.CENTER_VERTICAL
+				backgroundResource = ctx.attr(R.attr.selectableItemBackground).resourceId
 				tag = ViewHolderNoMember(this)
 
 				imageView(R.drawable.ic_add_white_24dp).lparams(width = dip(24), height = dip(24)) {
 					marginStart = dip(16)
 				}
 
-				textView(R.string.text_no_member).lparams {
+				textView(R.string.text_no_member) {
+					textSize = 20f
+				}.lparams {
 					marginStart = dip(32)
 				}
 			}
@@ -94,8 +103,8 @@ class MembersAdapter(private val members: MutableList<Member>) : RecyclerView.Ad
 			delete.onClick {
 				with(view.ctx) {
 					alert(Appcompat,
-						  getString(R.string.alert_remove_member_title),
-						  getString(R.string.alert_remove_member, member.name)) {
+						  getString(R.string.alert_remove_member, member.name),
+						  getString(R.string.alert_remove_member_title)) {
 						positiveButton(R.string.action_remove) {
 							removeMember(member)
 						}
@@ -115,9 +124,13 @@ class MembersAdapter(private val members: MutableList<Member>) : RecyclerView.Ad
 					alert(Appcompat, R.string.alert_add_member_title) {
 						lateinit var name: EditText
 						customView {
-							editText {
-								name = this
-								setHint(R.string.text_hint_member_name)
+							frameLayout {
+								editText {
+									name = this
+									setHint(R.string.text_hint_member_name)
+								}.lparams(width = MATCH_PARENT) {
+									horizontalMargin = dip(24)
+								}
 							}
 						}
 						positiveButton(R.string.action_add) {
@@ -158,7 +171,8 @@ class MembersAdapter(private val members: MutableList<Member>) : RecyclerView.Ad
 
 	private fun removeMember(member: Member)
 	{
+		val position = members.indexOf(member)
 		members.remove(member)
-		notifyItemRemoved(members.size)
+		notifyItemRemoved(position)
 	}
 }

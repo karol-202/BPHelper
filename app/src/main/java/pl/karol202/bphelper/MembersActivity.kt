@@ -14,7 +14,7 @@ class MembersActivity : AppCompatActivity()
 {
 	private val members = listOf<Member>()
 
-	private val membersAdapter = MembersAdapter(listOf())
+	private val membersAdapter = MembersAdapter(mutableListOf())
 
 	private val ui = MembersActivityUI(membersAdapter)
 

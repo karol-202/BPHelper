@@ -1,5 +1,14 @@
 <resources>
     <string name="app_name">BP Helper</string>
 
+    <string name="alert_add_member_title">Dodaj członka</string>
+    <string name="alert_remove_member_title">Na pewno?</string>
+    <string name="alert_remove_member">Czy na pewno chcesz usunąć %s?</string>
+
     <string name="text_no_member">Dodaj członka</string>
+    <string name="text_hint_member_name">Nazwa</string>
+
+    <string name="action_add">Dodaj</string>
+    <string name="action_remove">Usuń</string>
+    <string name="action_cancel">Anuluj</string>
 </resources>

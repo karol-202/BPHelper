@@ -11,7 +11,7 @@ import org.jetbrains.anko.appcompat.v7.Appcompat
 import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
 import org.jetbrains.anko.sdk27.coroutines.onClick
 
-class MembersAdapter(private val members: MutableList<Member>) : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
+class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 {
 	private inner class ViewHolderMemberUI : AnkoComponent<View>
 	{
@@ -33,7 +33,8 @@ class MembersAdapter(private val members: MutableList<Member>) : RecyclerView.Ad
 
 				textView {
 					name = this
-					textSize = 20f
+					textSize = 18f
+					textColorResource = R.color.text_member
 				}.lparams {
 					marginStart = dip(24)
 				}
@@ -69,7 +70,8 @@ class MembersAdapter(private val members: MutableList<Member>) : RecyclerView.Ad
 				}
 
 				textView(R.string.text_no_member) {
-					textSize = 20f
+					textSize = 18f
+					textColorResource = R.color.text_member
 				}.lparams {
 					marginStart = dip(32)
 				}
@@ -106,7 +108,7 @@ class MembersAdapter(private val members: MutableList<Member>) : RecyclerView.Ad
 						  getString(R.string.alert_remove_member, member.name),
 						  getString(R.string.alert_remove_member_title)) {
 						positiveButton(R.string.action_remove) {
-							removeMember(member)
+							callback?.removeMember(member)
 						}
 						negativeButton(R.string.action_cancel) { }
 					}.show()
@@ -134,7 +136,7 @@ class MembersAdapter(private val members: MutableList<Member>) : RecyclerView.Ad
 							}
 						}
 						positiveButton(R.string.action_add) {
-							addMember(name.text.toString())
+							callback?.addMember(Member(name.text.toString(), true))
 						}
 						negativeButton(R.string.action_cancel) { }
 					}.show()
@@ -143,11 +145,26 @@ class MembersAdapter(private val members: MutableList<Member>) : RecyclerView.Ad
 		}
 	}
 
+	interface Callback
+	{
+		fun addMember(member: Member)
+
+		fun removeMember(member: Member)
+	}
+
 	private companion object
 	{
 		const val TYPE_MEMBER = 0
 		const val TYPE_NO_MEMBER = 1
 	}
+
+	var callback: Callback? = null
+	var members = emptyList<Member>()
+		set(value)
+		{
+			field = value
+			notifyDataSetChanged()
+		}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<Member> =
 		if(viewType == TYPE_MEMBER) ViewHolderMemberUI().createView(AnkoContext.createFromView(parent)).tag as ViewHolderMember
@@ -161,18 +178,5 @@ class MembersAdapter(private val members: MutableList<Member>) : RecyclerView.Ad
 	{
 		if(holder is ViewHolderMember) holder.bind(members[position])
 		else if(holder is ViewHolderNoMember) holder.bind(null)
-	}
-
-	private fun addMember(name: String)
-	{
-		members.add(Member(name, true))
-		notifyItemInserted(members.size - 1)
-	}
-
-	private fun removeMember(member: Member)
-	{
-		val position = members.indexOf(member)
-		members.remove(member)
-		notifyItemRemoved(position)
 	}
 }

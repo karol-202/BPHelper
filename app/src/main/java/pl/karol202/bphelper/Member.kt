@@ -1,4 +1,8 @@
 package pl.karol202.bphelper
 
-data class Member(val name: String,
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
+
+@Entity(tableName = "members")
+data class Member(@PrimaryKey val name: String,
                   var present: Boolean = false)

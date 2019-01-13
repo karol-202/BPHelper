@@ -1,10 +1,13 @@
 package pl.karol202.bphelper
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import org.jetbrains.anko.AnkoComponent
@@ -19,29 +22,57 @@ import kotlin.properties.Delegates
 
 class MembersActivity : AppCompatActivity()
 {
-	private val members = mutableListOf(Member("Person 1"),
-								 		Member("Member 2", true))
+	private lateinit var membersViewModel: MembersViewModel
 
-	private val membersAdapter = MembersAdapter(members)
-
-	private val ui = MembersActivityUI(membersAdapter)
+	private val ui = MembersActivityUI()
+	private val membersAdapter = MembersAdapter()
 
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
 		super.onCreate(savedInstanceState)
+		initViewModel()
+
 		ui.setContentView(this)
 		initToolbar()
+		initRecyclerView()
+	}
+
+	private fun initViewModel()
+	{
+		membersViewModel = ViewModelProviders.of(this).get(MembersViewModel::class.java)
+		membersViewModel.allMembers.observe(this, Observer { members ->
+			members?.let { membersAdapter.members = members }
+		})
 	}
 
 	private fun initToolbar()
 	{
 		setSupportActionBar(ui.toolbar)
 	}
+
+	private fun initRecyclerView()
+	{
+		membersAdapter.callback = object : MembersAdapter.Callback {
+			override fun addMember(member: Member)
+			{
+				membersViewModel.addMember(member)
+			}
+
+			override fun removeMember(member: Member)
+			{
+				membersViewModel.removeMember(member)
+			}
+		}
+
+		ui.recyclerView.adapter = membersAdapter
+	}
 }
 
-class MembersActivityUI(private val adapter: MembersAdapter) : AnkoComponent<MembersActivity>
+class MembersActivityUI : AnkoComponent<MembersActivity>
 {
 	var toolbar by Delegates.notNull<Toolbar>()
+		private set
+	var recyclerView by Delegates.notNull<RecyclerView>()
 		private set
 
 	override fun createView(ui: AnkoContext<MembersActivity>) = with(ui) {
@@ -54,8 +85,8 @@ class MembersActivityUI(private val adapter: MembersAdapter) : AnkoComponent<Mem
 			}.lparams(width = MATCH_PARENT)
 
 			recyclerView {
+				recyclerView = this
 				layoutManager = LinearLayoutManager(ctx)
-				adapter = this@MembersActivityUI.adapter
 			}.lparams(width = MATCH_PARENT) {
 				behavior = AppBarLayout.ScrollingViewBehavior()
 			}

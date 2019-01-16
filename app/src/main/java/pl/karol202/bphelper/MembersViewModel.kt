@@ -5,7 +5,6 @@ import android.arch.lifecycle.AndroidViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
 class MembersViewModel(application: Application) : AndroidViewModel(application)
 {
@@ -13,7 +12,7 @@ class MembersViewModel(application: Application) : AndroidViewModel(application)
 	private val coroutineContext = job + Dispatchers.Main
 	private val coroutineScope = CoroutineScope(coroutineContext)
 
-	private val repository = MembersRepository(application)
+	private val repository = MembersRepository(application, coroutineScope)
 
 	val allMembers = repository.allMembers
 
@@ -23,11 +22,13 @@ class MembersViewModel(application: Application) : AndroidViewModel(application)
 		job.cancel()
 	}
 
-	fun addMember(member: Member) = coroutineScope.launch(Dispatchers.IO) {
+	fun addMember(member: Member)
+	{
 		repository.addMember(member)
 	}
 
-	fun removeMember(member: Member) = coroutineScope.launch(Dispatchers.IO) {
+	fun removeMember(member: Member)
+	{
 		repository.removeMember(member)
 	}
 }

@@ -19,38 +19,51 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 			lateinit var present: CheckBox
 			lateinit var name: TextView
 			lateinit var delete: ImageButton
-			linearLayout {
-				lparams(width = MATCH_PARENT, height = dip(56))
-				orientation = LinearLayout.HORIZONTAL
-				gravity = Gravity.CENTER_VERTICAL
+			lateinit var ironman: CheckBox
+			verticalLayout {
+				lparams(width = MATCH_PARENT)
 				backgroundResource = ctx.attr(R.attr.selectableItemBackground).resourceId
 
-				checkBox {
-					present = this
-				}.lparams {
-					marginStart = dip(16)
-				}
+				linearLayout {
+					orientation = LinearLayout.HORIZONTAL
+					gravity = Gravity.CENTER_VERTICAL
 
-				textView {
-					name = this
-					textSize = 18f
-					textColorResource = R.color.text_member
+					checkBox {
+						present = this
+					}.lparams {
+						marginStart = dip(16)
+					}
+
+					textView {
+						name = this
+						textSize = 16f
+						textColorResource = R.color.text_member
+					}.lparams {
+						marginStart = dip(24)
+					}
+
+					space().lparams {
+						weight = 1f
+					}
+
+					imageButton(R.drawable.ic_delete_white_24dp) {
+						delete = this
+						backgroundResource = ctx.attr(R.attr.selectableItemBackgroundBorderless).resourceId
+					}.lparams(width = dip(24), height = dip(24)) {
+						marginEnd = dip(16)
+					}
+				}.lparams(width = MATCH_PARENT, height = dip(56))
+
+				checkBox(R.string.text_ironman) {
+					ironman = this
+					visibility = View.GONE
+					textSize = 16f
 				}.lparams {
 					marginStart = dip(24)
+					bottomMargin = dip(8)
 				}
 
-				space().lparams {
-					weight = 1f
-				}
-
-				imageButton(R.drawable.ic_delete_white_24dp) {
-					delete = this
-					backgroundResource = ctx.attr(R.attr.selectableItemBackgroundBorderless).resourceId
-				}.lparams(width = dip(24), height = dip(24)) {
-					marginEnd = dip(16)
-				}
-
-				tag = ViewHolderMember(this, present, name, delete)
+				tag = ViewHolderMember(this, present, name, delete, ironman)
 			}
 		}
 	}
@@ -70,7 +83,7 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 				}
 
 				textView(R.string.text_no_member) {
-					textSize = 18f
+					textSize = 16f
 					textColorResource = R.color.text_member
 				}.lparams {
 					marginStart = dip(32)
@@ -87,7 +100,8 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 	inner class ViewHolderMember(private val view: View,
 	                             private val present: CheckBox,
 	                             private val name: TextView,
-	                             private val delete: ImageButton) : ViewHolder<Member>(view)
+	                             private val delete: ImageButton,
+	                             private val ironman: CheckBox) : ViewHolder<Member>(view)
 	{
 		override fun bind(member: Member)
 		{
@@ -100,6 +114,7 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 			present.isChecked = member.present
 			present.onCheckedChange { _, checked ->
 				member.present = checked
+				ironman.visibility = if(checked) View.VISIBLE else View.GONE
 			}
 
 			delete.onClick {
@@ -113,6 +128,12 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 						negativeButton(R.string.action_cancel) { }
 					}.show()
 				}
+			}
+
+			ironman.visibility = if(member.present) View.VISIBLE else View.GONE
+			ironman.isChecked = member.ironman
+			ironman.onCheckedChange { _, checked ->
+				member.ironman = checked
 			}
 		}
 	}

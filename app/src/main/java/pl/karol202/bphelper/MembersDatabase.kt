@@ -10,13 +10,15 @@ import kotlinx.coroutines.launch
 
 @Entity(tableName = Member.TABLE_NAME)
 data class Member(@PrimaryKey @ColumnInfo(name = COLUMN_NAME) val name: String,
-                              @ColumnInfo(name = COLUMN_PRESENT) var present: Boolean = false)
+                              @ColumnInfo(name = COLUMN_PRESENT) var present: Boolean = false,
+                              @ColumnInfo(name = COLUMN_IRONMAN) var ironman: Boolean = false)
 {
 	companion object
 	{
 		const val TABLE_NAME = "members"
 		const val COLUMN_NAME = "name"
 		const val COLUMN_PRESENT = "present"
+		const val COLUMN_IRONMAN = "ironman"
 	}
 }
 
@@ -36,7 +38,7 @@ interface MemberDao
 	fun getAll(): LiveData<List<Member>>
 }
 
-@Database(entities = [Member::class], version = 3, exportSchema = false)
+@Database(entities = [Member::class], version = 4, exportSchema = false)
 abstract class MembersDatabase : RoomDatabase()
 {
 	private class Callback(private val openCallback: (SupportSQLiteDatabase) -> Unit) : RoomDatabase.Callback()
@@ -81,6 +83,7 @@ class MembersRepository(context: Context,
 	}
 
 	private fun onOpen(database: SupportSQLiteDatabase) = scope.launch(Dispatchers.IO) {
-		database.execSQL("UPDATE members SET present = 0")
+		database.execSQL("UPDATE ${Member.TABLE_NAME} " +
+				              "SET ${Member.COLUMN_PRESENT} = 0, ${Member.COLUMN_IRONMAN} = 0")
 	}
 }

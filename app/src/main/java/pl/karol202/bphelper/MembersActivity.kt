@@ -88,6 +88,7 @@ class MembersActivityUI : AnkoComponent<MembersActivity>
 			recyclerView {
 				recyclerView = this
 				layoutManager = LinearLayoutManager(ctx)
+				addItemDecoration(ItemDivider(ctx.getDrawableCompat(R.drawable.divider)))
 			}.lparams(width = MATCH_PARENT) {
 				behavior = AppBarLayout.ScrollingViewBehavior()
 			}

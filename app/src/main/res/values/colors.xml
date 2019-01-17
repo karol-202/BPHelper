@@ -5,6 +5,6 @@
     <color name="colorAccent">#FF9100</color>
 
     <color name="logo_background">#FFFFFF</color>
-    <color name="divider">#1F000000</color>
+    <color name="divider">#A0FFFFFF</color>
     <color name="text_member">#FFFFFF</color>
 </resources>

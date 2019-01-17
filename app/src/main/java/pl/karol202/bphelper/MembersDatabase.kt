@@ -4,14 +4,17 @@ import android.arch.lifecycle.LiveData
 import android.arch.persistence.db.SupportSQLiteDatabase
 import android.arch.persistence.room.*
 import android.content.Context
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@Parcelize
 @Entity(tableName = Member.TABLE_NAME)
 data class Member(@PrimaryKey @ColumnInfo(name = COLUMN_NAME) val name: String,
                               @ColumnInfo(name = COLUMN_PRESENT) var present: Boolean = false,
-                              @ColumnInfo(name = COLUMN_IRONMAN) var ironman: Boolean = false)
+                              @ColumnInfo(name = COLUMN_IRONMAN) var ironman: Boolean = false) : Parcelable
 {
 	companion object
 	{
@@ -20,6 +23,9 @@ data class Member(@PrimaryKey @ColumnInfo(name = COLUMN_NAME) val name: String,
 		const val COLUMN_PRESENT = "present"
 		const val COLUMN_IRONMAN = "ironman"
 	}
+
+	val occupiedSeats: Int
+		get() = if(ironman) 2 else 1
 }
 
 @Dao

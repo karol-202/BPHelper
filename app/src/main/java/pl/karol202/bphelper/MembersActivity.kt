@@ -5,20 +5,20 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.AppBarLayout
+import android.support.design.widget.FloatingActionButton
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.support.v7.widget.Toolbar
+import android.view.Gravity
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import org.jetbrains.anko.AnkoComponent
-import org.jetbrains.anko.AnkoContext
+import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.toolbar
 import org.jetbrains.anko.design.appBarLayout
 import org.jetbrains.anko.design.coordinatorLayout
-import org.jetbrains.anko.dip
+import org.jetbrains.anko.design.floatingActionButton
 import org.jetbrains.anko.recyclerview.v7.recyclerView
-import org.jetbrains.anko.setContentView
-import kotlin.properties.Delegates
+import org.jetbrains.anko.sdk27.coroutines.onClick
 
 class MembersActivity : AppCompatActivity()
 {
@@ -36,6 +36,7 @@ class MembersActivity : AppCompatActivity()
 		ui.setContentView(this)
 		initToolbar()
 		initRecyclerView()
+		initDrawButton()
 	}
 
 	private fun initViewModel()
@@ -59,6 +60,11 @@ class MembersActivity : AppCompatActivity()
 				membersViewModel.addMember(member)
 			}
 
+			override fun updateMember(member: Member)
+			{
+				membersViewModel.updateMember(member)
+			}
+
 			override fun removeMember(member: Member)
 			{
 				membersViewModel.removeMember(member)
@@ -67,14 +73,23 @@ class MembersActivity : AppCompatActivity()
 
 		ui.recyclerView.adapter = membersAdapter
 	}
+
+	private fun initDrawButton()
+	{
+		ui.drawButton.onClick {
+			startActivity<TablesActivity>()
+		}
+	}
 }
 
-class MembersActivityUI : AnkoComponent<MembersActivity>
+private class MembersActivityUI : AnkoComponent<MembersActivity>
 {
-	var toolbar by Delegates.notNull<Toolbar>()
+	lateinit var toolbar: Toolbar
 		private set
-	var recyclerView by Delegates.notNull<RecyclerView>()
+	lateinit var recyclerView: RecyclerView
 		private set
+	lateinit var drawButton: FloatingActionButton
+	private set
 
 	override fun createView(ui: AnkoContext<MembersActivity>) = with(ui) {
 		coordinatorLayout {
@@ -91,6 +106,16 @@ class MembersActivityUI : AnkoComponent<MembersActivity>
 				addItemDecoration(ItemDivider(ctx.getDrawableCompat(R.drawable.divider)))
 			}.lparams(width = MATCH_PARENT) {
 				behavior = AppBarLayout.ScrollingViewBehavior()
+			}
+
+			floatingActionButton {
+				drawButton = this
+				size = FloatingActionButton.SIZE_NORMAL
+				imageResource = R.drawable.ic_random_white_24dp
+				doOnApi(Build.VERSION_CODES.LOLLIPOP) { elevation = dip(6).toFloat() }
+			}.lparams {
+				gravity = Gravity.END or Gravity.BOTTOM
+				margin = dip(16)
 			}
 		}
 	}

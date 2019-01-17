@@ -27,6 +27,11 @@ class MembersViewModel(application: Application) : AndroidViewModel(application)
 		repository.addMember(member)
 	}
 
+	fun updateMember(member: Member)
+	{
+		repository.updateMember(member)
+	}
+
 	fun removeMember(member: Member)
 	{
 		repository.removeMember(member)

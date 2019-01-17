@@ -78,6 +78,10 @@ class MembersRepository(context: Context,
 		memberDao.insert(member)
 	}
 
+	fun updateMember(member: Member) = scope.launch(Dispatchers.IO) {
+		memberDao.update(member)
+	}
+
 	fun removeMember(member: Member) = scope.launch(Dispatchers.IO) {
 		memberDao.delete(member)
 	}

@@ -114,6 +114,7 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 			present.isChecked = member.present
 			present.onCheckedChange { _, checked ->
 				member.present = checked
+				callback?.updateMember(member)
 				ironman.visibility = if(checked) View.VISIBLE else View.GONE
 			}
 
@@ -134,6 +135,7 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 			ironman.isChecked = member.ironman
 			ironman.onCheckedChange { _, checked ->
 				member.ironman = checked
+				callback?.updateMember(member)
 			}
 		}
 	}
@@ -169,6 +171,8 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 	interface Callback
 	{
 		fun addMember(member: Member)
+
+		fun updateMember(member: Member)
 
 		fun removeMember(member: Member)
 	}

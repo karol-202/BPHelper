@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">BP Helper</string>
     <string name="activity_members">Losowanie stołów</string>
+    <string name="activity_tables">Stoły</string>
 
     <string name="alert_add_member_title">Dodaj członka</string>
     <string name="alert_remove_member_title">Na pewno?</string>

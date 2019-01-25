@@ -4,11 +4,13 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 enum class TableConfigurationType(val visibleName: String,
-                                  val factory: TableConfiguration.Factory<*>)
+                                  val factory: TableConfigurationFactory)
 {
-	_4X2("4x2", TableConfiguration4X2),
-	_2X3("2x3", TableConfiguration2X3)
+	TYPE_4X2("4x2", TableConfiguration4X2),
+	TYPE_2X3("2x3", TableConfiguration2X3)
 }
+
+typealias TableConfigurationFactory = TableConfiguration.Factory<*>
 
 abstract class TableConfiguration protected constructor() : Parcelable
 {
@@ -50,7 +52,10 @@ abstract class TableConfiguration protected constructor() : Parcelable
 			return createFromTables(tables)
 		}
 
-		private fun isPossibleForMembers(members: List<Member>) = getOccupiedSeatsAmount(members) == seats
+		private fun isPossibleForMembers(members: List<Member>) = getRemainingSeatsForMembers(members) == 0
+
+		//Returns positive number if there are too few members and negative number if there are too many members
+		fun getRemainingSeatsForMembers(members: List<Member>) = seats - getOccupiedSeatsAmount(members)
 
 		private fun getOccupiedSeatsAmount(members: List<Member>) =
 				members.filter { it.present }.map { it.occupiedSeats }.sum()

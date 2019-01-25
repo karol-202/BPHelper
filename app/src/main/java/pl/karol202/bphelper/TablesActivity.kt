@@ -17,7 +17,7 @@ class TablesActivity : AppCompatActivity()
 {
 	companion object
 	{
-		const val KEY_TABLE_CONFIGURATION = "key_table_configuration"
+		const val KEY_TABLE_CONFIGURATION_NAME = "key_table_configuration"
 	}
 
 	private lateinit var membersViewModel: MembersViewModel
@@ -44,13 +44,14 @@ class TablesActivity : AppCompatActivity()
 	private fun initTablesConfiguration(savedInstanceState: Bundle?)
 	{
 		val savedConfiguration = savedInstanceState?.getParcelable<TableConfiguration>("tableConfiguration")
-		tableConfiguration = savedConfiguration ?: createTableConfiguration() ?: throw Exception("Cannot create configuration")
+		tableConfiguration = savedConfiguration ?: createTableConfiguration()
 	}
 
-	private fun createTableConfiguration(): TableConfiguration?
+	private fun createTableConfiguration(): TableConfiguration
 	{
-		val configurationType = TableConfigurationType.valueOf(intent.getStringExtra(KEY_TABLE_CONFIGURATION))
-		return configurationType.factory.createForMembers(membersViewModel.allMembers.value ?: return null)
+		val configurationType = TableConfigurationType.valueOf(intent.getStringExtra(KEY_TABLE_CONFIGURATION_NAME))
+		val members = membersViewModel.allMembers.value ?: throw Exception("Members are null")
+		return configurationType.factory.createForMembers(members) ?: throw Exception("Members incompatible with table configuration")
 	}
 
 	private fun initToolbar()

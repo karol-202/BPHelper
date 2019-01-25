@@ -6,19 +6,16 @@ import android.arch.persistence.room.*
 import android.content.Context
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @Parcelize
-@Entity(tableName = Member.TABLE_NAME)
+@Entity(tableName = Member.TABLE)
 data class Member(@PrimaryKey @ColumnInfo(name = COLUMN_NAME) val name: String,
                               @ColumnInfo(name = COLUMN_PRESENT) var present: Boolean = false,
                               @ColumnInfo(name = COLUMN_IRONMAN) var ironman: Boolean = false) : Parcelable
 {
 	companion object
 	{
-		const val TABLE_NAME = "members"
+		const val TABLE = "members"
 		const val COLUMN_NAME = "name"
 		const val COLUMN_PRESENT = "present"
 		const val COLUMN_IRONMAN = "ironman"
@@ -47,12 +44,12 @@ interface MemberDao
 @Database(entities = [Member::class], version = 4, exportSchema = false)
 abstract class MembersDatabase : RoomDatabase()
 {
-	private class Callback(private val openCallback: (SupportSQLiteDatabase) -> Unit) : RoomDatabase.Callback()
+	private class Callback : RoomDatabase.Callback()
 	{
 		override fun onOpen(db: SupportSQLiteDatabase)
 		{
 			super.onOpen(db)
-			openCallback(db)
+			db.execSQL("UPDATE ${Member.TABLE} SET ${Member.COLUMN_PRESENT} = 0, ${Member.COLUMN_IRONMAN} = 0")
 		}
 	}
 
@@ -60,10 +57,10 @@ abstract class MembersDatabase : RoomDatabase()
 	{
 		private var database: MembersDatabase? = null
 
-		fun getDatabase(context: Context, onOpen: (SupportSQLiteDatabase) -> Unit) = database ?:
+		fun getDatabase(context: Context) = database ?:
 			Room.databaseBuilder(context.applicationContext, MembersDatabase::class.java, "MembersDatabase")
 				.fallbackToDestructiveMigration() //TODO To be removed
-				.addCallback(Callback(onOpen))
+				.addCallback(Callback())
 				.build()
 				.apply { database = this }
 	}
@@ -71,29 +68,24 @@ abstract class MembersDatabase : RoomDatabase()
 	abstract fun memberDao(): MemberDao
 }
 
-class MembersRepository(context: Context,
-                        private val scope: CoroutineScope)
+class MembersRepository(context: Context)
 {
-	private val memberDao: MemberDao = MembersDatabase.getDatabase(context) { db ->
-		onOpen(db)
-	}.memberDao()
+	private val memberDao: MemberDao = MembersDatabase.getDatabase(context).memberDao()
 
 	val allMembers = memberDao.getAll()
 
-	fun addMember(member: Member) = scope.launch(Dispatchers.IO) {
+	fun addMember(member: Member)
+	{
 		memberDao.insert(member)
 	}
 
-	fun updateMember(member: Member) = scope.launch(Dispatchers.IO) {
+	fun updateMember(member: Member)
+	{
 		memberDao.update(member)
 	}
 
-	fun removeMember(member: Member) = scope.launch(Dispatchers.IO) {
+	fun removeMember(member: Member)
+	{
 		memberDao.delete(member)
-	}
-
-	private fun onOpen(database: SupportSQLiteDatabase) = scope.launch(Dispatchers.IO) {
-		database.execSQL("UPDATE ${Member.TABLE_NAME} " +
-				              "SET ${Member.COLUMN_PRESENT} = 0, ${Member.COLUMN_IRONMAN} = 0")
 	}
 }

@@ -5,11 +5,22 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
         <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+        <item name="bannerStyle">@style/Banner</item>
     </style>
 
     <style name="AppTheme.Launcher" parent="Theme.AppCompat.Light">
         <item name="android:windowBackground">@drawable/splash_screen</item>
-        <item name="colorPrimaryDark">@color/logo_background</item>
+        <item name="colorPrimaryDark">@color/background_logo</item>
+    </style>
+
+    <style name="Banner">
+        <item name="android:height">54dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:background">@drawable/banner_background</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">16sp</item>
     </style>
 </resources>

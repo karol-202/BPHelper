@@ -6,6 +6,8 @@
     <string name="alert_add_member_title">Dodaj członka</string>
     <string name="alert_remove_member_title">Na pewno?</string>
     <string name="alert_remove_member">Czy na pewno chcesz usunąć %s?</string>
+    <string name="alert_cannot_draw_title">Nie można losować</string>
+    <string name="alert_cannot_draw_error">Wystąpił błąd</string>
 
     <string name="text_no_member">Dodaj członka</string>
     <string name="text_hint_member_name">Nazwa</string>
@@ -14,4 +16,17 @@
     <string name="action_add">Dodaj</string>
     <string name="action_remove">Usuń</string>
     <string name="action_cancel">Anuluj</string>
+
+    <plurals name="text_too_few_members">
+        <item quantity="one">O %d osobę za mało</item>
+        <item quantity="few">O %d osoby za mało</item>
+        <item quantity="many">O %d osób za mało</item>
+        <item quantity="other">O %d osoby za mało</item>
+    </plurals>
+    <plurals name="text_too_many_members">
+        <item quantity="one">O %d osobę za dużo</item>
+        <item quantity="few">O %d osoby za dużo</item>
+        <item quantity="many">O %d osób za dużo</item>
+        <item quantity="other">O %d osoby za dużo</item>
+    </plurals>
 </resources>

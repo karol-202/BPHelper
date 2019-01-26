@@ -1,18 +1,18 @@
 package pl.karol202.bphelper
 
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.support.v7.widget.Toolbar
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import org.jetbrains.anko.AnkoComponent
-import org.jetbrains.anko.AnkoContext
+import com.google.android.material.chip.Chip
+import org.jetbrains.anko.*
 import org.jetbrains.anko.appcompat.v7.toolbar
+import org.jetbrains.anko.design._CoordinatorLayout
 import org.jetbrains.anko.design.appBarLayout
 import org.jetbrains.anko.design.coordinatorLayout
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.setContentView
 
 fun Context.startTablesActivity(configurationType: TableConfigurationType, members: List<Member>) =
 	startActivity<TablesActivity>(TablesActivity::configurationType to configurationType,
@@ -27,7 +27,7 @@ class TablesActivity : BundledActivity()
 		createTableConfiguration()
 	}
 
-	private val ui = TablesActivityUI()
+	private val ui by lazy { TablesActivityUI(tableConfiguration) }
 
 	override fun onCreate(savedInstanceState: Bundle?)
 	{
@@ -47,7 +47,7 @@ class TablesActivity : BundledActivity()
 		configurationType.factory.createForMembers(members) ?: throw Exception("Members incompatible with table configuration")
 }
 
-private class TablesActivityUI : AnkoComponent<TablesActivity>
+private class TablesActivityUI(private val tableConfiguration: TableConfiguration) : AnkoComponent<TablesActivity>
 {
 	lateinit var toolbar: Toolbar
 
@@ -59,6 +59,39 @@ private class TablesActivityUI : AnkoComponent<TablesActivity>
 					doOnApi(Build.VERSION_CODES.LOLLIPOP) { elevation = dip(4).toFloat() }
 				}.lparams(width = MATCH_PARENT)
 			}.lparams(width = MATCH_PARENT)
+
+			createViewForTableConfiguration()
 		}
+	}
+
+	private fun _CoordinatorLayout.createViewForTableConfiguration() = when(tableConfiguration)
+	{
+		is TableConfiguration4X2 -> createViewForTableConfiguration4x2(tableConfiguration)
+		is TableConfiguration2X3 -> createViewForTableConfiguration2x3(tableConfiguration)
+		else -> throw Exception("Unsupported table configuration")
+	}
+
+	private fun _CoordinatorLayout.createViewForTableConfiguration4x2(tableConfiguration: TableConfiguration4X2) = gridLayout {
+		columnCount = 2
+
+		createViewForTable2(tableConfiguration.openingGov)
+		createViewForTable2(tableConfiguration.openingOpp)
+		createViewForTable2(tableConfiguration.closingGov)
+		createViewForTable2(tableConfiguration.closingOpp)
+	}
+
+	private fun _GridLayout.createViewForTable2(table: TableConfiguration4X2.Table) = verticalLayout {
+
+	}
+
+	private fun _CoordinatorLayout.createViewForTableConfiguration2x3(tableConfiguration: TableConfiguration2X3) = gridLayout {
+		columnCount = 2
+
+		createViewForTable3(tableConfiguration.gov)
+		createViewForTable3(tableConfiguration.opp)
+	}
+
+	private fun _GridLayout.createViewForTable3(table: TableConfiguration2X3.Table) = verticalLayout {
+
 	}
 }

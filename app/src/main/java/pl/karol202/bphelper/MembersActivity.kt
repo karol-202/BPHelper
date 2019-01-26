@@ -164,7 +164,9 @@ private class MembersActivityUI : AnkoComponent<MembersActivity>
 				toolbar {
 					toolbar = this
 					doOnApi(Build.VERSION_CODES.LOLLIPOP) { elevation = dip(4).toFloat() }
-				}.lparams(width = MATCH_PARENT)
+				}.lparams(width = MATCH_PARENT) {
+					scrollFlags = 0
+				}
 
 				spinner {
 					configurationSpinner = this
@@ -184,7 +186,7 @@ private class MembersActivityUI : AnkoComponent<MembersActivity>
 					layoutManager = LinearLayoutManager(ctx)
 					addItemDecoration(ItemDivider(ctx.getDrawableCompat(R.drawable.divider)))
 				}.lparams(width = MATCH_PARENT, height = MATCH_PARENT)
-			}.lparams(width = MATCH_PARENT) {
+			}.lparams(width = MATCH_PARENT, height = MATCH_PARENT) {
 				behavior = AppBarLayout.ScrollingViewBehavior()
 			}
 

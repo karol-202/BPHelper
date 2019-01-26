@@ -10,9 +10,8 @@
         <item name="bannerStyle">@style/Banner</item>
     </style>
 
-    <style name="AppTheme.Launcher" parent="Theme.AppCompat.Light">
+    <style name="AppTheme.Launcher" parent="Theme.AppCompat">
         <item name="android:windowBackground">@drawable/splash_screen</item>
-        <item name="colorPrimaryDark">@color/background_logo</item>
     </style>
 
     <style name="Banner">

@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Parcelable
 import android.support.v7.widget.Toolbar
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.appcompat.v7.toolbar
@@ -56,9 +57,8 @@ private class TablesActivityUI : AnkoComponent<TablesActivity>
 				toolbar {
 					toolbar = this
 					doOnApi(Build.VERSION_CODES.LOLLIPOP) { elevation = dip(4).toFloat() }
-				}
-			}
-
+				}.lparams(width = MATCH_PARENT)
+			}.lparams(width = MATCH_PARENT)
 		}
 	}
 }

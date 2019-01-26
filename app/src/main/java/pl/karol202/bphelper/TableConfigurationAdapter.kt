@@ -16,6 +16,8 @@ class TableConfigurationAdapter : BaseAdapter()
 
 	override fun getCount() = TableConfigurationType.values().size
 
+	fun getPosition(item: TableConfigurationType) = TableConfigurationType.values().indexOf(item)
+
 	override fun getView(position: Int, convertView: View?, parent: ViewGroup) = with(parent.ctx) {
 		val item = getItem(position)
 

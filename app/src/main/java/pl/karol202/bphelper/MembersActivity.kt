@@ -28,7 +28,7 @@ import org.jetbrains.anko.sdk27.coroutines.onItemSelectedListener
 class MembersActivity : AppCompatActivity()
 {
 	private lateinit var membersViewModel: MembersViewModel
-	private var tableConfigurationType: TableConfigurationType? = null
+	private var tableConfigurationType = TableConfigurationType.TYPE_4X2
 
 	private val ui = MembersActivityUI()
 	private val configurationAdapter = TableConfigurationAdapter()
@@ -66,6 +66,7 @@ class MembersActivity : AppCompatActivity()
 	{
 		ui.configurationSpinner.apply {
 			adapter = configurationAdapter
+			setSelection(configurationAdapter.getPosition(tableConfigurationType))
 			onItemSelectedListener {
 				onItemSelected { _, _, position, _ ->
 					tableConfigurationType = TableConfigurationType.values()[position]
@@ -101,24 +102,34 @@ class MembersActivity : AppCompatActivity()
 	{
 		ui.drawButton.onClick {
 			val remainingSeats = getRemainingSeatsForMembers()
-			if(remainingSeats == 0) tableConfigurationType?.let { type ->
-				startActivity<TablesActivity>(TablesActivity.KEY_TABLE_CONFIGURATION_NAME to type.name)
-			}
-			else
-			{
-				val message = when
-				{
-					remainingSeats == null -> resources.getString(R.string.alert_cannot_draw_error)
-					remainingSeats > 0 -> resources.getQuantityString(R.plurals.text_too_few_members, remainingSeats, remainingSeats)
-					else -> resources.getQuantityString(R.plurals.text_too_many_members, -remainingSeats, -remainingSeats)
-				}
-				alert(Appcompat, message, getString(R.string.alert_cannot_draw_title)) {
-					negativeButton(R.string.action_cancel) { dialog ->
-						dialog.dismiss()
-					}
-				}.show()
-			}
+			val members = membersViewModel.allMembers.value
+			if(remainingSeats == 0 && members != null) startTablesActivity(tableConfigurationType, members)
+			else showMembersErrorAlert(remainingSeats)
 		}
+	}
+
+	private fun getRemainingSeatsForMembers(): Int?
+	{
+		val factory = tableConfigurationType.factory
+		val members = membersViewModel.allMembers.value ?: return null
+		return factory.getRemainingSeatsForMembers(members)
+	}
+
+	private fun showMembersErrorAlert(remainingSeats: Int?)
+	{
+		val message = when
+		{
+			remainingSeats != null && remainingSeats > 0 ->
+				resources.getQuantityString(R.plurals.text_too_few_members, remainingSeats, remainingSeats)
+			remainingSeats != null && remainingSeats < 0 ->
+				resources.getQuantityString(R.plurals.text_too_many_members, -remainingSeats, -remainingSeats)
+			else -> resources.getString(R.string.alert_cannot_draw_error)
+		}
+		alert(Appcompat, message, getString(R.string.alert_cannot_draw_title)) {
+			negativeButton(R.string.action_cancel) { dialog ->
+				dialog.dismiss()
+			}
+		}.show()
 	}
 
 	private fun updateErrorBanner()
@@ -131,13 +142,6 @@ class MembersActivity : AppCompatActivity()
 			ui.errorBanner.show(text)
 		}
 		else ui.errorBanner.hide()
-	}
-
-	private fun getRemainingSeatsForMembers(): Int?
-	{
-		val factory = tableConfigurationType?.factory ?: return null
-		val members = membersViewModel.allMembers.value ?: return null
-		return factory.getRemainingSeatsForMembers(members)
 	}
 }
 

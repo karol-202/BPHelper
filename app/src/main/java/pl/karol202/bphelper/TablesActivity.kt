@@ -1,9 +1,9 @@
 package pl.karol202.bphelper
 
-import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.os.Parcelable
 import android.support.v7.widget.Toolbar
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
@@ -13,15 +13,18 @@ import org.jetbrains.anko.design.coordinatorLayout
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.setContentView
 
-class TablesActivity : AppCompatActivity()
-{
-	companion object
-	{
-		const val KEY_TABLE_CONFIGURATION_NAME = "key_table_configuration"
-	}
+fun Context.startTablesActivity(configurationType: TableConfigurationType, members: List<Member>) =
+	startActivity<TablesActivity>(TablesActivity::configurationType to configurationType,
+	                              TablesActivity::members to members.toTypedArray())
 
-	private lateinit var membersViewModel: MembersViewModel
-	private lateinit var tableConfiguration: TableConfiguration
+class TablesActivity : BundledActivity()
+{
+	val configurationType by intentOrThrow<TableConfigurationType>()
+	val members by intentOrThrow<Array<Parcelable>>().convert { it.map { parcelable -> parcelable as Member } }
+
+	private var tableConfiguration by instanceState {
+		createTableConfiguration()
+	}
 
 	private val ui = TablesActivityUI()
 
@@ -29,35 +32,18 @@ class TablesActivity : AppCompatActivity()
 	{
 		setTheme(R.style.AppTheme)
 		super.onCreate(savedInstanceState)
-		initViewModel()
-		initTablesConfiguration(savedInstanceState)
 
 		ui.setContentView(this)
 		initToolbar()
-	}
-
-	private fun initViewModel()
-	{
-		membersViewModel = ViewModelProviders.of(this).get(MembersViewModel::class.java)
-	}
-
-	private fun initTablesConfiguration(savedInstanceState: Bundle?)
-	{
-		val savedConfiguration = savedInstanceState?.getParcelable<TableConfiguration>("tableConfiguration")
-		tableConfiguration = savedConfiguration ?: createTableConfiguration()
-	}
-
-	private fun createTableConfiguration(): TableConfiguration
-	{
-		val configurationType = TableConfigurationType.valueOf(intent.getStringExtra(KEY_TABLE_CONFIGURATION_NAME))
-		val members = membersViewModel.allMembers.value ?: throw Exception("Members are null")
-		return configurationType.factory.createForMembers(members) ?: throw Exception("Members incompatible with table configuration")
 	}
 
 	private fun initToolbar()
 	{
 		setSupportActionBar(ui.toolbar)
 	}
+
+	private fun createTableConfiguration() =
+		configurationType.factory.createForMembers(members) ?: throw Exception("Members incompatible with table configuration")
 }
 
 private class TablesActivityUI : AnkoComponent<TablesActivity>

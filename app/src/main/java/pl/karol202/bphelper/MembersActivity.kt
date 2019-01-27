@@ -1,27 +1,12 @@
 package pl.karol202.bphelper
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
-import android.os.Build
 import android.os.Bundle
-import android.support.design.widget.AppBarLayout
-import android.support.design.widget.FloatingActionButton
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.Toolbar
-import android.view.Gravity
-import android.view.View
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.view.ViewGroup.LayoutParams.WRAP_CONTENT
-import android.widget.Spinner
-import org.jetbrains.anko.*
-import org.jetbrains.anko.appcompat.v7.Appcompat
-import org.jetbrains.anko.appcompat.v7.toolbar
-import org.jetbrains.anko.design.appBarLayout
-import org.jetbrains.anko.design.coordinatorLayout
-import org.jetbrains.anko.design.floatingActionButton
-import org.jetbrains.anko.recyclerview.v7.recyclerView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.get
+import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.activity_members.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.sdk27.coroutines.onItemSelectedListener
 
@@ -30,7 +15,6 @@ class MembersActivity : AppCompatActivity()
 	private lateinit var membersViewModel: MembersViewModel
 	private var tableConfigurationType = TableConfigurationType.TYPE_4X2
 
-	private val ui = MembersActivityUI()
 	private val configurationAdapter = TableConfigurationAdapter()
 	private val membersAdapter = MembersAdapter()
 
@@ -38,9 +22,10 @@ class MembersActivity : AppCompatActivity()
 	{
 		setTheme(R.style.AppTheme)
 		super.onCreate(savedInstanceState)
+		setContentView(R.layout.activity_members)
+
 		initViewModel()
 
-		ui.setContentView(this)
 		initToolbar()
 		initConfigurationSpinner()
 		initRecyclerView()
@@ -50,7 +35,7 @@ class MembersActivity : AppCompatActivity()
 
 	private fun initViewModel()
 	{
-		membersViewModel = ViewModelProviders.of(this).get(MembersViewModel::class.java)
+		membersViewModel = ViewModelProviders.of(this).get()
 		membersViewModel.allMembers.observe(this, Observer { members ->
 			members?.let { membersAdapter.members = it }
 			updateErrorBanner()
@@ -59,12 +44,12 @@ class MembersActivity : AppCompatActivity()
 
 	private fun initToolbar()
 	{
-		setSupportActionBar(ui.toolbar)
+		setSupportActionBar(toolbar)
 	}
 
 	private fun initConfigurationSpinner()
 	{
-		ui.configurationSpinner.apply {
+		spinnerTableConfiguration.apply {
 			adapter = configurationAdapter
 			setSelection(configurationAdapter.getPosition(tableConfigurationType))
 			onItemSelectedListener {
@@ -95,12 +80,14 @@ class MembersActivity : AppCompatActivity()
 			}
 		}
 
-		ui.recyclerView.adapter = membersAdapter
+		recyclerMembers.layoutManager = LinearLayoutManager(this)
+		recyclerMembers.adapter = membersAdapter
+		recyclerMembers.addItemDecoration(ItemDivider(getDrawableCompat(R.drawable.divider)))
 	}
 
 	private fun initDrawButton()
 	{
-		ui.drawButton.onClick {
+		fabDraw.onClick {
 			val remainingSeats = getRemainingSeatsForMembers()
 			val members = membersViewModel.allMembers.value
 			if(remainingSeats == 0 && members != null) startTablesActivity(tableConfigurationType, members)
@@ -125,8 +112,11 @@ class MembersActivity : AppCompatActivity()
 				resources.getQuantityString(R.plurals.text_too_many_members, -remainingSeats, -remainingSeats)
 			else -> resources.getString(R.string.alert_cannot_draw_error)
 		}
-		alert(Appcompat, message, getString(R.string.alert_cannot_draw_title)) {
-			negativeButton(R.string.action_cancel) { dialog ->
+
+		alertDialog {
+			setTitle(getString(R.string.alert_cannot_draw_title))
+			setMessage(message)
+			setNegativeButton(R.string.action_cancel) { dialog, _ ->
 				dialog.dismiss()
 			}
 		}.show()
@@ -139,66 +129,8 @@ class MembersActivity : AppCompatActivity()
 		{
 			val text = if(remainingSeats > 0) resources.getQuantityString(R.plurals.text_too_few_members, remainingSeats, remainingSeats)
 					   else resources.getQuantityString(R.plurals.text_too_many_members, -remainingSeats, -remainingSeats)
-			ui.errorBanner.show(text)
+			bannerMembersError.show(text)
 		}
-		else ui.errorBanner.hide()
-	}
-}
-
-private class MembersActivityUI : AnkoComponent<MembersActivity>
-{
-	lateinit var toolbar: Toolbar
-		private set
-	lateinit var configurationSpinner: Spinner
-		private set
-	lateinit var errorBanner: Banner
-		private set
-	lateinit var recyclerView: RecyclerView
-		private set
-	lateinit var drawButton: FloatingActionButton
-		private set
-
-	override fun createView(ui: AnkoContext<MembersActivity>) = with(ui) {
-		coordinatorLayout {
-			appBarLayout {
-				toolbar {
-					toolbar = this
-					doOnApi(Build.VERSION_CODES.LOLLIPOP) { elevation = dip(4).toFloat() }
-				}.lparams(width = MATCH_PARENT) {
-					scrollFlags = 0
-				}
-
-				spinner {
-					configurationSpinner = this
-				}.lparams(width = WRAP_CONTENT) {
-					marginStart = dip(16)
-				}
-			}.lparams(width = MATCH_PARENT)
-
-			verticalLayout {
-				banner {
-					errorBanner = this
-					visibility = View.GONE
-				}.lparams(width = MATCH_PARENT)
-
-				recyclerView {
-					recyclerView = this
-					layoutManager = LinearLayoutManager(ctx)
-					addItemDecoration(ItemDivider(ctx.getDrawableCompat(R.drawable.divider)))
-				}.lparams(width = MATCH_PARENT, height = MATCH_PARENT)
-			}.lparams(width = MATCH_PARENT, height = MATCH_PARENT) {
-				behavior = AppBarLayout.ScrollingViewBehavior()
-			}
-
-			floatingActionButton {
-				drawButton = this
-				size = FloatingActionButton.SIZE_NORMAL
-				imageResource = R.drawable.ic_random_white_24dp
-				doOnApi(Build.VERSION_CODES.LOLLIPOP) { elevation = dip(6).toFloat() }
-			}.lparams {
-				gravity = Gravity.END or Gravity.BOTTOM
-				margin = dip(16)
-			}
-		}
+		else bannerMembersError.hide()
 	}
 }

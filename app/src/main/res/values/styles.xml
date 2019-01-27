@@ -1,14 +1,16 @@
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat">
+    <style name="Base.AppTheme" parent="Theme.AppCompat">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
-        <item name="coordinatorLayoutStyle">@style/Widget.Design.CoordinatorLayout</item>
+        <item name="selectableItemBackgroundBorderless">?android:attr/selectableItemBackground</item>
         <item name="bannerStyle">@style/Banner</item>
     </style>
+
+    <style name="AppTheme" parent="Base.AppTheme"/>
 
     <style name="AppTheme.Launcher" parent="Theme.AppCompat">
         <item name="android:windowBackground">@drawable/splash_screen</item>

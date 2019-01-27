@@ -22,7 +22,7 @@ abstract class IntentDelegate<T> : ReadWriteProperty<Activity, T>
 			}
 	}
 
-	protected fun Activity.getFromIntent(name: String) = intent.extras[name] as T?
+	protected fun Activity.getFromIntent(name: String) = intent?.extras?.get(name) as T?
 
 	override operator fun setValue(thisRef: Activity, property: KProperty<*>, value: T)
 	{

@@ -1,7 +1,7 @@
 package pl.karol202.bphelper
 
 import android.app.Application
-import android.arch.lifecycle.AndroidViewModel
+import androidx.lifecycle.AndroidViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

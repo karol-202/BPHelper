@@ -1,17 +1,17 @@
 package pl.karol202.bphelper
 
-import android.arch.lifecycle.LiveData
-import android.arch.persistence.db.SupportSQLiteDatabase
-import android.arch.persistence.room.*
 import android.content.Context
 import android.os.Parcelable
+import androidx.lifecycle.LiveData
+import androidx.room.*
+import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 @Entity(tableName = Member.TABLE)
 data class Member(@PrimaryKey @ColumnInfo(name = COLUMN_NAME) val name: String,
-                              @ColumnInfo(name = COLUMN_PRESENT) var present: Boolean = false,
-                              @ColumnInfo(name = COLUMN_IRONMAN) var ironman: Boolean = false) : Parcelable
+                  @ColumnInfo(name = COLUMN_PRESENT) var present: Boolean = false,
+                  @ColumnInfo(name = COLUMN_IRONMAN) var ironman: Boolean = false) : Parcelable
 {
 	companion object
 	{

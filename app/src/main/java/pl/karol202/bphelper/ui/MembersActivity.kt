@@ -1,4 +1,4 @@
-package pl.karol202.bphelper
+package pl.karol202.bphelper.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_members.*
 import org.jetbrains.anko.sdk27.coroutines.onClick
 import org.jetbrains.anko.sdk27.coroutines.onItemSelectedListener
+import pl.karol202.bphelper.*
 
 class MembersActivity : AppCompatActivity()
 {
@@ -63,7 +64,8 @@ class MembersActivity : AppCompatActivity()
 
 	private fun initRecyclerView()
 	{
-		membersAdapter.callback = object : MembersAdapter.Callback {
+		membersAdapter.callback = object : MembersAdapter.Callback
+		{
 			override fun addMember(member: Member)
 			{
 				membersViewModel.addMember(member)

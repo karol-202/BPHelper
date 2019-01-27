@@ -1,13 +1,15 @@
-package pl.karol202.bphelper
+package pl.karol202.bphelper.ui
 
 import android.content.Context
 import android.os.Bundle
 import android.os.Parcelable
 import kotlinx.android.synthetic.main.activity_tables.*
+import pl.karol202.bphelper.*
 
 fun Context.startTablesActivity(configurationType: TableConfigurationType, members: List<Member>) =
-	startActivity<TablesActivity>(TablesActivity::configurationType to configurationType,
-	                              TablesActivity::members to members.toTypedArray())
+	startActivity<TablesActivity>(
+		TablesActivity::configurationType to configurationType,
+		TablesActivity::members to members.toTypedArray())
 
 class TablesActivity : BundledActivity()
 {

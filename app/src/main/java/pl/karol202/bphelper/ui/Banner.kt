@@ -1,16 +1,10 @@
-package pl.karol202.bphelper
+package pl.karol202.bphelper.ui
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.view.ViewManager
 import android.widget.TextView
-import org.jetbrains.anko.custom.ankoView
-
-inline fun ViewManager.banner(): Banner = banner { }
-
-inline fun ViewManager.banner(init: Banner.() -> Unit) =
-	ankoView({ context -> Banner(context) }, theme = 0) { init() }
+import pl.karol202.bphelper.R
 
 class Banner : TextView
 {

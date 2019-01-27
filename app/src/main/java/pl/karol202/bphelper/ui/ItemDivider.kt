@@ -1,4 +1,4 @@
-package pl.karol202.bphelper
+package pl.karol202.bphelper.ui
 
 import android.graphics.Canvas
 import android.graphics.Rect

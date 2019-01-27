@@ -1,4 +1,4 @@
-package pl.karol202.bphelper
+package pl.karol202.bphelper.ui
 
 import android.view.Gravity
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.BaseAdapter
 import org.jetbrains.anko.dip
 import org.jetbrains.anko.linearLayout
 import org.jetbrains.anko.textView
+import pl.karol202.bphelper.TableConfigurationType
 
 class TableConfigurationAdapter : BaseAdapter()
 {

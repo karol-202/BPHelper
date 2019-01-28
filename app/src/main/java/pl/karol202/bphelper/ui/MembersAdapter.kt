@@ -3,13 +3,14 @@ package pl.karol202.bphelper.ui
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_member.*
-import org.jetbrains.anko.sdk27.coroutines.onCheckedChange
-import org.jetbrains.anko.sdk27.coroutines.onClick
 import pl.karol202.bphelper.Member
 import pl.karol202.bphelper.R
+import pl.karol202.bphelper.ui.extensions.alertDialog
+import pl.karol202.bphelper.ui.extensions.ctx
 
 class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 {
@@ -22,20 +23,20 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 	{
 		override fun bind(member: Member)
 		{
-			containerView.onClick {
+			containerView.setOnClickListener {
 				checkMemberPresent.isChecked = !checkMemberPresent.isChecked
 			}
 
 			textMemberName.text = member.name
 
 			checkMemberPresent.isChecked = member.present
-			checkMemberPresent.onCheckedChange { _, checked ->
+			checkMemberPresent.setOnCheckedChangeListener { _, checked ->
 				member.present = checked
 				callback?.updateMember(member)
 				checkMemberIronman.visibility = if(checked) View.VISIBLE else View.GONE
 			}
 
-			buttonMemberDelete.onClick {
+			buttonMemberDelete.setOnClickListener {
 				with(containerView.ctx) {
 					alertDialog {
 						setTitle(getString(pl.karol202.bphelper.R.string.alert_remove_member_title))
@@ -50,7 +51,7 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 
 			checkMemberIronman.visibility = if(member.present) View.VISIBLE else View.GONE
 			checkMemberIronman.isChecked = member.ironman
-			checkMemberIronman.onCheckedChange { _, checked ->
+			checkMemberIronman.setOnCheckedChangeListener { _, checked ->
 				member.ironman = checked
 				callback?.updateMember(member)
 			}
@@ -61,7 +62,7 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 	{
 		override fun bind(member: Member?)
 		{
-			containerView.onClick {
+			containerView.setOnClickListener {
 				with(containerView.ctx) {
 					memberAddDialog {
 						setOnAddListener { name ->
@@ -99,9 +100,10 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<Member>
 	{
 		val inflater = LayoutInflater.from(parent.ctx)
-		return if(viewType == TYPE_MEMBER) ViewHolderMember(inflater.inflate(
-			R.layout.item_member, parent, false))
-		else ViewHolderNoMember(inflater.inflate(R.layout.item_no_member, parent, false))
+		fun inflate(@LayoutRes layout: Int) = inflater.inflate(layout, parent, false)
+
+		return if(viewType == TYPE_MEMBER) ViewHolderMember(inflate(R.layout.item_member))
+		else ViewHolderNoMember(inflate(R.layout.item_no_member))
 	}
 
 	override fun getItemCount() = members.size + 1

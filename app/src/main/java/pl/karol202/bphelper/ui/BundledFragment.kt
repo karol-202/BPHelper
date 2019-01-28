@@ -1,11 +1,10 @@
 package pl.karol202.bphelper.ui
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import pl.karol202.bphelper.BundleDelegate
-import pl.karol202.bphelper.IntentDelegate
 
-abstract class BundledActivity : AppCompatActivity()
+abstract class BundledFragment : Fragment()
 {
 	companion object
 	{
@@ -30,19 +29,9 @@ abstract class BundledActivity : AppCompatActivity()
 
 	protected fun <T : Any> instanceState() = BundleDelegate.Nullable<T>(instanceState)
 
-	protected fun <T : Any> instanceState(defaultValue: T) =
+	protected fun <T : Any> instanceStateOr(defaultValue: T) =
 		BundleDelegate.NotNull(instanceState) { defaultValue }
 
-	protected fun <T : Any> instanceState(defaultValueProvider: () -> T) =
+	protected fun <T : Any> instanceStateOr(defaultValueProvider: () -> T) =
 		BundleDelegate.NotNull(instanceState, defaultValueProvider)
-
-	protected fun <T : Any> intent() = IntentDelegate.Nullable<T>()
-
-	protected fun <T : Any> intent(defaultValue: T) = IntentDelegate.NotNull { defaultValue }
-
-	protected fun <T : Any> intent(defaultValueProvider: () -> T) =
-		IntentDelegate.NotNull(defaultValueProvider)
-
-	protected fun <T : Any> intentOrThrow() =
-		IntentDelegate.NotNull<T> { throw IllegalStateException("No value passed") }
 }

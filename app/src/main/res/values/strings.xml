@@ -1,17 +1,17 @@
 <resources>
     <string name="app_name">BP Helper</string>
-    <string name="activity_members">Losowanie stołów</string>
-    <string name="activity_tables">Stoły</string>
+    <string name="fragment_members">Losowanie stołów</string>
+    <string name="fragment_tables">Stoły</string>
 
     <string name="alert_add_member_title">Dodaj członka</string>
     <string name="alert_remove_member_title">Na pewno?</string>
     <string name="alert_remove_member">Czy na pewno chcesz usunąć %s?</string>
     <string name="alert_cannot_draw_title">Nie można losować</string>
-    <string name="alert_cannot_draw_error">Wystąpił błąd</string>
 
     <string name="text_no_member">Dodaj członka</string>
     <string name="text_hint_member_name">Nazwa</string>
     <string name="text_ironman">Ironman</string>
+    <string name="text_error">Wystąpił błąd</string>
 
     <string name="action_add">Dodaj</string>
     <string name="action_remove">Usuń</string>

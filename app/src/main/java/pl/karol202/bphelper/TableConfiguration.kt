@@ -4,10 +4,19 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 enum class TableConfigurationType(val visibleName: String,
-                                  val factory: TableConfigurationFactory)
+                                  private val factory: TableConfigurationFactory)
 {
 	TYPE_4X2("4x2", TableConfiguration4X2),
-	TYPE_2X3("2x3", TableConfiguration2X3)
+	TYPE_2X3("2x3", TableConfiguration2X3);
+
+	fun createForMembers(members: List<Member>) = factory.createForMembers(members)
+
+	fun getRemainingSeatsForMembers(members: List<Member>) = factory.getRemainingSeatsForMembers(members)
+
+	companion object
+	{
+		fun findByName(name: String) = values().first { it.name == name }
+	}
 }
 
 typealias TableConfigurationFactory = TableConfiguration.Factory<*>

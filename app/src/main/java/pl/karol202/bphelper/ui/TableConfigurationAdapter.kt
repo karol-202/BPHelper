@@ -1,16 +1,26 @@
 package pl.karol202.bphelper.ui
 
-import android.view.Gravity
+import android.content.Context
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import org.jetbrains.anko.dip
-import org.jetbrains.anko.linearLayout
-import org.jetbrains.anko.textView
+import kotlinx.android.extensions.LayoutContainer
+import kotlinx.android.synthetic.main.item_table_configuration.*
+import pl.karol202.bphelper.R
 import pl.karol202.bphelper.TableConfigurationType
+import pl.karol202.bphelper.ui.extensions.ctx
 
 class TableConfigurationAdapter : BaseAdapter()
 {
+	class ViewHolder(override val containerView: View) : LayoutContainer
+	{
+		fun bind(tableConfigurationType: TableConfigurationType)
+		{
+			textTableConfigurationName.text = tableConfigurationType.visibleName
+		}
+	}
+
 	override fun getItem(position: Int) = TableConfigurationType.values()[position]
 
 	override fun getItemId(position: Int) = position.toLong()
@@ -19,20 +29,17 @@ class TableConfigurationAdapter : BaseAdapter()
 
 	fun getPosition(item: TableConfigurationType) = TableConfigurationType.values().indexOf(item)
 
-	override fun getView(position: Int, convertView: View?, parent: ViewGroup) = with(parent.ctx) {
-		val item = getItem(position)
+	override fun getView(position: Int, convertView: View?, parent: ViewGroup): View
+	{
+		val viewHolder = convertView?.tag as? ViewHolder ?: createViewHolder(parent.ctx, parent)
+		viewHolder.bind(getItem(position))
+		return viewHolder.containerView
+	}
 
-		linearLayout {
-			lparams(height = dip(48))
-			gravity = Gravity.CENTER_VERTICAL
-
-			textView(item.visibleName) {
-				textSize = 16f
-			}.lparams {
-				marginStart = dip(16)
-				marginEnd = dip(32)
-			}
-		}
+	private fun createViewHolder(context: Context, parent: ViewGroup): ViewHolder
+	{
+		val view = LayoutInflater.from(context).inflate(R.layout.item_table_configuration, parent, false)
+		return ViewHolder(view).also { view.tag = it }
 	}
 
 	override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup) = getView(position, convertView, parent)

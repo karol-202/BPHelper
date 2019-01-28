@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            app:startDestination="@id/membersFragment">
+
+    <fragment
+            android:id="@+id/membersFragment"
+            android:name="pl.karol202.bphelper.ui.MembersFragment"
+            android:label="@string/fragment_members"
+            tools:layout="@layout/fragment_members">
+        <action
+                android:id="@+id/toTablesFragment"
+                app:destination="@id/tablesFragment"/>
+    </fragment>
+
+    <fragment
+            android:id="@+id/tablesFragment"
+            android:name="pl.karol202.bphelper.ui.TablesFragment"
+            android:label="@string/fragment_tables"
+            tools:layout="@layout/fragment_tables">
+        <argument
+                android:name="tableConfigurationType"
+                app:argType="string"/>
+    </fragment>
+</navigation>

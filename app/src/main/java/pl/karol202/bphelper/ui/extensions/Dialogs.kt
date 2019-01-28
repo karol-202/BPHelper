@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.ui
+package pl.karol202.bphelper.ui.extensions
 
 import android.annotation.SuppressLint
 import android.content.Context

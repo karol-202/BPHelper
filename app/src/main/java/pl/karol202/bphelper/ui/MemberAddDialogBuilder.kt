@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.annotation.StyleRes
 import kotlinx.android.synthetic.main.dialog_member_add.*
 import pl.karol202.bphelper.R
+import pl.karol202.bphelper.ui.extensions.CustomDialogBuilder
 
 fun Context.memberAddDialog(@StyleRes style: Int = 0, init: MemberAddDialogBuilder.() -> Unit) =
 	MemberAddDialogBuilder(this, style).apply(init)

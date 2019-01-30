@@ -4,7 +4,7 @@
     <color name="colorPrimaryDark">#212121</color>
     <color name="colorAccent">#FF9100</color>
 
-    <color name="background_banner">#3D3D3D</color>
+    <color name="background_banner">#424242</color>
     <color name="background_logo">#FFFFFF</color>
     <color name="status_bar_launcher">#20000000</color>
     <color name="divider">#A0FFFFFF</color>

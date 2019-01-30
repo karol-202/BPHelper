@@ -9,6 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.get
 import androidx.navigation.fragment.NavHostFragment
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_members.*
 import pl.karol202.bphelper.Member
@@ -65,33 +66,25 @@ class MembersFragment : Fragment()
 
 	private fun initRecyclerView()
 	{
-		membersAdapter.callback = object : MembersAdapter.Callback
-		{
-			override fun addMember(member: Member)
-			{
-				membersViewModel.addMember(member)
-			}
-
-			override fun updateMember(member: Member)
-			{
-				membersViewModel.updateMember(member)
-			}
-
-			override fun removeMember(member: Member)
-			{
-				membersViewModel.removeMember(member)
-			}
+		membersAdapter.memberAddListener = {
+			membersViewModel.addMember(it)
+		}
+		membersAdapter.memberUpdateListener = {
+			membersViewModel.updateMember(it)
+		}
+		membersAdapter.memberRemoveListener = {
+			membersViewModel.removeMember(it)
 		}
 
 		recyclerMembers.layoutManager = LinearLayoutManager(ctx)
 		recyclerMembers.adapter = membersAdapter
-		recyclerMembers.addItemDecoration(ItemDivider.createDefault(ctx))
+		recyclerMembers.addItemDecoration(DividerItemDecoration(ctx, DividerItemDecoration.VERTICAL))
 	}
 
 	private fun initDrawButton()
 	{
 		fabDraw.setOnClickListener {
-			val members = members ?: return@setOnClickListener showMembersNullAlert()
+			val members = members ?: return@setOnClickListener
 			val remainingSeats = getRemainingSeatsForMembers(members)
 			if(remainingSeats == 0) navigateToTablesFragment()
 			else showMembersAmountAlert(remainingSeats)
@@ -115,8 +108,6 @@ class MembersFragment : Fragment()
 			showMembersAlert(resources.getQuantityString(R.plurals.text_too_many_members, -remainingSeats, -remainingSeats))
 	}
 
-	private fun showMembersNullAlert() = showMembersAlert(resources.getString(R.string.text_error))
-
 	private fun showMembersAlert(message: String)
 	{
 		ctx.alertDialog {
@@ -133,7 +124,7 @@ class MembersFragment : Fragment()
 		val remainingSeats = members?.let { getRemainingSeatsForMembers(it) }
 		textMembersError.text = when
 		{
-			remainingSeats == null -> getString(R.string.text_error)
+			remainingSeats == null -> getString(R.string.text_loading)
 			remainingSeats > 0 -> resources.getQuantityString(R.plurals.text_too_few_members, remainingSeats, remainingSeats)
 			remainingSeats < 0 -> resources.getQuantityString(R.plurals.text_too_many_members, -remainingSeats, -remainingSeats)
 			else -> null

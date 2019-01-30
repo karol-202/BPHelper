@@ -11,7 +11,7 @@
     <string name="text_no_member">Dodaj członka</string>
     <string name="text_hint_member_name">Nazwa</string>
     <string name="text_ironman">Ironman</string>
-    <string name="text_error">Wystąpił błąd</string>
+    <string name="text_loading">Ładowanie…</string>
 
     <string name="action_add">Dodaj</string>
     <string name="action_remove">Usuń</string>

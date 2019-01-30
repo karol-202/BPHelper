@@ -1,5 +1,5 @@
 <resources>
-    <style name="Base.AppTheme" parent="Theme.AppCompat">
+    <style name="Base.AppTheme" parent="Theme.MaterialComponents">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
@@ -11,7 +11,7 @@
 
     <style name="AppTheme" parent="Base.AppTheme"/>
 
-    <style name="AppTheme.Launcher" parent="Theme.AppCompat">
-        <item name="android:windowBackground">@drawable/splash_screen</item>
+    <style name="AppTheme.Launcher" parent="AppTheme">
+        <item name="android:windowBackground">@drawable/background_splash_screen</item>
     </style>
 </resources>

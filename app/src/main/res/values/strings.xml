@@ -32,11 +32,12 @@
 
     <string name="table_configuration_4x2">4x2</string>
     <string name="table_configuration_2x3">2x3</string>
+    <string name="table_configuration_2x4">2x4</string>
 
-    <string name="table_name_4x2_og">OG</string>
-    <string name="table_name_4x2_oo">OO</string>
-    <string name="table_name_4x2_cg">CG</string>
-    <string name="table_name_4x2_co">CO</string>
-    <string name="table_name_2x3_gov">Gov</string>
-    <string name="table_name_2x3_opp">Opp</string>
+    <string name="table_name_og">OG</string>
+    <string name="table_name_oo">OO</string>
+    <string name="table_name_cg">CG</string>
+    <string name="table_name_co">CO</string>
+    <string name="table_name_gov">Gov</string>
+    <string name="table_name_opp">Opp</string>
 </resources>

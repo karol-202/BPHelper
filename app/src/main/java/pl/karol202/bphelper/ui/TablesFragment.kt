@@ -27,7 +27,8 @@ class TablesFragment : BundledFragment()
 	private fun getLayout() = when(tableConfiguration)
 	{
 		is TableConfiguration4X2 -> R.layout.fragment_tables_4
-		is TableConfiguration2X3 -> R.layout.fragment_tables_2
+		is TableConfiguration2X3,
+		is TableConfiguration2X4 -> R.layout.fragment_tables_2
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?)
@@ -51,6 +52,11 @@ class TablesFragment : BundledFragment()
 				add(R.id.frameTable4, TableFragment.create(tableConfiguration.closingOpp))
 			}
 			is TableConfiguration2X3 ->
+			{
+				add(R.id.frameTable1, TableFragment.create(tableConfiguration.gov))
+				add(R.id.frameTable2, TableFragment.create(tableConfiguration.opp))
+			}
+			is TableConfiguration2X4 ->
 			{
 				add(R.id.frameTable1, TableFragment.create(tableConfiguration.gov))
 				add(R.id.frameTable2, TableFragment.create(tableConfiguration.opp))

@@ -8,7 +8,8 @@ enum class TableConfigurationType(@StringRes val visibleName: Int,
                                   private val factory: TableConfigurationFactory)
 {
 	TYPE_4X2(R.string.table_configuration_4x2, TableConfiguration4X2),
-	TYPE_2X3(R.string.table_configuration_2x3, TableConfiguration2X3);
+	TYPE_2X3(R.string.table_configuration_2x3, TableConfiguration2X3),
+	TYPE_2X4(R.string.table_configuration_2x4, TableConfiguration2X4);
 
 	fun createForMembers(members: List<Member>) = factory.createForMembers(members)
 
@@ -42,6 +43,8 @@ sealed class TableConfiguration : Parcelable
 
 			fun isApplicableFor(member: Member) = freeSeats >= member.occupiedSeats
 
+			fun shuffle() = apply { members.shuffle() }
+
 			abstract fun build(): T?
 		}
 
@@ -60,7 +63,7 @@ sealed class TableConfiguration : Parcelable
 			members.filter { it.present }.sortedByDescending { it.ironman }.forEach { member ->
 				tablesBuilders.filter { it.isApplicableFor(member) }.random().add(member)
 			}
-			val tables = tablesBuilders.map { it.build() ?: throw Exception("Table building error") }
+			val tables = tablesBuilders.map { it.shuffle().build() ?: throw Exception("Table building error") }
 			return createFromTables(tables)
 		}
 
@@ -103,10 +106,10 @@ data class TableConfiguration4X2(val openingGov: Table,
 
 	companion object : TableConfiguration.Factory<Table>()
 	{
-		private val tableNames = listOf(R.string.table_name_4x2_og,
-		                                R.string.table_name_4x2_oo,
-		                                R.string.table_name_4x2_cg,
-		                                R.string.table_name_4x2_co)
+		private val tableNames = listOf(R.string.table_name_og,
+		                                R.string.table_name_oo,
+		                                R.string.table_name_cg,
+		                                R.string.table_name_co)
 
 		override val seats: Int
 			get() = 8
@@ -141,8 +144,8 @@ data class TableConfiguration2X3(val gov: Table,
 
 	companion object : Factory<Table>()
 	{
-		private val tableNames = listOf(R.string.table_name_2x3_gov,
-		                                R.string.table_name_2x3_opp)
+		private val tableNames = listOf(R.string.table_name_gov,
+		                                R.string.table_name_opp)
 
 		override val seats: Int
 			get() = 6
@@ -150,5 +153,42 @@ data class TableConfiguration2X3(val gov: Table,
 		override fun createBuilders() = tableNames.map { Table.Builder(it) }
 
 		override fun createFromTables(tables: List<Table>) = TableConfiguration2X3(tables[0], tables[1])
+	}
+}
+
+@Parcelize
+data class TableConfiguration2X4(val gov: Table,
+                                 val opp: Table) : TableConfiguration()
+{
+	@Parcelize
+	data class Table(@StringRes override val name: Int,
+	                 val first: Member,
+	                 val second: Member,
+	                 val third: Member,
+	                 val fourth: Member) : TableConfiguration.Table
+	{
+		class Builder(@StringRes val name: Int) : TableConfiguration.Table.Builder<Table>()
+		{
+			override val size: Int
+				get() = 4
+
+			override fun build() = if(freeSeats == 0) Table(name, members[0], members[1], members[2], members[3]) else null
+		}
+
+		override val allMembers: List<Member>
+			get() = listOf(first, second, third, fourth)
+	}
+
+	companion object : Factory<Table>()
+	{
+		private val tableNames = listOf(R.string.table_name_gov,
+		                                R.string.table_name_opp)
+
+		override val seats: Int
+			get() = 8
+
+		override fun createBuilders() = tableNames.map { Table.Builder(it) }
+
+		override fun createFromTables(tables: List<Table>) = TableConfiguration2X4(tables[0], tables[1])
 	}
 }

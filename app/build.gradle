@@ -34,8 +34,10 @@ dependencies {
     
     //Android
     implementation "androidx.core:core-ktx:1.0.1"
+    implementation "androidx.fragment:fragment-ktx:1.0.0"
     implementation "androidx.appcompat:appcompat:1.0.2"
     implementation "androidx.recyclerview:recyclerview:1.0.0"
+    implementation "androidx.gridlayout:gridlayout:1.0.0"
     implementation "com.google.android.material:material:1.0.0"
 
     //Navigation
@@ -51,9 +53,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.0.0"
     implementation "android.arch.lifecycle:extensions:$lifecycle_version"
     kapt           "android.arch.lifecycle:compiler:$lifecycle_version"
-    
-    //Anko
-    //implementation "org.jetbrains.anko:anko:$anko_version"
     
     //Tests
     testImplementation "junit:junit:4.12"

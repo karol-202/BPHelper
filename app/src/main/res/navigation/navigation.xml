@@ -22,7 +22,7 @@
             android:id="@+id/tablesFragment"
             android:name="pl.karol202.bphelper.ui.TablesFragment"
             android:label="@string/fragment_tables"
-            tools:layout="@layout/fragment_tables">
+            tools:layout="@layout/fragment_tables_2">
         <argument
                 android:name="tableConfigurationType"
                 app:argType="string"/>

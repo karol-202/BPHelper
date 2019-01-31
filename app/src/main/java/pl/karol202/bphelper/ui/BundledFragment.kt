@@ -27,11 +27,31 @@ abstract class BundledFragment : Fragment()
 		outState.putBundle(BUNDLE_NAME, instanceState)
 	}
 
-	protected fun <T : Any> instanceState() = BundleDelegate.Nullable<T>(instanceState)
+	protected fun <T : Any> instanceState() =
+		BundleDelegate.Nullable<T>(bundleProvider = { instanceState })
 
 	protected fun <T : Any> instanceStateOr(defaultValue: T) =
-		BundleDelegate.NotNull(instanceState) { defaultValue }
+		BundleDelegate.NotNull(bundleProvider = { instanceState },
+		                       defaultValueProvider = { defaultValue })
 
 	protected fun <T : Any> instanceStateOr(defaultValueProvider: () -> T) =
-		BundleDelegate.NotNull(instanceState, defaultValueProvider)
+		BundleDelegate.NotNull(bundleProvider = { instanceState },
+		                       defaultValueProvider = defaultValueProvider)
+
+	protected fun <T : Any> arguments() =
+		BundleDelegate.Nullable<T>(bundleProvider = this::getOrCreateNewArguments)
+
+	protected fun <T : Any> argumentsOr(defaultValue: T) =
+		BundleDelegate.NotNull(bundleProvider = this::getOrCreateNewArguments,
+		                       defaultValueProvider = { defaultValue })
+
+	protected fun <T : Any> argumentsOr(defaultValueProvider: () -> T) =
+		BundleDelegate.NotNull(bundleProvider = this::getOrCreateNewArguments,
+		                       defaultValueProvider = defaultValueProvider)
+
+	protected fun <T : Any> argumentsOrThrow() =
+		BundleDelegate.NotNull<T>(bundleProvider = this::getOrCreateNewArguments,
+		                          defaultValueProvider = { throw IllegalStateException("No argument passed") })
+
+	private fun getOrCreateNewArguments() = arguments ?: Bundle().also { arguments = it }
 }

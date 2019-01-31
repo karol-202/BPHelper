@@ -17,7 +17,7 @@ class TableConfigurationAdapter : BaseAdapter()
 	{
 		fun bind(tableConfigurationType: TableConfigurationType)
 		{
-			textTableConfigurationName.text = tableConfigurationType.visibleName
+			textTableConfigurationName.setText(tableConfigurationType.visibleName)
 		}
 	}
 

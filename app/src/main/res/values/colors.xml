@@ -9,4 +9,5 @@
     <color name="status_bar_launcher">#20000000</color>
     <color name="divider">#A0FFFFFF</color>
     <color name="text_member">#FFFFFF</color>
+    <color name="menu_item">#FFFFFF</color>
 </resources>

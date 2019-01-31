@@ -9,8 +9,8 @@
             android:name="pl.karol202.bphelper.ui.MembersFragment"
             android:label="@string/fragment_members"
             tools:layout="@layout/fragment_members">
-        <action
-                android:id="@+id/toTablesFragment"
+
+        <action android:id="@+id/toTablesFragment"
                 app:destination="@id/tablesFragment"
                 app:enterAnim="@anim/nav_default_enter_anim"
                 app:exitAnim="@anim/nav_default_exit_anim"
@@ -23,8 +23,14 @@
             android:name="pl.karol202.bphelper.ui.TablesFragment"
             android:label="@string/fragment_tables"
             tools:layout="@layout/fragment_tables_2">
-        <argument
-                android:name="tableConfigurationType"
-                app:argType="string"/>
+
+        <argument android:name="tableConfigurationType"
+                  app:argType="string"/>
     </fragment>
+
+    <fragment
+            android:id="@+id/prepTimerFragment"
+            android:name="pl.karol202.bphelper.ui.PrepTimerFragment"
+            android:label="@string/fragment_prep_timer"
+            tools:layout="@layout/fragment_prep_timer"/>
 </navigation>

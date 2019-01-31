@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+        <item android:id="@id/membersFragment"
+              android:title="@string/fragment_members"
+              android:icon="@drawable/ic_members_white_24dp"/>
+        <item android:id="@+id/prepTimerFragment"
+              android:title="@string/fragment_prep_timer"
+              android:icon="@drawable/ic_prep_time_white_24dp"/>
+    </group>
+</menu>

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.get
@@ -21,7 +20,7 @@ import pl.karol202.bphelper.ui.extensions.alertDialog
 import pl.karol202.bphelper.ui.extensions.ctx
 import pl.karol202.bphelper.ui.extensions.setOnItemSelectedListener
 
-class MembersFragment : Fragment()
+class MembersFragment : BundledFragment()
 {
 	private var tableConfigurationType = TableConfigurationType.TYPE_4X2
 

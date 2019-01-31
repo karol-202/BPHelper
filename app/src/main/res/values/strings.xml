@@ -2,6 +2,7 @@
     <string name="app_name">BP Helper</string>
     <string name="fragment_members">Losowanie stołów</string>
     <string name="fragment_tables">Stoły</string>
+    <string name="fragment_prep_timer">Czas na przygotowanie</string>
 
     <string name="alert_add_member_title">Dodaj członka</string>
     <string name="alert_remove_member_title">Na pewno?</string>
@@ -12,6 +13,9 @@
     <string name="text_hint_member_name">Nazwa</string>
     <string name="text_ironman">Ironman</string>
     <string name="text_loading">Ładowanie…</string>
+
+    <string name="button_prep_timer_start">Start!</string>
+    <string name="button_prep_timer_stop">Stop!</string>
 
     <string name="action_add">Dodaj</string>
     <string name="action_remove">Usuń</string>
@@ -29,6 +33,8 @@
         <item quantity="many">O %d osób za dużo</item>
         <item quantity="other">O %d osoby za dużo</item>
     </plurals>
+
+    <string name="time_format">%02d:%02d</string>
 
     <string name="table_configuration_4x2">4x2</string>
     <string name="table_configuration_2x3">2x3</string>

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+            app:title="@string/preference_speech_category">
+
+        <pl.karol202.bphelper.settings.DurationPreference
+                app:key="speechDuration"
+                app:title="@string/preference_speech_duration"
+                app:defaultValue="420"/>
+
+        <pl.karol202.bphelper.settings.DurationPreference
+                app:key="speechDurationMax"
+                app:title="@string/preference_speech_duration_max"
+                app:defaultValue="435"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            app:title="@string/preference_poi_start_category">
+
+        <SwitchPreferenceCompat
+                app:key="poiStartEnabled"
+                app:title="@string/preference_poi_start_enabled"
+                app:defaultValue="true"/>
+
+        <pl.karol202.bphelper.settings.DurationPreference
+                app:key="poiStart"
+                app:title="@string/preference_poi_start"
+                app:defaultValue="60"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+            app:title="@string/preference_poi_end_category">
+
+        <SwitchPreferenceCompat
+                app:key="poiEndEnabled"
+                app:title="@string/preference_poi_end_enabled"
+                app:defaultValue="true"/>
+
+        <pl.karol202.bphelper.settings.DurationPreference
+                app:key="poiEnd"
+                app:title="@string/preference_poi_end"
+                app:defaultValue="360"/>
+
+    </PreferenceCategory>
+
+</androidx.preference.PreferenceScreen>

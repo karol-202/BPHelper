@@ -39,4 +39,9 @@
             android:name="pl.karol202.bphelper.debate.FragmentDebate"
             android:label="@string/fragment_debate"
             tools:layout="@layout/fragment_debate"/>
+
+    <fragment
+            android:id="@+id/settingsFragment"
+            android:name="pl.karol202.bphelper.settings.SettingsFragment"
+            android:label="@string/fragment_settings"/>
 </navigation>

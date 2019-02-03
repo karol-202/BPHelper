@@ -4,6 +4,7 @@
     <string name="fragment_tables">Stoły</string>
     <string name="fragment_prep_timer">Czas na przygotowanie</string>
     <string name="fragment_debate">Debata</string>
+    <string name="fragment_settings">Ustawienia</string>
 
     <string name="alert_add_member_title">Dodaj członka</string>
     <string name="alert_remove_member_title">Na pewno?</string>
@@ -44,6 +45,16 @@
     <string name="notification_channel_default_name">Koniec czasu na przygotowanie</string>
     <string name="notification_channel_default_description">Powiadomienia sygnalizujące koniec czasu na przygotowanie</string>
     <string name="notification_prep_time_end">Koniec czasu na przygotowanie!</string>
+
+    <string name="preference_speech_category">Mowa</string>
+    <string name="preference_speech_duration">Długość mowy</string>
+    <string name="preference_speech_duration_max">Ostateczna długość mowy</string>
+    <string name="preference_poi_start_category">Początek czasu na pytania</string>
+    <string name="preference_poi_start_enabled">Dzwonek</string>
+    <string name="preference_poi_start">Czas</string>
+    <string name="preference_poi_end_category">Koniec czasu na pytania</string>
+    <string name="preference_poi_end_enabled">Dzwonek</string>
+    <string name="preference_poi_end">Czas</string>
 
     <string name="time_format">%02d:%02d</string>
     <string name="duration_divider">:</string>

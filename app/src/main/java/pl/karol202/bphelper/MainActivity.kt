@@ -8,8 +8,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
-import pl.karol202.bphelper.Notifications
-import pl.karol202.bphelper.R
+import pl.karol202.bphelper.settings.Settings
 
 class MainActivity : AppCompatActivity()
 {
@@ -20,6 +19,7 @@ class MainActivity : AppCompatActivity()
 	{
 		setTheme(R.style.AppTheme)
 		super.onCreate(savedInstanceState)
+		Settings.init(this)
 		Notifications.registerChannels(this)
 		setContentView(R.layout.activity_main)
 

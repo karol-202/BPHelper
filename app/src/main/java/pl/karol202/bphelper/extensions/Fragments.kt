@@ -13,13 +13,10 @@ val Fragment.ctx: Context
 	get() = requireContext()
 
 
-data class FragmentArgument<T>(val property: KProperty<T>,
+data class FragmentArgument<T>(val key: String,
                                val value: T?)
-{
-	val key = property.name
-}
 
-infix fun <T> KProperty<T>.to(value: T?) = FragmentArgument(this, value)
+infix fun <T> KProperty<T>.to(value: T?) = FragmentArgument(this.name, value)
 
 fun <F : Fragment> F.setArguments(vararg args: FragmentArgument<*>): F
 {

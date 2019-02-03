@@ -15,6 +15,7 @@ import pl.karol202.bphelper.Duration
 import pl.karol202.bphelper.NotificationPreset
 import pl.karol202.bphelper.R
 import pl.karol202.bphelper.components.ExtendedFragment
+import pl.karol202.bphelper.orThrow
 
 private interface StateContext
 {
@@ -65,9 +66,9 @@ class PrepTimerFragment : ExtendedFragment(), StateContext,
 
 		private inner class Timer(initialDuration: Duration,
 		                          tickInterval: Duration) :
-			CountDownTimer(initialDuration.timeInMillis, tickInterval.timeInMillis)
+			CountDownTimer(initialDuration.timeInMillis.toLong(), tickInterval.timeInMillis.toLong())
 		{
-			override fun onTick(millisUntilFinished: Long) = onTimerUpdate(Duration.fromMillis(millisUntilFinished)!!)
+			override fun onTick(millisUntilFinished: Long) = onTimerUpdate(Duration.fromMillis(millisUntilFinished.toInt()).orThrow())
 
 			override fun onFinish() = onTimerFinish()
 		}

@@ -6,7 +6,7 @@ import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Duration(val timeInMillis: Long) : Parcelable, Comparable<Duration>
+data class Duration(val timeInMillis: Int) : Parcelable, Comparable<Duration>
 {
 	companion object
 	{
@@ -20,16 +20,14 @@ data class Duration(val timeInMillis: Long) : Parcelable, Comparable<Duration>
 				Duration((((minutes * 60) + seconds) * 1000) + millis)
 			else null
 
-		fun fromMillis(millis: Long) = Duration(millis).takeIf { it in zero..max }
+		fun fromMillis(millis: Int) = Duration(millis).takeIf { it in zero..max }
 
-		fun fromMillis(millis: Int) = Duration(millis.toLong()).takeIf { it in zero..max }
+		fun fromSeconds(seconds: Int) = fromMillis(seconds * 1000)
 	}
 
-	@IgnoredOnParcel val minutes = ((timeInMillis / 1000) / 60).toInt()
-	@IgnoredOnParcel val seconds = ((timeInMillis / 1000) % 60).toInt()
-	@IgnoredOnParcel val millis = (timeInMillis % 1000).toInt()
-
-	constructor(timeInMillis: Int) : this(timeInMillis.toLong())
+	@IgnoredOnParcel val minutes = ((timeInMillis / 1000) / 60)
+	@IgnoredOnParcel val seconds = ((timeInMillis / 1000) % 60)
+	@IgnoredOnParcel val millis = (timeInMillis % 1000)
 
 	fun format(context: Context): String = context.getString(R.string.time_format, minutes, seconds)
 
@@ -43,3 +41,5 @@ data class Duration(val timeInMillis: Long) : Parcelable, Comparable<Duration>
 operator fun Duration?.plus(other: Duration?) = if(this != null && other != null) this + other else null
 
 operator fun Duration?.minus(other: Duration?) = if(this != null && other != null) this - other else null
+
+fun Duration?.orThrow() = this ?: throw IllegalStateException("Invalid duration")

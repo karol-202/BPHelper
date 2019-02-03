@@ -16,6 +16,8 @@ import pl.karol202.bphelper.R
 import pl.karol202.bphelper.components.ExtendedFragment
 import pl.karol202.bphelper.extensions.getColorCompat
 import pl.karol202.bphelper.minus
+import pl.karol202.bphelper.orThrow
+import pl.karol202.bphelper.settings.Settings
 
 private interface StateContext
 {
@@ -34,10 +36,6 @@ class FragmentDebate : ExtendedFragment(), StateContext
 {
 	companion object
 	{
-		private val SPEECH_DURATION = Duration.create(seconds = 15)!!
-		private val SPEECH_DURATION_MAX = Duration.create(seconds = 20)!!
-		private val POI_START = Duration.create(seconds = 3)!!
-		private val POI_END = Duration.create(seconds = 10)!!
 		private val TICK_INTERVAL = Duration.create(millis = 100)!!
 	}
 
@@ -61,9 +59,9 @@ class FragmentDebate : ExtendedFragment(), StateContext
 
 		private inner class Timer(elapsedTime: Duration,
 		                          tickInterval: Duration) :
-			CountDownTimer((Duration.max - elapsedTime)!!.timeInMillis, tickInterval.timeInMillis)
+			CountDownTimer((Duration.max - elapsedTime).orThrow().timeInMillis.toLong(), tickInterval.timeInMillis.toLong())
 		{
-			override fun onTick(millisUntilFinished: Long) = onTimerUpdate((Duration.max - Duration.fromMillis(millisUntilFinished))!!)
+			override fun onTick(millisUntilFinished: Long) = onTimerUpdate((Duration.max - Duration.fromMillis(millisUntilFinished.toInt())).orThrow())
 
 			override fun onFinish() = onTimerFinish()
 		}
@@ -86,7 +84,7 @@ class FragmentDebate : ExtendedFragment(), StateContext
 		{
 			timer = Timer(elapsedTime, TICK_INTERVAL).apply { start() }
 			stateContext.updateClock(elapsedTime)
-			stateContext.updateClockOvertime(elapsedTime >= SPEECH_DURATION)
+			stateContext.updateClockOvertime(elapsedTime >= Settings.speechDuration)
 			stateContext.updateTimerButton(R.string.button_debate_timer_stop)
 		}
 
@@ -107,23 +105,23 @@ class FragmentDebate : ExtendedFragment(), StateContext
 
 		private fun checkTime()
 		{
-			if(!timeChecks.poiStart && elapsedTime >= POI_START)
+			if(!timeChecks.poiStart && elapsedTime >= Settings.poiStart && Settings.poiStartEnabled)
 			{
 				timeChecks.poiStart = true
 				stateContext.playBellSound(1)
 			}
-			if(!timeChecks.poiEnd && elapsedTime >= POI_END)
+			if(!timeChecks.poiEnd && elapsedTime >= Settings.poiEnd && Settings.poiEndEnabled)
 			{
 				timeChecks.poiEnd = true
 				stateContext.playBellSound(1)
 			}
-			if(!timeChecks.speechDuration && elapsedTime >= SPEECH_DURATION)
+			if(!timeChecks.speechDuration && elapsedTime >= Settings.speechDuration)
 			{
 				timeChecks.speechDuration = true
 				stateContext.updateClockOvertime(true)
 				stateContext.playBellSound(2)
 			}
-			if(!timeChecks.speechDurationMax && elapsedTime >= SPEECH_DURATION_MAX)
+			if(!timeChecks.speechDurationMax && elapsedTime >= Settings.speechDurationMax)
 			{
 				timeChecks.speechDurationMax = true
 				stateContext.playBellSound(3)

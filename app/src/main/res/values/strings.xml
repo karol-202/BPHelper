@@ -15,14 +15,6 @@
     <string name="text_ironman">Ironman</string>
     <string name="text_loading">Ładowanie…</string>
 
-    <string name="button_prep_timer_start">Start!</string>
-    <string name="button_prep_timer_stop">Stop!</string>
-
-    <string name="action_ok">OK</string>
-    <string name="action_add">Dodaj</string>
-    <string name="action_remove">Usuń</string>
-    <string name="action_cancel">Anuluj</string>
-
     <plurals name="text_too_few_members">
         <item quantity="one">O %d osobę za mało</item>
         <item quantity="few">O %d osoby za mało</item>
@@ -35,6 +27,18 @@
         <item quantity="many">O %d osób za dużo</item>
         <item quantity="other">O %d osoby za dużo</item>
     </plurals>
+
+    <string name="button_prep_timer_start">Start!</string>
+    <string name="button_prep_timer_stop">Stop!</string>
+
+    <string name="action_ok">OK</string>
+    <string name="action_add">Dodaj</string>
+    <string name="action_remove">Usuń</string>
+    <string name="action_cancel">Anuluj</string>
+
+    <string name="notification_channel_default_name">Koniec czasu na przygotowanie</string>
+    <string name="notification_channel_default_description">Powiadomienia sygnalizujące koniec czasu na przygotowanie</string>
+    <string name="notification_prep_time_end">Koniec czasu na przygotowanie!</string>
 
     <string name="time_format">%02d:%02d</string>
     <string name="duration_divider">:</string>

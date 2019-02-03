@@ -12,6 +12,7 @@ import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_prep_timer.*
 import pl.karol202.bphelper.Duration
+import pl.karol202.bphelper.NotificationPreset
 import pl.karol202.bphelper.R
 
 private interface StateContext
@@ -31,6 +32,11 @@ class PrepTimerFragment : ExtendedFragment(), StateContext, DurationPickerFragme
 	{
 		private val DEFAULT_DURATION = Duration.create(minutes = 15)!!
 		private val TICK_INTERVAL = Duration.create(millis = 100)!!
+	}
+
+	object PrepTimeEndNotificationPreset : NotificationPreset()
+	{
+		override val title = R.string.notification_prep_time_end
 	}
 
 	private interface State : Parcelable
@@ -98,7 +104,10 @@ class PrepTimerFragment : ExtendedFragment(), StateContext, DurationPickerFragme
 			stateContext.updateClock(timeLeft.format(stateContext.ctx))
 		}
 
-		private fun onTimerFinish() { }
+		private fun onTimerFinish()
+		{
+			PrepTimeEndNotificationPreset.show(stateContext.ctx)
+		}
 	}
 
 	@Parcelize

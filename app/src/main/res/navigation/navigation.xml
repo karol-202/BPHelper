@@ -33,4 +33,10 @@
             android:name="pl.karol202.bphelper.preptimer.PrepTimerFragment"
             android:label="@string/fragment_prep_timer"
             tools:layout="@layout/fragment_prep_timer"/>
+
+    <fragment
+            android:id="@+id/debateFragment"
+            android:name="pl.karol202.bphelper.debate.FragmentDebate"
+            android:label="@string/fragment_debate"
+            tools:layout="@layout/fragment_debate"/>
 </navigation>

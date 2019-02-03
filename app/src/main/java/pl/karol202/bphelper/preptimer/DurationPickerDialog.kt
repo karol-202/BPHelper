@@ -8,6 +8,7 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.dialog_duration_picker.*
+import pl.karol202.bphelper.Duration
 import pl.karol202.bphelper.components.ExtendedAlertDialog
 import pl.karol202.bphelper.R
 

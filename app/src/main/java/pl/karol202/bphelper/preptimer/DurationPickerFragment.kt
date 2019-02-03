@@ -3,6 +3,7 @@ package pl.karol202.bphelper.preptimer
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import pl.karol202.bphelper.Duration
 import pl.karol202.bphelper.components.ExtendedDialogFragment
 import pl.karol202.bphelper.extensions.ctx
 import pl.karol202.bphelper.extensions.setArguments

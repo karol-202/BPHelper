@@ -3,6 +3,7 @@
     <string name="fragment_members">Losowanie stołów</string>
     <string name="fragment_tables">Stoły</string>
     <string name="fragment_prep_timer">Czas na przygotowanie</string>
+    <string name="fragment_debate">Debata</string>
 
     <string name="alert_add_member_title">Dodaj członka</string>
     <string name="alert_remove_member_title">Na pewno?</string>
@@ -30,6 +31,10 @@
 
     <string name="button_prep_timer_start">Start!</string>
     <string name="button_prep_timer_stop">Stop!</string>
+    <string name="button_debate_timer_start">Czas start!</string>
+    <string name="button_debate_timer_stop">Czas stop!</string>
+    <string name="button_debate_recording_enable">Nagrywaj</string>
+    <string name="button_debate_recording_disable">Zakończ nagrywanie</string>
 
     <string name="action_ok">OK</string>
     <string name="action_add">Dodaj</string>

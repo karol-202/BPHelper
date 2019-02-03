@@ -7,5 +7,8 @@
         <item android:id="@+id/prepTimerFragment"
               android:title="@string/fragment_prep_timer"
               android:icon="@drawable/ic_prep_time_white_24dp"/>
+        <item android:id="@+id/debateFragment"
+              android:title="@string/fragment_debate"
+              android:icon="@drawable/ic_debate_24dp"/>
     </group>
 </menu>

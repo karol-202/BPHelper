@@ -10,4 +10,5 @@
     <color name="divider">#A0FFFFFF</color>
     <color name="text_member">#FFFFFF</color>
     <color name="menu_item">#FFFFFF</color>
+    <color name="text_timer_overtime">#E00020</color>
 </resources>

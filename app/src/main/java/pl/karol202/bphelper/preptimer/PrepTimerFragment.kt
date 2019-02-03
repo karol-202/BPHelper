@@ -11,19 +11,18 @@ import androidx.annotation.StringRes
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_prep_timer.*
-import pl.karol202.bphelper.components.ExtendedFragment
+import pl.karol202.bphelper.Duration
 import pl.karol202.bphelper.NotificationPreset
 import pl.karol202.bphelper.R
+import pl.karol202.bphelper.components.ExtendedFragment
 
 private interface StateContext
 {
 	val ctx: Context
 
-	fun updateClock(text: String)
+	fun updateClock(duration: Duration)
 
 	fun updateButton(@StringRes text: Int)
-
-	fun changeState()
 }
 
 class PrepTimerFragment : ExtendedFragment(), StateContext,
@@ -56,8 +55,7 @@ class PrepTimerFragment : ExtendedFragment(), StateContext,
 
 	@Parcelize
 	private class EnabledState private constructor(override val initialDuration: Duration,
-	                                               private var timeLeft: Duration = initialDuration) :
-		State
+	                                               private var timeLeft: Duration = initialDuration) : State
 	{
 		companion object
 		{
@@ -65,16 +63,11 @@ class PrepTimerFragment : ExtendedFragment(), StateContext,
 				EnabledState(initialDuration).apply { setContext(stateContext) }
 		}
 
-		inner class Timer(initialDuration: Duration,
-		                  tickInterval: Duration
-		) :
+		private inner class Timer(initialDuration: Duration,
+		                          tickInterval: Duration) :
 			CountDownTimer(initialDuration.timeInMillis, tickInterval.timeInMillis)
 		{
-			override fun onTick(millisUntilFinished: Long) = onTimerUpdate(
-				Duration.fromMillis(
-					millisUntilFinished
-				)
-			)
+			override fun onTick(millisUntilFinished: Long) = onTimerUpdate(Duration.fromMillis(millisUntilFinished)!!)
 
 			override fun onFinish() = onTimerFinish()
 		}
@@ -92,10 +85,8 @@ class PrepTimerFragment : ExtendedFragment(), StateContext,
 
 		override fun onEntering()
 		{
-			val timer = Timer(timeLeft, TICK_INTERVAL)
-			this.timer = timer
-			timer.start()
-			stateContext.updateClock(timeLeft.format(stateContext.ctx))
+			timer = Timer(timeLeft, TICK_INTERVAL).apply { start() }
+			stateContext.updateClock(timeLeft)
 			stateContext.updateButton(R.string.button_prep_timer_stop)
 		}
 
@@ -108,7 +99,7 @@ class PrepTimerFragment : ExtendedFragment(), StateContext,
 		private fun onTimerUpdate(timeLeft: Duration)
 		{
 			this.timeLeft = timeLeft
-			stateContext.updateClock(timeLeft.format(stateContext.ctx))
+			stateContext.updateClock(timeLeft)
 		}
 
 		private fun onTimerFinish()
@@ -118,8 +109,7 @@ class PrepTimerFragment : ExtendedFragment(), StateContext,
 	}
 
 	@Parcelize
-	private class DisabledState private constructor(override var initialDuration: Duration) :
-		State
+	private class DisabledState private constructor(override var initialDuration: Duration) : State
 	{
 		companion object
 		{
@@ -151,7 +141,7 @@ class PrepTimerFragment : ExtendedFragment(), StateContext,
 
 		private fun updateClockWithInitialDuration()
 		{
-			stateContext.updateClock(initialDuration.format(stateContext.ctx))
+			stateContext.updateClock(initialDuration)
 		}
 	}
 
@@ -183,32 +173,30 @@ class PrepTimerFragment : ExtendedFragment(), StateContext,
 		fragmentManager?.let { fragment.show(it) }
 	}
 
+	private fun changeState()
+	{
+		val initialDuration = state.initialDuration
+
+		state.onExiting()
+		if(state is EnabledState) state = DisabledState.create(this, initialDuration)
+		else if(state is DisabledState) state = EnabledState.create(this, initialDuration)
+		state.onEntering()
+	}
+
 	override fun onDestroyView()
 	{
 		super.onDestroyView()
 		state.onExiting()
 	}
 
-	override fun updateClock(text: String)
+	override fun updateClock(duration: Duration)
 	{
-		textPrepTimer.text = text
+		textPrepTimer.text = duration.format(ctx)
 	}
 
 	override fun updateButton(@StringRes text: Int)
 	{
 		buttonPrepTimerStart.setText(text)
-	}
-
-	override fun changeState()
-	{
-		val initialDuration = state.initialDuration
-
-		state.onExiting()
-		if(state is EnabledState) state =
-			DisabledState.create(this, initialDuration)
-		else if(state is DisabledState) state =
-			EnabledState.create(this, initialDuration)
-		state.onEntering()
 	}
 
 	override fun onDurationSet(duration: Duration) = state.onInitialDurationSet(duration)

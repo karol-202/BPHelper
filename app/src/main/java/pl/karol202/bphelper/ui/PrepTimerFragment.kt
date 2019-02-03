@@ -1,86 +1,192 @@
 package pl.karol202.bphelper.ui
 
-import android.graphics.Color
+import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.StringRes
+import kotlinx.android.parcel.IgnoredOnParcel
+import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_prep_timer.*
+import pl.karol202.bphelper.Duration
 import pl.karol202.bphelper.R
-import pl.karol202.bphelper.Time
-import pl.karol202.bphelper.ui.extensions.ctx
 
-class PrepTimerFragment : BundledFragment()
+private interface StateContext
 {
-	inner class Timer(initialTime: Time,
-	            tickTime: Time) : CountDownTimer(initialTime.timeInMillis, tickTime.timeInMillis)
-	{
-		override fun onTick(millisUntilFinished: Long) = onTimerUpdate(Time.fromMillis(millisUntilFinished))
+	val ctx: Context
 
-		override fun onFinish() = onTimerFinish()
-	}
+	fun updateClock(text: String)
 
+	fun updateButton(@StringRes text: Int)
+
+	fun changeState()
+}
+
+class PrepTimerFragment : ExtendedFragment(), StateContext, DurationPickerFragment.OnDurationSetListener
+{
 	companion object
 	{
-		private val DEFAULT_TIME = Time.create(minutes = 15)!!
-		private val TICK_TIME = Time.create(millis = 100)!!
+		private val DEFAULT_DURATION = Duration.create(minutes = 15)!!
+		private val TICK_INTERVAL = Duration.create(millis = 100)!!
 	}
 
-	private var timerEnabled = false
-	private var initialTime = DEFAULT_TIME
-	private var timer: CountDownTimer? = null
+	private interface State : Parcelable
+	{
+		val initialDuration: Duration
+		val allowsInitialDurationPicker: Boolean
+
+		fun setContext(stateContext: StateContext)
+
+		fun onInitialDurationSet(duration: Duration)
+
+		fun onEntering()
+
+		fun onExiting()
+	}
+
+	@Parcelize
+	private class EnabledState private constructor(override val initialDuration: Duration,
+	                                               private var timeLeft: Duration = initialDuration) : State
+	{
+		companion object
+		{
+			fun create(stateContext: StateContext, initialDuration: Duration) =
+				EnabledState(initialDuration).apply { setContext(stateContext) }
+		}
+
+		inner class Timer(initialDuration: Duration,
+		                  tickInterval: Duration) :
+			CountDownTimer(initialDuration.timeInMillis, tickInterval.timeInMillis)
+		{
+			override fun onTick(millisUntilFinished: Long) = onTimerUpdate(Duration.fromMillis(millisUntilFinished))
+
+			override fun onFinish() = onTimerFinish()
+		}
+
+		override val allowsInitialDurationPicker get() = false
+		@IgnoredOnParcel private lateinit var stateContext: StateContext
+		@IgnoredOnParcel private var timer: Timer? = null
+
+		override fun setContext(stateContext: StateContext)
+		{
+			this.stateContext = stateContext
+		}
+
+		override fun onInitialDurationSet(duration: Duration) { }
+
+		override fun onEntering()
+		{
+			val timer = Timer(timeLeft, TICK_INTERVAL)
+			this.timer = timer
+			timer.start()
+			stateContext.updateClock(timeLeft.format(stateContext.ctx))
+			stateContext.updateButton(R.string.button_prep_timer_stop)
+		}
+
+		override fun onExiting()
+		{
+			timer?.cancel()
+			timer = null
+		}
+
+		private fun onTimerUpdate(timeLeft: Duration)
+		{
+			this.timeLeft = timeLeft
+			stateContext.updateClock(timeLeft.format(stateContext.ctx))
+		}
+
+		private fun onTimerFinish() { }
+	}
+
+	@Parcelize
+	private class DisabledState private constructor(override var initialDuration: Duration) : State
+	{
+		companion object
+		{
+			fun create(stateContext: StateContext, initialDuration: Duration) =
+				DisabledState(initialDuration).apply { setContext(stateContext) }
+		}
+
+		override val allowsInitialDurationPicker get() = true
+		@IgnoredOnParcel private lateinit var stateContext: StateContext
+
+		override fun setContext(stateContext: StateContext)
+		{
+			this.stateContext = stateContext
+		}
+
+		override fun onInitialDurationSet(duration: Duration)
+		{
+			initialDuration = duration
+			updateClockWithInitialDuration()
+		}
+
+		override fun onEntering()
+		{
+			updateClockWithInitialDuration()
+			stateContext.updateButton(R.string.button_prep_timer_start)
+		}
+
+		override fun onExiting() { }
+
+		private fun updateClockWithInitialDuration()
+		{
+			stateContext.updateClock(initialDuration.format(stateContext.ctx))
+		}
+	}
+
+	override val ctx get() = requireContext()
+
+	private var state by instanceStateOr<State>(DisabledState.create(this, DEFAULT_DURATION))
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-			inflater.inflate(R.layout.fragment_prep_timer, container, false)
+		inflater.inflate(R.layout.fragment_prep_timer, container, false)
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?)
 	{
 		super.onViewCreated(view, savedInstanceState)
-		initText()
-		initButton()
+		state.setContext(this)
+		state.onEntering()
+
+		textPrepTimer.setOnClickListener { showDurationPickerDialog() }
+		buttonPrepTimerStart.setOnClickListener { changeState() }
 	}
 
-	private fun initText()
+	private fun showDurationPickerDialog()
 	{
-		textPrepTimer.text = initialTime.format(ctx)
+		if(!state.allowsInitialDurationPicker) return
+		val fragment = DurationPickerFragment.create(state.initialDuration, this)
+		fragmentManager?.let { fragment.show(it) }
 	}
 
-	private fun initButton()
+	override fun onDestroyView()
 	{
-		buttonPrepTimerStart.setOnClickListener {
-			timerEnabled = !timerEnabled
-			buttonPrepTimerStart.setText(if(timerEnabled) R.string.button_prep_timer_stop else R.string.button_prep_timer_start)
-			if(timerEnabled) startTimer()
-			else stopTimer()
-		}
+		super.onDestroyView()
+		state.onExiting()
 	}
 
-	override fun onDestroy()
+	override fun updateClock(text: String)
 	{
-		super.onDestroy()
-		stopTimer()
+		textPrepTimer.text = text
 	}
 
-	private fun startTimer()
+	override fun updateButton(@StringRes text: Int)
 	{
-		val timer = Timer(initialTime, TICK_TIME)
-		this.timer = timer
-		timer.start()
+		buttonPrepTimerStart.setText(text)
 	}
 
-	private fun stopTimer()
+	override fun changeState()
 	{
-		timer?.cancel()
+		val initialDuration = state.initialDuration
+
+		state.onExiting()
+		if(state is EnabledState) state = DisabledState.create(this, initialDuration)
+		else if(state is DisabledState) state = EnabledState.create(this, initialDuration)
+		state.onEntering()
 	}
 
-	private fun onTimerUpdate(timeLeft: Time)
-	{
-		textPrepTimer.text = timeLeft.format(ctx)
-	}
-
-	private fun onTimerFinish()
-	{
-		textPrepTimer.setTextColor(Color.RED)
-	}
+	override fun onDurationSet(duration: Duration) = state.onInitialDurationSet(duration)
 }

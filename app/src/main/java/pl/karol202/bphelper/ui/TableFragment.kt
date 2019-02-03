@@ -12,7 +12,7 @@ import pl.karol202.bphelper.ui.extensions.ctx
 import pl.karol202.bphelper.ui.extensions.setArguments
 import pl.karol202.bphelper.ui.extensions.to
 
-class TableFragment : BundledFragment()
+class TableFragment : ExtendedFragment()
 {
 	companion object
 	{

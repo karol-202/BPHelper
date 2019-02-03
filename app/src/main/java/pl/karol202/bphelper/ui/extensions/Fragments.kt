@@ -21,7 +21,7 @@ data class FragmentArgument<T>(val property: KProperty<T>,
 
 infix fun <T> KProperty<T>.to(value: T?) = FragmentArgument(this, value)
 
-fun Fragment.setArguments(vararg args: FragmentArgument<*>): Fragment
+fun <F : Fragment> F.setArguments(vararg args: FragmentArgument<*>): F
 {
 	val bundle = Bundle()
 	args.forEach { bundle[it.key] = it.value }

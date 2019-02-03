@@ -12,10 +12,11 @@ import androidx.navigation.fragment.navArgs
 import pl.karol202.bphelper.*
 import pl.karol202.bphelper.ui.extensions.act
 
-class TablesFragment : BundledFragment()
+class TablesFragment : ExtendedFragment()
 {
 	private val arguments by navArgs<TablesFragmentArgs>()
 	private val configurationType get() = TableConfigurationType.findByName(arguments.tableConfigurationType)
+
 	private var tableConfiguration by instanceStateOr { createTableConfiguration() }
 
 	private val membersViewModel by lazy { ViewModelProviders.of(act).get<MembersViewModel>() }

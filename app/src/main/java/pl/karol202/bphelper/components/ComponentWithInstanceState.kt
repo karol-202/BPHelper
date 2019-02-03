@@ -1,4 +1,4 @@
-package pl.karol202.bphelper
+package pl.karol202.bphelper.components
 
 import android.os.Bundle
 
@@ -11,11 +11,12 @@ interface ComponentWithInstanceState
 
 	fun <T : Any> instanceStateOr(defaultValue: T) =
 		BundleDelegate.NotNull(bundleProvider = { instanceState.bundle },
-		                       defaultValueProvider = { defaultValue })
+		                                                       defaultValueProvider = { defaultValue })
 
-	fun <T : Any> instanceStateOr(defaultValueProvider: () -> T) =
-		BundleDelegate.NotNull(bundleProvider = { instanceState.bundle },
-		                       defaultValueProvider = defaultValueProvider)
+	fun <T : Any> instanceStateOr(defaultValueProvider: () -> T) = BundleDelegate.NotNull(
+		bundleProvider = { instanceState.bundle },
+		defaultValueProvider = defaultValueProvider
+	)
 }
 
 class InstanceState

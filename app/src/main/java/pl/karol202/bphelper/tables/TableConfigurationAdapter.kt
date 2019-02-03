@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.ui
+package pl.karol202.bphelper.tables
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,8 +8,7 @@ import android.widget.BaseAdapter
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_table_configuration.*
 import pl.karol202.bphelper.R
-import pl.karol202.bphelper.TableConfigurationType
-import pl.karol202.bphelper.ui.extensions.ctx
+import pl.karol202.bphelper.extensions.ctx
 
 class TableConfigurationAdapter : BaseAdapter()
 {
@@ -31,7 +30,8 @@ class TableConfigurationAdapter : BaseAdapter()
 
 	override fun getView(position: Int, convertView: View?, parent: ViewGroup): View
 	{
-		val viewHolder = convertView?.tag as? ViewHolder ?: createViewHolder(parent.ctx, parent)
+		val viewHolder = convertView?.tag as? ViewHolder
+			?: createViewHolder(parent.ctx, parent)
 		viewHolder.bind(getItem(position))
 		return viewHolder.containerView
 	}

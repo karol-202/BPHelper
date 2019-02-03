@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.ui
+package pl.karol202.bphelper.members
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,10 +9,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_member.*
-import pl.karol202.bphelper.Member
 import pl.karol202.bphelper.R
-import pl.karol202.bphelper.ui.extensions.alertDialog
-import pl.karol202.bphelper.ui.extensions.ctx
+import pl.karol202.bphelper.extensions.alertDialog
+import pl.karol202.bphelper.extensions.ctx
 
 class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 {
@@ -45,12 +44,12 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 				val member = member ?: return@setOnClickListener
 				with(containerView.ctx) {
 					alertDialog {
-						setTitle(getString(pl.karol202.bphelper.R.string.alert_remove_member_title))
-						setMessage(getString(pl.karol202.bphelper.R.string.alert_remove_member, member.name))
-						setPositiveButton(pl.karol202.bphelper.R.string.action_remove) { _, _ ->
+						setTitle(getString(R.string.alert_remove_member_title))
+						setMessage(getString(R.string.alert_remove_member, member.name))
+						setPositiveButton(R.string.action_remove) { _, _ ->
 							memberRemoveListener?.invoke(member)
 						}
-						setNegativeButton(pl.karol202.bphelper.R.string.action_cancel, null)
+						setNegativeButton(R.string.action_cancel, null)
 					}.show()
 				}
 			}

@@ -1,4 +1,4 @@
-package pl.karol202.bphelper
+package pl.karol202.bphelper.members
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel

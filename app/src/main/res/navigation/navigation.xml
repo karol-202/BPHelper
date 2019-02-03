@@ -6,7 +6,7 @@
 
     <fragment
             android:id="@+id/membersFragment"
-            android:name="pl.karol202.bphelper.ui.MembersFragment"
+            android:name="pl.karol202.bphelper.members.MembersFragment"
             android:label="@string/fragment_members"
             tools:layout="@layout/fragment_members">
 
@@ -20,7 +20,7 @@
 
     <fragment
             android:id="@+id/tablesFragment"
-            android:name="pl.karol202.bphelper.ui.TablesFragment"
+            android:name="pl.karol202.bphelper.tables.TablesFragment"
             android:label="@string/fragment_tables"
             tools:layout="@layout/fragment_tables_2">
 
@@ -30,7 +30,7 @@
 
     <fragment
             android:id="@+id/prepTimerFragment"
-            android:name="pl.karol202.bphelper.ui.PrepTimerFragment"
+            android:name="pl.karol202.bphelper.preptimer.PrepTimerFragment"
             android:label="@string/fragment_prep_timer"
             tools:layout="@layout/fragment_prep_timer"/>
 </navigation>

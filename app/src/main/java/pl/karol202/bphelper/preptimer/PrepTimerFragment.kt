@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.ui
+package pl.karol202.bphelper.preptimer
 
 import android.content.Context
 import android.os.Bundle
@@ -11,7 +11,7 @@ import androidx.annotation.StringRes
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_prep_timer.*
-import pl.karol202.bphelper.Duration
+import pl.karol202.bphelper.components.ExtendedFragment
 import pl.karol202.bphelper.NotificationPreset
 import pl.karol202.bphelper.R
 
@@ -26,7 +26,8 @@ private interface StateContext
 	fun changeState()
 }
 
-class PrepTimerFragment : ExtendedFragment(), StateContext, DurationPickerFragment.OnDurationSetListener
+class PrepTimerFragment : ExtendedFragment(), StateContext,
+                          DurationPickerFragment.OnDurationSetListener
 {
 	companion object
 	{
@@ -55,7 +56,8 @@ class PrepTimerFragment : ExtendedFragment(), StateContext, DurationPickerFragme
 
 	@Parcelize
 	private class EnabledState private constructor(override val initialDuration: Duration,
-	                                               private var timeLeft: Duration = initialDuration) : State
+	                                               private var timeLeft: Duration = initialDuration) :
+		State
 	{
 		companion object
 		{
@@ -64,10 +66,15 @@ class PrepTimerFragment : ExtendedFragment(), StateContext, DurationPickerFragme
 		}
 
 		inner class Timer(initialDuration: Duration,
-		                  tickInterval: Duration) :
+		                  tickInterval: Duration
+		) :
 			CountDownTimer(initialDuration.timeInMillis, tickInterval.timeInMillis)
 		{
-			override fun onTick(millisUntilFinished: Long) = onTimerUpdate(Duration.fromMillis(millisUntilFinished))
+			override fun onTick(millisUntilFinished: Long) = onTimerUpdate(
+				Duration.fromMillis(
+					millisUntilFinished
+				)
+			)
 
 			override fun onFinish() = onTimerFinish()
 		}
@@ -111,7 +118,8 @@ class PrepTimerFragment : ExtendedFragment(), StateContext, DurationPickerFragme
 	}
 
 	@Parcelize
-	private class DisabledState private constructor(override var initialDuration: Duration) : State
+	private class DisabledState private constructor(override var initialDuration: Duration) :
+		State
 	{
 		companion object
 		{
@@ -149,7 +157,11 @@ class PrepTimerFragment : ExtendedFragment(), StateContext, DurationPickerFragme
 
 	override val ctx get() = requireContext()
 
-	private var state by instanceStateOr<State>(DisabledState.create(this, DEFAULT_DURATION))
+	private var state by instanceStateOr<State>(
+		DisabledState.create(
+			this, DEFAULT_DURATION
+		)
+	)
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
 		inflater.inflate(R.layout.fragment_prep_timer, container, false)
@@ -192,8 +204,10 @@ class PrepTimerFragment : ExtendedFragment(), StateContext, DurationPickerFragme
 		val initialDuration = state.initialDuration
 
 		state.onExiting()
-		if(state is EnabledState) state = DisabledState.create(this, initialDuration)
-		else if(state is DisabledState) state = EnabledState.create(this, initialDuration)
+		if(state is EnabledState) state =
+			DisabledState.create(this, initialDuration)
+		else if(state is DisabledState) state =
+			EnabledState.create(this, initialDuration)
 		state.onEntering()
 	}
 

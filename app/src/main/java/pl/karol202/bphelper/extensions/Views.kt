@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.ui.extensions
+package pl.karol202.bphelper.extensions
 
 import android.content.Context
 import android.view.View

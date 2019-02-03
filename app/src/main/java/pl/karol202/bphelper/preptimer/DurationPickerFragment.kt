@@ -1,12 +1,12 @@
-package pl.karol202.bphelper.ui
+package pl.karol202.bphelper.preptimer
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import pl.karol202.bphelper.Duration
-import pl.karol202.bphelper.ui.extensions.ctx
-import pl.karol202.bphelper.ui.extensions.setArguments
-import pl.karol202.bphelper.ui.extensions.to
+import pl.karol202.bphelper.components.ExtendedDialogFragment
+import pl.karol202.bphelper.extensions.ctx
+import pl.karol202.bphelper.extensions.setArguments
+import pl.karol202.bphelper.extensions.to
 
 class DurationPickerFragment : ExtendedDialogFragment()
 {
@@ -34,7 +34,9 @@ class DurationPickerFragment : ExtendedDialogFragment()
 	override fun onCreateDialog(savedInstanceState: Bundle?) =
 		DurationPickerDialog(ctx, { onDurationSet(it) }, initialDuration)
 
-	fun show(fragmentManager: FragmentManager) = show(fragmentManager, TAG)
+	fun show(fragmentManager: FragmentManager) = show(fragmentManager,
+	                                                  TAG
+	)
 
 	private fun onDurationSet(duration: Duration)
 	{

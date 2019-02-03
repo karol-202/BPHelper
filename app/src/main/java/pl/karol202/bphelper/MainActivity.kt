@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.ui
+package pl.karol202.bphelper
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

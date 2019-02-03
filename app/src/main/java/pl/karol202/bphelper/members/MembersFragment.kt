@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.ui
+package pl.karol202.bphelper.members
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,14 +12,14 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_members.*
-import pl.karol202.bphelper.Member
-import pl.karol202.bphelper.MembersViewModel
 import pl.karol202.bphelper.R
-import pl.karol202.bphelper.TableConfigurationType
-import pl.karol202.bphelper.ui.extensions.act
-import pl.karol202.bphelper.ui.extensions.alertDialog
-import pl.karol202.bphelper.ui.extensions.ctx
-import pl.karol202.bphelper.ui.extensions.setOnItemSelectedListener
+import pl.karol202.bphelper.tables.TableConfigurationAdapter
+import pl.karol202.bphelper.tables.TableConfigurationType
+import pl.karol202.bphelper.extensions.act
+import pl.karol202.bphelper.extensions.alertDialog
+import pl.karol202.bphelper.extensions.ctx
+import pl.karol202.bphelper.extensions.setOnItemSelectedListener
+import pl.karol202.bphelper.ui.MembersFragmentDirections
 
 class MembersFragment : Fragment()
 {
@@ -96,7 +96,8 @@ class MembersFragment : Fragment()
 
 	private fun navigateToTablesFragment()
 	{
-		val action = MembersFragmentDirections.toTablesFragment(tableConfigurationType.name)
+		val action =
+			MembersFragmentDirections.toTablesFragment(tableConfigurationType.name)
 		NavHostFragment.findNavController(this).navigate(action)
 	}
 

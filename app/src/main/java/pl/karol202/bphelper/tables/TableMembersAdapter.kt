@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.ui
+package pl.karol202.bphelper.tables
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.item_table_member.*
-import pl.karol202.bphelper.Member
 import pl.karol202.bphelper.R
-import pl.karol202.bphelper.ui.extensions.ctx
+import pl.karol202.bphelper.extensions.ctx
+import pl.karol202.bphelper.members.Member
 
 class TableMembersAdapter(private val members: List<Member>) : RecyclerView.Adapter<TableMembersAdapter.ViewHolder>()
 {

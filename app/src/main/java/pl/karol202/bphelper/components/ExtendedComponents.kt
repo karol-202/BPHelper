@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.ui
+package pl.karol202.bphelper.components
 
 import android.content.Context
 import android.content.DialogInterface
@@ -6,11 +6,9 @@ import android.os.Bundle
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import pl.karol202.bphelper.ComponentWithArguments
-import pl.karol202.bphelper.ComponentWithInstanceState
-import pl.karol202.bphelper.InstanceState
 
-abstract class ExtendedFragment : Fragment(), ComponentWithInstanceState, ComponentWithArguments
+abstract class ExtendedFragment : Fragment(), ComponentWithInstanceState,
+                                  ComponentWithArguments
 {
 	override var componentArguments: Bundle?
 		get() = arguments
@@ -31,7 +29,8 @@ abstract class ExtendedFragment : Fragment(), ComponentWithInstanceState, Compon
 	}
 }
 
-abstract class ExtendedDialogFragment : DialogFragment(), ComponentWithInstanceState, ComponentWithArguments
+abstract class ExtendedDialogFragment : DialogFragment(), ComponentWithInstanceState,
+                                        ComponentWithArguments
 {
 	override var componentArguments: Bundle?
 		get() = arguments

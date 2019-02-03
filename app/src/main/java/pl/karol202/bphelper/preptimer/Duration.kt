@@ -1,9 +1,10 @@
-package pl.karol202.bphelper
+package pl.karol202.bphelper.preptimer
 
 import android.content.Context
 import android.os.Parcelable
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
+import pl.karol202.bphelper.R
 
 @Parcelize
 data class Duration(val timeInMillis: Long) : Parcelable
@@ -15,8 +16,9 @@ data class Duration(val timeInMillis: Long) : Parcelable
 		fun create(minutes: Int = 0,
 		           seconds: Int = 0,
 		           millis: Int = 0) =
-			if(minutes in 0..59 && seconds in 0..59 && millis in 0..999)
-				Duration.fromMillis((((minutes * 60) + seconds) * 1000) + millis)
+			if(minutes in 0..59 && seconds in 0..59 && millis in 0..999) fromMillis(
+				(((minutes * 60) + seconds) * 1000) + millis
+			)
 			else null
 
 		fun fromMillis(millis: Long) = Duration(millis)

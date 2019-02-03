@@ -8,7 +8,7 @@ import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.getSystemService
-import pl.karol202.bphelper.ui.extensions.doOnApi
+import pl.karol202.bphelper.extensions.doOnApi
 
 object Notifications
 {

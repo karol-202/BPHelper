@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.ui
+package pl.karol202.bphelper.preptimer
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,12 +8,13 @@ import android.view.View
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.dialog_duration_picker.*
-import pl.karol202.bphelper.Duration
+import pl.karol202.bphelper.components.ExtendedAlertDialog
 import pl.karol202.bphelper.R
 
 class DurationPickerDialog(context: Context,
                            private val onDurationSetListener: ((duration: Duration) -> Unit)? = null,
-                           initialDuration: Duration = Duration.zero) : ExtendedAlertDialog(context), LayoutContainer
+                           initialDuration: Duration = Duration.zero
+) : ExtendedAlertDialog(context), LayoutContainer
 {
 	@SuppressLint("InflateParams")
 	override val containerView: View = LayoutInflater.from(context).inflate(R.layout.dialog_duration_picker, null)
@@ -61,6 +62,9 @@ class DurationPickerDialog(context: Context,
 		setButton(AlertDialog.BUTTON_NEGATIVE, context.getString(R.string.action_cancel)) { _, _ -> }
 	}
 
-	private fun getDuration() = Duration.create(numberPickerMinutes.value, numberPickerSeconds.value)
+	private fun getDuration() = Duration.create(
+		numberPickerMinutes.value,
+		numberPickerSeconds.value
+	)
 		?: throw IllegalStateException("Cannot create duration")
 }

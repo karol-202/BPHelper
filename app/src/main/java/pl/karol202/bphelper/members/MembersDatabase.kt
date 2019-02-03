@@ -1,4 +1,4 @@
-package pl.karol202.bphelper
+package pl.karol202.bphelper.members
 
 import android.content.Context
 import android.os.Parcelable
@@ -70,7 +70,9 @@ abstract class MembersDatabase : RoomDatabase()
 
 class MembersRepository(context: Context)
 {
-	private val memberDao: MemberDao = MembersDatabase.getDatabase(context).memberDao()
+	private val memberDao: MemberDao = MembersDatabase.getDatabase(
+		context
+	).memberDao()
 
 	val allMembers = memberDao.getAll()
 

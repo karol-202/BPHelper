@@ -7,12 +7,12 @@
         <pl.karol202.bphelper.settings.DurationPreference
                 app:key="speechDuration"
                 app:title="@string/preference_speech_duration"
-                app:defaultValue="420"/>
+                app:defaultValue="420000"/>
 
         <pl.karol202.bphelper.settings.DurationPreference
                 app:key="speechDurationMax"
                 app:title="@string/preference_speech_duration_max"
-                app:defaultValue="435"/>
+                app:defaultValue="435000"/>
 
     </PreferenceCategory>
 
@@ -27,7 +27,7 @@
         <pl.karol202.bphelper.settings.DurationPreference
                 app:key="poiStart"
                 app:title="@string/preference_poi_start"
-                app:defaultValue="60"/>
+                app:defaultValue="60000"/>
 
     </PreferenceCategory>
 
@@ -42,7 +42,7 @@
         <pl.karol202.bphelper.settings.DurationPreference
                 app:key="poiEnd"
                 app:title="@string/preference_poi_end"
-                app:defaultValue="360"/>
+                app:defaultValue="360000"/>
 
     </PreferenceCategory>
 

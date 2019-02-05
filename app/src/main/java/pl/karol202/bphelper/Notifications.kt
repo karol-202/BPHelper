@@ -1,7 +1,9 @@
 package pl.karol202.bphelper
 
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
 import androidx.annotation.StringRes
@@ -19,13 +21,13 @@ object Notifications
 	                   val priority: Int) //Used only below Android O
 	{
 		DEFAULT("default",
-		        R.string.notification_channel_default_name,
-		        R.string.notification_channel_default_description,
+		        R.string.notification_channel_prep_time_name,
+		        R.string.notification_channel_prep_time_description,
 		        NotificationManager.IMPORTANCE_DEFAULT,
 		        NotificationCompat.PRIORITY_DEFAULT)
 	}
 
-	var nextNotificationId = 0
+	var nextNotificationId = 1
 		get() = field++
 		private set
 
@@ -53,11 +55,15 @@ open class NotificationPreset
 	open val smallIcon: Int = R.drawable.ic_notification_24dp
 	open val title: Int? = null
 	open val description: Int? = null
+	open val contentIntent: PendingIntent? = null
+	open val ongoing: Boolean = false
 
-	open fun build(context: Context) = NotificationCompat.Builder(context, channel.id).apply {
+	open fun build(context: Context): Notification = NotificationCompat.Builder(context, channel.id).apply {
 		setSmallIcon(smallIcon)
 		title?.let { setContentTitle(context.getString(it)) }
 		description?.let { setContentText(context.getString(it)) }
+		contentIntent?.let { setContentIntent(it) }
+		setOngoing(ongoing)
 		priority = channel.priority
 	}.build()
 

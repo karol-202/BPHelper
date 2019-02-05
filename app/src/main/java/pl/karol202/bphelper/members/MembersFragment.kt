@@ -19,7 +19,6 @@ import pl.karol202.bphelper.extensions.act
 import pl.karol202.bphelper.extensions.alertDialog
 import pl.karol202.bphelper.extensions.ctx
 import pl.karol202.bphelper.extensions.setOnItemSelectedListener
-import pl.karol202.bphelper.ui.MembersFragmentDirections
 
 class MembersFragment : Fragment()
 {
@@ -96,8 +95,7 @@ class MembersFragment : Fragment()
 
 	private fun navigateToTablesFragment()
 	{
-		val action =
-			MembersFragmentDirections.toTablesFragment(tableConfigurationType.name)
+		val action = MembersFragmentDirections.toTablesFragment(tableConfigurationType.name)
 		NavHostFragment.findNavController(this).navigate(action)
 	}
 

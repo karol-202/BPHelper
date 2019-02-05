@@ -11,14 +11,19 @@
     <string name="alert_remove_member">Czy na pewno chcesz usunąć %s?</string>
     <string name="alert_cannot_draw_title">Nie można losować</string>
     <string name="alert_set_prep_time">Ile czasu na przygotowanie?</string>
+	<string name="alert_recording_filename_title">Podaj nazwę pliku</string>
+	<string name="alert_recording_stop_title">Na pewno chcesz zakończyć nagrywanie?</string>
 
     <string name="text_no_member">Dodaj członka</string>
     <string name="text_hint_member_name">Nazwa</string>
     <string name="text_ironman">Ironman</string>
     <string name="text_loading">Ładowanie…</string>
+    <string name="text_file_exists">Nazwa zajęta. Plik zostanie nadpisany</string>
+	<string name="text_recording_storage_error">Nie można zapisać pliku</string>
+	<string name="text_recording_saved">Nagranie zapisane: %s</string>
 
     <plurals name="text_too_few_members">
-        <item quantity="one">O %d osobę za mało</item>
+	    <item quantity="one">O %d osobę za mało</item>
         <item quantity="few">O %d osoby za mało</item>
         <item quantity="many">O %d osób za mało</item>
         <item quantity="other">O %d osoby za mało</item>
@@ -40,11 +45,18 @@
     <string name="action_ok">OK</string>
     <string name="action_add">Dodaj</string>
     <string name="action_remove">Usuń</string>
+	<string name="action_record">Nagrywaj</string>
+	<string name="action_finish">Zakończ</string>
+	<string name="action_open">Otwórz</string>
     <string name="action_cancel">Anuluj</string>
 
-    <string name="notification_channel_default_name">Koniec czasu na przygotowanie</string>
-    <string name="notification_channel_default_description">Powiadomienia sygnalizujące koniec czasu na przygotowanie</string>
+    <string name="notification_channel_prep_time_name">Koniec czasu na przygotowanie</string>
+    <string name="notification_channel_prep_time_description">Powiadomienie sygnalizujące koniec czasu na przygotowanie</string>
+	<string name="notification_channel_recorder_name">Nagrywanie debaty</string>
+	<string name="notification_channel_recorder_description">Powiadomienie informujące o trwającym nagrywaniu dźwięku</string>
     <string name="notification_prep_time_end">Koniec czasu na przygotowanie!</string>
+    <string name="notification_recorder">Trwa nagrywanie debaty…</string>
+	<string name="notification_recorder_description">Kliknij, aby zakończyć</string>
 
     <string name="preference_speech_category">Mowa</string>
     <string name="preference_speech_duration">Długość mowy</string>

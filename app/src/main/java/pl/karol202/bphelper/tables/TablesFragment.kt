@@ -13,7 +13,6 @@ import pl.karol202.bphelper.components.ExtendedFragment
 import pl.karol202.bphelper.R
 import pl.karol202.bphelper.extensions.act
 import pl.karol202.bphelper.members.MembersViewModel
-import pl.karol202.bphelper.ui.TablesFragmentArgs
 
 class TablesFragment : ExtendedFragment()
 {
@@ -50,44 +49,20 @@ class TablesFragment : ExtendedFragment()
 		{
 			is TableConfiguration4X2 ->
 			{
-				add(
-					R.id.frameTable1,
-					TableFragment.create(tableConfiguration.openingGov)
-				)
-				add(
-					R.id.frameTable2,
-					TableFragment.create(tableConfiguration.openingOpp)
-				)
-				add(
-					R.id.frameTable3,
-					TableFragment.create(tableConfiguration.closingGov)
-				)
-				add(
-					R.id.frameTable4,
-					TableFragment.create(tableConfiguration.closingOpp)
-				)
+				add(R.id.frameTable1, TableFragment.create(tableConfiguration.openingGov))
+				add(R.id.frameTable2, TableFragment.create(tableConfiguration.openingOpp))
+				add(R.id.frameTable3, TableFragment.create(tableConfiguration.closingGov))
+				add(R.id.frameTable4, TableFragment.create(tableConfiguration.closingOpp))
 			}
 			is TableConfiguration2X3 ->
 			{
-				add(
-					R.id.frameTable1,
-					TableFragment.create(tableConfiguration.gov)
-				)
-				add(
-					R.id.frameTable2,
-					TableFragment.create(tableConfiguration.opp)
-				)
+				add(R.id.frameTable1, TableFragment.create(tableConfiguration.gov))
+				add(R.id.frameTable2, TableFragment.create(tableConfiguration.opp))
 			}
 			is TableConfiguration2X4 ->
 			{
-				add(
-					R.id.frameTable1,
-					TableFragment.create(tableConfiguration.gov)
-				)
-				add(
-					R.id.frameTable2,
-					TableFragment.create(tableConfiguration.opp)
-				)
+				add(R.id.frameTable1, TableFragment.create(tableConfiguration.gov))
+				add(R.id.frameTable2, TableFragment.create(tableConfiguration.opp))
 			}
 		}
 	}

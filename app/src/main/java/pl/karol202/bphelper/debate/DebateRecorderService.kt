@@ -16,12 +16,15 @@ class DebateRecorderService : Service()
     {
 	    const val FILENAME_SUFFIX = ".aac"
 
-	    private const val STOP = "stop"
-	    private const val FILE = "filename"
+	    private const val ARG_STOP = "stop"
+	    private const val ARG_FILE = "filename"
+	    private const val ARG_CALLBACK = "callback"
 
-    	fun start(context: Context, file: String) = with(context) {
+    	fun start(context: Context, file: String, recordingStopListener: OnRecordingStopListener?) = with(context) {
 		    Intent(this, DebateRecorderService::class.java).also { intent ->
-			    intent.putExtra(FILE, file)
+			    val recordingCallback = recordingStopListener?.let { RecordingCallback.create(it) }
+			    intent.putExtra(ARG_FILE, file)
+			    intent.putExtra(ARG_CALLBACK, recordingCallback)
 			    doOnApi(Build.VERSION_CODES.O, block = {
 				    startForegroundService(intent)
 			    }, fallback = {
@@ -47,36 +50,56 @@ class DebateRecorderService : Service()
 		private fun createContentIntent(context: Context): PendingIntent
 		{
 			val intent = Intent(context, DebateRecorderService::class.java)
-			intent.putExtra(STOP, true)
+			intent.putExtra(ARG_STOP, true)
 
 			return PendingIntent.getService(context, 0, intent, 0)
 		}
 	}
 
 	private val mediaRecorder = MediaRecorder()
+	private var started = false
+	private var stopped = false
+	private var recordingCallback: RecordingCallback? = null
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int
     {
-	    if(intent.getStop()) stopSelf()
-	    else start(intent)
+	    if(intent.getStop()) stop()
+	    else
+	    {
+		    start(intent)
+		    recordingCallback = intent.getRecordingCallback()
+	    }
         return START_NOT_STICKY
     }
 
-	private fun Intent?.getStop() = this?.getBooleanExtra(STOP, false) ?: false
+	private fun Intent?.getStop() = this?.getBooleanExtra(ARG_STOP, false) ?: false
+
+	private fun Intent?.getFile() = this?.getStringExtra(ARG_FILE) ?: throw IllegalArgumentException("No file.")
+
+	private fun Intent?.getRecordingCallback() = this?.getParcelableExtra<RecordingCallback>(ARG_CALLBACK)
 
 	private fun start(intent: Intent?)
 	{
+		if(started) return
 		val notificationPreset = RecorderNotificationPreset(this)
 		startForeground(notificationPreset.id, notificationPreset.build(this))
 		startRecording(intent.getFile())
+		started = true
 	}
 
-	private fun Intent?.getFile() = this?.getStringExtra(FILE) ?: throw IllegalArgumentException("No file.")
+	private fun stop()
+	{
+		if(stopped) return
+		stopRecording()
+		recordingCallback?.onRecordingStop()
+		stopSelf()
+		stopped = true
+	}
 
 	override fun onDestroy()
 	{
 		super.onDestroy()
-		stopRecording()
+		stop()
 	}
 
     override fun onBind(intent: Intent?) = null

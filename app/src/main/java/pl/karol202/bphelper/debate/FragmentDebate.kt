@@ -40,11 +40,12 @@ private interface TimerStateContext
 private interface RecordingStateContext
 {
 	val ctx: Context
+	val onRecordingStopListener: OnRecordingStopListener?
 
 	fun updateRecordingButton(@StringRes text: Int)
 }
 
-class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateContext
+class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateContext, OnRecordingStopListener
 {
 	companion object
 	{
@@ -198,15 +199,12 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 
 		override fun onEntering()
 		{
-			DebateRecorderService.start(stateContext.ctx, file.absolutePath)
+			DebateRecorderService.start(stateContext.ctx, file.absolutePath, stateContext.onRecordingStopListener)
 
 			stateContext.updateRecordingButton(R.string.button_debate_recording_disable)
 		}
 
-		override fun onExiting()
-		{
-			DebateRecorderService.stop(stateContext.ctx)
-		}
+		override fun onExiting() { }
 	}
 
 	@Parcelize
@@ -227,6 +225,8 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 
 		override fun onEntering()
 		{
+			DebateRecorderService.stop(stateContext.ctx)
+
 			stateContext.updateRecordingButton(R.string.button_debate_recording_enable)
 		}
 
@@ -235,6 +235,7 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 
 	override val ctx: Context
 		get() = requireContext()
+	override val onRecordingStopListener = this
 
 	private lateinit var bellPlayer: BellPlayer
 
@@ -295,7 +296,7 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 			setFilenameValidityChecker { filename -> !getFileForRecording(filename).exists() }
 			setOnFilenameSetListener { filename ->
 				val file = getFileForRecording(filename)
-				recordingState = RecordingStateEnabled.create(this@FragmentDebate, filename, file)
+				setRecordingEnabled(filename, file)
 			}
 		}.show()
 	}
@@ -338,7 +339,7 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 			setTitle(R.string.alert_recording_stop_title)
 			setPositiveButton(R.string.action_finish) { _, _ ->
 				(recordingState as? RecordingStateEnabled)?.let { showRecordingStopMessage(it) }
-				recordingState = RecordingStateDisabled.create(this@FragmentDebate)
+				setRecordingDisabled()
 			}
 			setNegativeButton(R.string.action_cancel, null)
 		}.show()
@@ -348,6 +349,16 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 	{
 		val message = getString(R.string.text_recording_saved, recordingState.filename)
 		Snackbar.make(view ?: return, message, Snackbar.LENGTH_LONG).show()
+	}
+
+	private fun setRecordingEnabled(filename: String, file: File)
+	{
+		recordingState = RecordingStateEnabled.create(this@FragmentDebate, filename, file)
+	}
+
+	private fun setRecordingDisabled()
+	{
+		recordingState = RecordingStateDisabled.create(this@FragmentDebate)
 	}
 
 	override fun onDestroyView()
@@ -379,5 +390,10 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 	override fun updateRecordingButton(text: Int)
 	{
 		buttonDebateRecording.setText(text)
+	}
+
+	override fun onRecordingStop()
+	{
+		if(context != null) setRecordingDisabled()
 	}
 }

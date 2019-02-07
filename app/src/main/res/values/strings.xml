@@ -1,72 +1,67 @@
 <resources>
-    <string name="app_name">BP Helper</string>
-    <string name="fragment_members">Losowanie stołów</string>
-    <string name="fragment_tables">Stoły</string>
-    <string name="fragment_prep_timer">Czas na przygotowanie</string>
-    <string name="fragment_debate">Debata</string>
-    <string name="fragment_settings">Ustawienia</string>
+    <string name="app_name">Debate Helper</string>
+    <string name="fragment_members">Members</string>
+    <string name="fragment_tables">Tables</string>
+    <string name="fragment_prep_timer">Preparation time</string>
+    <string name="fragment_debate">Debate</string>
+    <string name="fragment_settings">Settings</string>
 
-    <string name="alert_add_member_title">Dodaj członka</string>
-    <string name="alert_remove_member_title">Na pewno?</string>
-    <string name="alert_remove_member">Czy na pewno chcesz usunąć %s?</string>
-    <string name="alert_cannot_draw_title">Nie można losować</string>
-    <string name="alert_set_prep_time">Ile czasu na przygotowanie?</string>
-	<string name="alert_recording_filename_title">Podaj nazwę pliku</string>
-	<string name="alert_recording_stop_title">Na pewno chcesz zakończyć nagrywanie?</string>
+    <string name="alert_add_member_title">Add member</string>
+    <string name="alert_remove_member_title">Are you sure?</string>
+    <string name="alert_remove_member">Do you want do remove %s?</string>
+    <string name="alert_cannot_draw_title">Cannot continue</string>
+    <string name="alert_set_prep_time">Set preparation time</string>
+	<string name="alert_recording_filename_title">Type filename</string>
+	<string name="alert_recording_stop_title">Do you want to finish recording?</string>
 
-    <string name="text_no_member">Dodaj członka</string>
-    <string name="text_hint_member_name">Nazwa</string>
+    <string name="text_no_member">New member</string>
+    <string name="text_hint_member_name">Name</string>
     <string name="text_ironman">Ironman</string>
-    <string name="text_loading">Ładowanie…</string>
-    <string name="text_file_exists">Nazwa zajęta. Plik zostanie nadpisany</string>
-	<string name="text_recording_storage_error">Nie można zapisać pliku</string>
-	<string name="text_recording_saved">Nagranie zapisane: %s</string>
+    <string name="text_loading">Loading…</string>
+    <string name="text_file_exists">Name is busy. FIle will be overwritten</string>
+	<string name="text_recording_storage_error">Cannot save file</string>
+	<string name="text_recording_saved">Recording saved: %s</string>
 
     <plurals name="text_too_few_members">
-	    <item quantity="one">O %d osobę za mało</item>
-        <item quantity="few">O %d osoby za mało</item>
-        <item quantity="many">O %d osób za mało</item>
-        <item quantity="other">O %d osoby za mało</item>
+	    <item quantity="one">%d member missing</item>
+        <item quantity="other">%d members missing</item>
     </plurals>
     <plurals name="text_too_many_members">
-        <item quantity="one">O %d osobę za dużo</item>
-        <item quantity="few">O %d osoby za dużo</item>
-        <item quantity="many">O %d osób za dużo</item>
-        <item quantity="other">O %d osoby za dużo</item>
+        <item quantity="one">%d member excess</item>
+        <item quantity="other">%d members excess</item>
     </plurals>
 
     <string name="button_prep_timer_start">Start!</string>
     <string name="button_prep_timer_stop">Stop!</string>
-    <string name="button_debate_timer_start">Czas start!</string>
-    <string name="button_debate_timer_stop">Czas stop!</string>
-    <string name="button_debate_recording_enable">Nagrywaj</string>
-    <string name="button_debate_recording_disable">Zakończ nagrywanie</string>
+    <string name="button_debate_timer_start">Start!</string>
+    <string name="button_debate_timer_stop">Stop!</string>
+    <string name="button_debate_recording_enable">Start recording</string>
+    <string name="button_debate_recording_disable">Stop recording</string>
 
     <string name="action_ok">OK</string>
-    <string name="action_add">Dodaj</string>
-    <string name="action_remove">Usuń</string>
-	<string name="action_record">Nagrywaj</string>
-	<string name="action_finish">Zakończ</string>
-	<string name="action_open">Otwórz</string>
-    <string name="action_cancel">Anuluj</string>
+    <string name="action_add">Add</string>
+    <string name="action_remove">Remove</string>
+	<string name="action_record">Record</string>
+	<string name="action_finish">Finish</string>
+    <string name="action_cancel">Cancel</string>
 
-    <string name="notification_channel_prep_time_name">Koniec czasu na przygotowanie</string>
-    <string name="notification_channel_prep_time_description">Powiadomienie sygnalizujące koniec czasu na przygotowanie</string>
-	<string name="notification_channel_recorder_name">Nagrywanie debaty</string>
-	<string name="notification_channel_recorder_description">Powiadomienie informujące o trwającym nagrywaniu dźwięku</string>
-    <string name="notification_prep_time_end">Koniec czasu na przygotowanie!</string>
-    <string name="notification_recorder">Trwa nagrywanie debaty…</string>
-	<string name="notification_recorder_description">Kliknij, aby zakończyć</string>
+    <string name="notification_channel_prep_time_name">Preparation time</string>
+    <string name="notification_channel_prep_time_description">Notification about the of the preparation time</string>
+	<string name="notification_channel_recorder_name">Debate recording</string>
+	<string name="notification_channel_recorder_description">Notification about ongoing sound recording</string>
+    <string name="notification_prep_time_end">End of the preparation time!</string>
+    <string name="notification_recorder">Debate recording…</string>
+	<string name="notification_recorder_description">Click to stop</string>
 
-    <string name="preference_speech_category">Mowa</string>
-    <string name="preference_speech_duration">Długość mowy</string>
-    <string name="preference_speech_duration_max">Ostateczna długość mowy</string>
-    <string name="preference_poi_start_category">Początek czasu na pytania</string>
-    <string name="preference_poi_start_enabled">Dzwonek</string>
-    <string name="preference_poi_start">Czas</string>
-    <string name="preference_poi_end_category">Koniec czasu na pytania</string>
-    <string name="preference_poi_end_enabled">Dzwonek</string>
-    <string name="preference_poi_end">Czas</string>
+    <string name="preference_speech_category">Speech</string>
+    <string name="preference_speech_duration">Speech duration</string>
+    <string name="preference_speech_duration_max">Maximal speech duration</string>
+    <string name="preference_poi_start_category">Start of the POI time</string>
+    <string name="preference_poi_start_enabled">Bell</string>
+    <string name="preference_poi_start">Time</string>
+    <string name="preference_poi_end_category">End of the POI time</string>
+    <string name="preference_poi_end_enabled">Bell</string>
+    <string name="preference_poi_end">Time</string>
 
     <string name="time_format">%02d:%02d</string>
     <string name="duration_divider">:</string>

@@ -1,1 +1,4 @@
 build
+
+signing/keystore.jks
+google-services.json

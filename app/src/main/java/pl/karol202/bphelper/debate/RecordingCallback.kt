@@ -1,15 +1,13 @@
 package pl.karol202.bphelper.debate
 
-import android.os.Handler
-import android.os.Message
-import android.os.Messenger
-import android.os.Parcelable
+import android.os.*
 import kotlinx.android.parcel.Parcelize
+import pl.karol202.bphelper.extensions.set
 import java.lang.ref.WeakReference
 
 interface OnRecordingStopListener
 {
-	fun onRecordingStop()
+	fun onRecordingStop(error: Boolean, filename: String?)
 }
 
 @Parcelize
@@ -18,6 +16,8 @@ class RecordingCallback(private val messenger: Messenger) : Parcelable, OnRecord
 	companion object
 	{
 		private const val MESSAGE_STOP = 1
+		private const val ARG_STOP_ERROR = "error"
+		private const val ARG_STOP_FILENAME = "filename"
 
 		fun create(onRecordingStopListener: OnRecordingStopListener) =
 			RecordingCallback(CallbackHandler(onRecordingStopListener).toMessenger())
@@ -28,18 +28,32 @@ class RecordingCallback(private val messenger: Messenger) : Parcelable, OnRecord
 	{
 		private val listenerReference = WeakReference(onRecordingStopListener)
 
-		override fun handleMessage(message: Message?)
+		fun toMessenger() = Messenger(this)
+
+		override fun handleMessage(message: Message?) = when(message?.what)
 		{
-			if(message?.what == MESSAGE_STOP) listenerReference.get()?.onRecordingStop()
+			MESSAGE_STOP -> handleStopMessage(message)
+			else -> Unit
 		}
 
-		fun toMessenger() = Messenger(this)
+		private fun handleStopMessage(message: Message)
+		{
+			val error = message.data.getBoolean(ARG_STOP_ERROR)
+			val filename = message.data.getString(ARG_STOP_FILENAME)
+			listenerReference.get()?.onRecordingStop(error, filename)
+		}
 	}
 
-	override fun onRecordingStop()
+	override fun onRecordingStop(error: Boolean, filename: String?)
 	{
 		val message = Message.obtain()
 		message.what = MESSAGE_STOP
+		message.data = prepareDataBundle(error, filename)
 		messenger.send(message)
+	}
+
+	private fun prepareDataBundle(error: Boolean, filename: String?) = Bundle().apply {
+		this[ARG_STOP_ERROR] = error
+		this[ARG_STOP_FILENAME] = filename
 	}
 }

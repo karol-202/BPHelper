@@ -18,9 +18,11 @@
     <string name="text_hint_member_name">Nazwa</string>
     <string name="text_ironman">Ironman</string>
     <string name="text_loading">Ładowanie…</string>
-    <string name="text_file_exists">Nazwa zajęta. Plik zostanie nadpisany</string>
+    <string name="text_filename_empty">Nazwa pusta</string>
+    <string name="text_filename_busy">Nazwa zajęta. Plik zostanie nadpisany</string>
 	<string name="text_recording_storage_error">Nie można zapisać pliku</string>
 	<string name="text_recording_saved">Nagranie zapisane: %s</string>
+    <string name="text_recording_error">Błąd nagrywania</string>
 
     <plurals name="text_too_few_members">
 	    <item quantity="one">O %d osobę za mało</item>

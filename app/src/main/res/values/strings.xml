@@ -16,10 +16,12 @@
 
     <string name="text_no_member">New member</string>
     <string name="text_hint_member_name">Name</string>
+    <string name="text_member_name_empty_error">Name cannot be empty</string>
+    <string name="text_member_name_busy_error">Name is busy</string>
     <string name="text_ironman">Ironman</string>
     <string name="text_loading">Loading…</string>
     <string name="text_filename_empty">Filename is empty</string>
-    <string name="text_filename_busy">Name is busy. FIle will be overwritten</string>
+    <string name="text_filename_busy">Name is busy. File will be overwritten</string>
 	<string name="text_recording_storage_error">Cannot save file</string>
 	<string name="text_recording_saved">Recording saved: %s</string>
     <string name="text_recording_error">Recording error</string>

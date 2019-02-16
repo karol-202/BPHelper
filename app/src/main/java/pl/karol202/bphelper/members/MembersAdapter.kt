@@ -83,6 +83,11 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 			containerView.setOnClickListener {
 				with(containerView.ctx) {
 					memberAddDialog {
+						setNameValidityChecker { name -> when {
+							name.isBlank() -> MemberAddDialogBuilder.Validity.EMPTY
+							members.map { it.name }.contains(name) -> MemberAddDialogBuilder.Validity.BUSY
+							else -> MemberAddDialogBuilder.Validity.VALID
+						} }
 						setOnAddListener { name ->
 							memberAddListener?.invoke(Member(name, true))
 						}
@@ -120,7 +125,6 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 		{
 			val result = DiffUtil.calculateDiff(DiffCallback(field, value))
 			field = value
-			//notifyDataSetChanged()
 			result.dispatchUpdatesTo(this)
 		}
 

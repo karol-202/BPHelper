@@ -1,5 +1,6 @@
 package pl.karol202.bphelper
 
+import android.media.AudioManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
@@ -51,4 +52,10 @@ class MainActivity : AppCompatActivity()
 	private fun DrawerLayout.closeAndLock() = setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
 
 	private fun DrawerLayout.unlock() = setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+
+	override fun onResume()
+	{
+		super.onResume()
+		volumeControlStream = AudioManager.STREAM_MUSIC
+	}
 }

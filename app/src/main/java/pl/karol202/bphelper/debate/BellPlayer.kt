@@ -27,12 +27,12 @@ class BellPlayer(context: Context)
 
 	@RequiresApi(Build.VERSION_CODES.LOLLIPOP)
 	private fun createAudioAttributes() = AudioAttributes.Builder()
-														 .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+														 .setUsage(AudioAttributes.USAGE_MEDIA)
 														 .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
 														 .build()
 
 	@Suppress("DEPRECATION")
-	private fun createSoundPoolLegacy() = SoundPool(1, AudioManager.STREAM_NOTIFICATION, 0)
+	private fun createSoundPoolLegacy() = SoundPool(1, AudioManager.STREAM_MUSIC, 0)
 
 	fun play(times: Int)
 	{

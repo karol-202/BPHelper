@@ -22,12 +22,15 @@ import pl.karol202.bphelper.tables.TableConfigurationType
 
 class MembersFragment : Fragment()
 {
-	private var tableConfigurationType = TableConfigurationType.TYPE_4X2
+	private val navController by lazy { NavHostFragment.findNavController(this) }
 
 	private val membersViewModel by lazy { ViewModelProviders.of(act).get<MembersViewModel>() }
 	private val members get() = membersViewModel.allMembers.value
+
 	private val configurationAdapter = TableConfigurationAdapter()
 	private val membersAdapter = MembersAdapter()
+
+	private var tableConfigurationType = TableConfigurationType.TYPE_4X2
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
 		inflater.inflate(R.layout.fragment_members, container, false)
@@ -78,19 +81,28 @@ class MembersFragment : Fragment()
 	{
 		fabDraw.setOnClickListener {
 			val members = members ?: return@setOnClickListener
-			val remainingSeats = getRemainingSeatsForMembers(members)
-			if(remainingSeats == 0) navigateToTablesFragment()
-			else showMembersAmountAlert(remainingSeats)
+			val remainingSeats = members.getRemainingSeatsForMembers()
+			val valid = members.isConfigurationValidForMembers()
+			when
+			{
+				remainingSeats != 0 -> showMembersAmountAlert(remainingSeats)
+				!valid -> showMembersInvalidAlert()
+				else -> navigateToTablesFragment()
+			}
 		}
 	}
 
-	private fun getRemainingSeatsForMembers(members: List<Member>) =
-		tableConfigurationType.getRemainingSeatsForMembers(members)
+	private fun List<Member>.getRemainingSeatsForMembers() =
+		tableConfigurationType.getRemainingSeatsForMembers(this)
+
+	private fun List<Member>.isConfigurationValidForMembers() =
+		tableConfigurationType.isPossibleForMembers(this)
 
 	private fun navigateToTablesFragment()
 	{
+		if(navController.currentDestination?.id != R.id.membersFragment) return
 		val action = MembersFragmentDirections.toTablesFragment(tableConfigurationType.name)
-		NavHostFragment.findNavController(this).navigate(action)
+		navController.navigate(action)
 	}
 
 	private fun showMembersAmountAlert(remainingSeats: Int)
@@ -100,6 +112,8 @@ class MembersFragment : Fragment()
 		else if(remainingSeats < 0)
 			showMembersAlert(resources.getQuantityString(R.plurals.text_too_many_members, -remainingSeats, -remainingSeats))
 	}
+
+	private fun showMembersInvalidAlert() = showMembersAlert(getString(R.string.text_configuration_invalid))
 
 	private fun showMembersAlert(message: String)
 	{
@@ -114,12 +128,14 @@ class MembersFragment : Fragment()
 
 	private fun updateErrorBanner()
 	{
-		val remainingSeats = members?.let { getRemainingSeatsForMembers(it) }
+		val remainingSeats = members?.getRemainingSeatsForMembers()
+		val valid = members?.isConfigurationValidForMembers()
 		textMembersError.text = when
 		{
 			remainingSeats == null -> getString(R.string.text_loading)
 			remainingSeats > 0 -> resources.getQuantityString(R.plurals.text_too_few_members, remainingSeats, remainingSeats)
 			remainingSeats < 0 -> resources.getQuantityString(R.plurals.text_too_many_members, -remainingSeats, -remainingSeats)
+			valid != true -> getString(R.string.text_configuration_invalid)
 			else -> null
 		}
 	}

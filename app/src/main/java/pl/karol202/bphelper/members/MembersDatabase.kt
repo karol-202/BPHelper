@@ -19,9 +19,12 @@ data class Member(@PrimaryKey @ColumnInfo(name = COLUMN_NAME) val name: String,
 		const val COLUMN_NAME = "name"
 		const val COLUMN_PRESENT = "present"
 		const val COLUMN_IRONMAN = "ironman"
+
+		const val SEATS_STANDARD = 1
+		const val SEATS_IRONMAN = 2
 	}
 
-	val occupiedSeats get() = if(ironman) 2 else 1
+	val occupiedSeats get() = if(ironman) SEATS_IRONMAN else SEATS_STANDARD
 }
 
 @Dao

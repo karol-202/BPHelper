@@ -36,7 +36,10 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 			_checkMemberPresent.setOnCheckedChangeListener { _, checked ->
 				val member = member ?: return@setOnCheckedChangeListener
 				member.present = checked
+				if(!checked) member.ironman = false
+
 				memberUpdateListener?.invoke(member)
+				_checkMemberIronman.isChecked = member.ironman
 				_checkMemberIronman.visibility = if(checked) View.VISIBLE else View.GONE
 			}
 

@@ -36,9 +36,7 @@ class TablesFragment : ExtendedFragment()
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?)
 	{
 		super.onViewCreated(view, savedInstanceState)
-		childFragmentManager.transaction {
-			addFragmentsForTableConfiguration()
-		}
+		childFragmentManager.transaction { addFragmentsForTableConfiguration() }
 	}
 
 	private fun FragmentTransaction.addFragmentsForTableConfiguration()

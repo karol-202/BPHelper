@@ -18,6 +18,7 @@
     <string name="text_hint_member_name">Name</string>
     <string name="text_member_name_empty_error">Name cannot be empty</string>
     <string name="text_member_name_busy_error">Name is busy</string>
+    <string name="text_configuration_invalid">Invalid configuration</string>
     <string name="text_ironman">Ironman</string>
     <string name="text_loading">Loading…</string>
     <string name="text_filename_empty">Filename is empty</string>

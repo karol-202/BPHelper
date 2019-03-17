@@ -21,8 +21,7 @@ data class Member(@PrimaryKey @ColumnInfo(name = COLUMN_NAME) val name: String,
 		const val COLUMN_IRONMAN = "ironman"
 	}
 
-	val occupiedSeats: Int
-		get() = if(ironman) 2 else 1
+	val occupiedSeats get() = if(ironman) 2 else 1
 }
 
 @Dao
@@ -76,18 +75,9 @@ class MembersRepository(context: Context)
 
 	val allMembers = memberDao.getAll()
 
-	fun addMember(member: Member)
-	{
-		memberDao.insert(member)
-	}
+	fun addMember(member: Member) = memberDao.insert(member)
 
-	fun updateMember(member: Member)
-	{
-		memberDao.update(member)
-	}
+	fun updateMember(member: Member) = memberDao.update(member)
 
-	fun removeMember(member: Member)
-	{
-		memberDao.delete(member)
-	}
+	fun removeMember(member: Member) = memberDao.delete(member)
 }

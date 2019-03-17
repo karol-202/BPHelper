@@ -1,7 +1,6 @@
 package pl.karol202.bphelper.debate
 
 import android.Manifest
-import android.content.Context
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -23,8 +22,7 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 		private const val DIRECTORY_RECORDINGS = "Recordings"
 	}
 
-	override val ctx: Context
-		get() = requireContext()
+	override val ctx get() = requireContext()
 	override val onRecordingStopListener = this
 
 	private lateinit var bellPlayer: BellPlayer

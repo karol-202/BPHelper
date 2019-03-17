@@ -23,15 +23,9 @@ class MembersViewModel(application: Application) : AndroidViewModel(application)
 		job.cancel()
 	}
 
-	fun addMember(member: Member) = coroutineScope.launch(Dispatchers.IO) {
-		repository.addMember(member)
-	}
+	fun addMember(member: Member) = coroutineScope.launch(Dispatchers.IO) { repository.addMember(member) }
 
-	fun updateMember(member: Member) = coroutineScope.launch(Dispatchers.IO) {
-		repository.updateMember(member)
-	}
+	fun updateMember(member: Member) = coroutineScope.launch(Dispatchers.IO) { repository.updateMember(member) }
 
-	fun removeMember(member: Member) = coroutineScope.launch(Dispatchers.IO) {
-		repository.removeMember(member)
-	}
+	fun removeMember(member: Member) = coroutineScope.launch(Dispatchers.IO) { repository.removeMember(member) }
 }

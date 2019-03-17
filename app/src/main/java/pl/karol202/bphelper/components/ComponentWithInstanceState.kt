@@ -11,12 +11,11 @@ interface ComponentWithInstanceState
 
 	fun <T : Any> instanceStateOr(defaultValue: T) =
 		BundleDelegate.NotNull(bundleProvider = { instanceState.bundle },
-		                                                       defaultValueProvider = { defaultValue })
+		                       defaultValueProvider = { defaultValue })
 
-	fun <T : Any> instanceStateOr(defaultValueProvider: () -> T) = BundleDelegate.NotNull(
-		bundleProvider = { instanceState.bundle },
-		defaultValueProvider = defaultValueProvider
-	)
+	fun <T : Any> instanceStateOr(defaultValueProvider: () -> T) =
+		BundleDelegate.NotNull(bundleProvider = { instanceState.bundle },
+		                       defaultValueProvider = defaultValueProvider)
 }
 
 class InstanceState

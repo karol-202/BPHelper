@@ -9,8 +9,8 @@ import androidx.fragment.app.transaction
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.get
 import androidx.navigation.fragment.navArgs
-import pl.karol202.bphelper.components.ExtendedFragment
 import pl.karol202.bphelper.R
+import pl.karol202.bphelper.components.ExtendedFragment
 import pl.karol202.bphelper.extensions.act
 import pl.karol202.bphelper.members.MembersViewModel
 
@@ -30,8 +30,7 @@ class TablesFragment : ExtendedFragment()
 	private fun getLayout() = when(tableConfiguration)
 	{
 		is TableConfiguration4X2 -> R.layout.fragment_tables_4
-		is TableConfiguration2X3,
-		is TableConfiguration2X4 -> R.layout.fragment_tables_2
+		is TableConfiguration2X3, is TableConfiguration2X4 -> R.layout.fragment_tables_2
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?)

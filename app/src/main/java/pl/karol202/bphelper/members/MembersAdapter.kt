@@ -42,16 +42,7 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 
 			buttonMemberDelete.setOnClickListener {
 				val member = member ?: return@setOnClickListener
-				with(containerView.ctx) {
-					alertDialog {
-						setTitle(getString(R.string.alert_remove_member_title))
-						setMessage(getString(R.string.alert_remove_member, member.name))
-						setPositiveButton(R.string.action_remove) { _, _ ->
-							memberRemoveListener?.invoke(member)
-						}
-						setNegativeButton(R.string.action_cancel, null)
-					}.show()
-				}
+				showMemberDeleteDialog(member)
 			}
 
 			_checkMemberIronman.setOnCheckedChangeListener { _, checked ->
@@ -59,6 +50,17 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 				member.ironman = checked
 				memberUpdateListener?.invoke(member)
 			}
+		}
+
+		private fun showMemberDeleteDialog(member: Member) = with(containerView.ctx) {
+			alertDialog {
+				setTitle(getString(R.string.alert_remove_member_title))
+				setMessage(getString(R.string.alert_remove_member, member.name))
+				setPositiveButton(R.string.action_remove) { _, _ ->
+					memberRemoveListener?.invoke(member)
+				}
+				setNegativeButton(R.string.action_cancel, null)
+			}.show()
 		}
 
 		override fun bind(member: Member)
@@ -80,20 +82,20 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 	{
 		init
 		{
-			containerView.setOnClickListener {
-				with(containerView.ctx) {
-					memberAddDialog {
-						setNameValidityChecker { name -> when {
-							name.isBlank() -> MemberAddDialogBuilder.Validity.EMPTY
-							members.map { it.name }.contains(name) -> MemberAddDialogBuilder.Validity.BUSY
-							else -> MemberAddDialogBuilder.Validity.VALID
-						} }
-						setOnAddListener { name ->
-							memberAddListener?.invoke(Member(name, true))
-						}
-					}.show()
+			containerView.setOnClickListener { showMemberAddDialog() }
+		}
+
+		private fun showMemberAddDialog() = with(containerView.ctx) {
+			memberAddDialog {
+				setNameValidityChecker { name -> when {
+					name.isBlank() -> MemberAddDialogBuilder.Validity.EMPTY
+					members.map { it.name }.contains(name) -> MemberAddDialogBuilder.Validity.BUSY
+					else -> MemberAddDialogBuilder.Validity.VALID
+				} }
+				setOnAddListener { name ->
+					memberAddListener?.invoke(Member(name, true))
 				}
-			}
+			}.show()
 		}
 
 		override fun bind(member: Member?) { }

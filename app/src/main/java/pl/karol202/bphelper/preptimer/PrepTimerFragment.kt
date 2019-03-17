@@ -26,7 +26,8 @@ private interface StateContext
 	fun updateButton(@StringRes text: Int)
 }
 
-class PrepTimerFragment : ExtendedFragment(), StateContext,
+class PrepTimerFragment : ExtendedFragment(),
+                          StateContext,
                           DurationPickerFragment.OnDurationSetListener
 {
 	companion object
@@ -148,11 +149,7 @@ class PrepTimerFragment : ExtendedFragment(), StateContext,
 
 	override val ctx get() = requireContext()
 
-	private var state by instanceStateOr<State>(
-		DisabledState.create(
-			this, DEFAULT_DURATION
-		)
-	)
+	private var state by instanceStateOr<State>(DisabledState.create(this, DEFAULT_DURATION))
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
 		inflater.inflate(R.layout.fragment_prep_timer, container, false)

@@ -10,17 +10,17 @@ interface ComponentWithArguments
 	fun <T : Any> arguments() =
 		BundleDelegate.Nullable<T>(bundleProvider = this::getOrCreateNewArguments)
 
-	fun <T : Any> argumentsOr(defaultValue: T) = BundleDelegate.NotNull(
-		bundleProvider = this::getOrCreateNewArguments,
-		defaultValueProvider = { defaultValue })
+	fun <T : Any> argumentsOr(defaultValue: T) =
+		BundleDelegate.NotNull(bundleProvider = this::getOrCreateNewArguments,
+		                       defaultValueProvider = { defaultValue })
 
-	fun <T : Any> argumentsOr(defaultValueProvider: () -> T) = BundleDelegate.NotNull(
-		bundleProvider = this::getOrCreateNewArguments, defaultValueProvider = defaultValueProvider
-	)
+	fun <T : Any> argumentsOr(defaultValueProvider: () -> T) =
+		BundleDelegate.NotNull(bundleProvider = this::getOrCreateNewArguments,
+		                       defaultValueProvider = defaultValueProvider)
 
 	fun <T : Any> argumentsOrThrow() =
 		BundleDelegate.NotNull<T>(bundleProvider = this::getOrCreateNewArguments,
-		                                                          defaultValueProvider = { throw IllegalStateException("No argument passed") })
+		                          defaultValueProvider = { throw IllegalStateException("No argument passed") })
 
 	private fun getOrCreateNewArguments() = componentArguments ?: Bundle().also { componentArguments = it }
 }

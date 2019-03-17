@@ -5,8 +5,7 @@ import android.view.View
 import android.widget.Adapter
 import android.widget.AdapterView
 
-val View.ctx: Context
-	get() = context
+val View.ctx: Context get() = context
 
 fun <T : Adapter> AdapterView<T>.setOnItemSelectedListener(
 	listener: ((parent: AdapterView<*>?, view: View?, position: Int, id: Long) -> Unit)?

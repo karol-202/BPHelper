@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_members.*
 import pl.karol202.bphelper.R
-import pl.karol202.bphelper.tables.TableConfigurationAdapter
-import pl.karol202.bphelper.tables.TableConfigurationType
 import pl.karol202.bphelper.extensions.act
 import pl.karol202.bphelper.extensions.alertDialog
 import pl.karol202.bphelper.extensions.ctx
 import pl.karol202.bphelper.extensions.setOnItemSelectedListener
+import pl.karol202.bphelper.tables.TableConfigurationAdapter
+import pl.karol202.bphelper.tables.TableConfigurationType
 
 class MembersFragment : Fragment()
 {
@@ -45,7 +45,7 @@ class MembersFragment : Fragment()
 
 	private fun observeMembers()
 	{
-		membersViewModel.allMembers.observe(this, Observer { members ->
+		membersViewModel.allMembers.observe(viewLifecycleOwner, Observer { members ->
 			members?.let { membersAdapter.members = it }
 			updateErrorBanner()
 		})
@@ -65,15 +65,9 @@ class MembersFragment : Fragment()
 
 	private fun initRecyclerView()
 	{
-		membersAdapter.memberAddListener = {
-			membersViewModel.addMember(it)
-		}
-		membersAdapter.memberUpdateListener = {
-			membersViewModel.updateMember(it)
-		}
-		membersAdapter.memberRemoveListener = {
-			membersViewModel.removeMember(it)
-		}
+		membersAdapter.memberAddListener = { membersViewModel.addMember(it) }
+		membersAdapter.memberUpdateListener = { membersViewModel.updateMember(it) }
+		membersAdapter.memberRemoveListener = { membersViewModel.removeMember(it) }
 
 		recyclerMembers.layoutManager = LinearLayoutManager(ctx)
 		recyclerMembers.adapter = membersAdapter

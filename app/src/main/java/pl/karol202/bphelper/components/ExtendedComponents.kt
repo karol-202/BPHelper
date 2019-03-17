@@ -9,12 +9,12 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceDialogFragmentCompat
 
-abstract class ExtendedFragment : Fragment(), ComponentWithInstanceState,
-	ComponentWithArguments,
-	ComponentWithPermissions
+abstract class ExtendedFragment : Fragment(),
+                                  ComponentWithInstanceState,
+                                  ComponentWithArguments,
+                                  ComponentWithPermissions
 {
-	override val ctx: Context
-		get() = requireContext()
+	override val ctx get() = requireContext()
 
 	override var componentArguments: Bundle?
 		get() = arguments
@@ -53,7 +53,8 @@ abstract class ExtendedFragment : Fragment(), ComponentWithInstanceState,
 	}
 }
 
-abstract class ExtendedDialogFragment : DialogFragment(), ComponentWithInstanceState,
+abstract class ExtendedDialogFragment : DialogFragment(),
+                                        ComponentWithInstanceState,
                                         ComponentWithArguments
 {
 	override var componentArguments: Bundle?
@@ -75,7 +76,8 @@ abstract class ExtendedDialogFragment : DialogFragment(), ComponentWithInstanceS
 	}
 }
 
-abstract class ExtendedPreferenceDialogFragmentCompat : PreferenceDialogFragmentCompat(), ComponentWithInstanceState,
+abstract class ExtendedPreferenceDialogFragmentCompat : PreferenceDialogFragmentCompat(),
+                                                        ComponentWithInstanceState,
                                                         ComponentWithArguments
 {
 	override var componentArguments: Bundle?
@@ -97,7 +99,8 @@ abstract class ExtendedPreferenceDialogFragmentCompat : PreferenceDialogFragment
 	}
 }
 
-abstract class ExtendedAlertDialog : AlertDialog, ComponentWithInstanceState
+abstract class ExtendedAlertDialog : AlertDialog,
+                                     ComponentWithInstanceState
 {
 	override val instanceState = InstanceState()
 

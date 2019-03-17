@@ -35,9 +35,7 @@ class DurationPickerFragment : ExtendedDialogFragment()
 	override fun onCreateDialog(savedInstanceState: Bundle?) =
 		DurationPickerDialog(ctx, { onDurationSet(it) }, initialDuration)
 
-	fun show(fragmentManager: FragmentManager) = show(fragmentManager,
-	                                                  TAG
-	)
+	fun show(fragmentManager: FragmentManager) = show(fragmentManager, TAG)
 
 	private fun onDurationSet(duration: Duration)
 	{

@@ -8,7 +8,8 @@ import pl.karol202.bphelper.Duration
 import pl.karol202.bphelper.R
 import pl.karol202.bphelper.orThrow
 
-class DurationPreference(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : DialogPreference(context, attrs, defStyleAttr, defStyleRes)
+class DurationPreference(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) :
+	DialogPreference(context, attrs, defStyleAttr, defStyleRes)
 {
 	var duration: Duration = Duration.zero
 		set(value)

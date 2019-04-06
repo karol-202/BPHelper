@@ -1,26 +1,21 @@
 package pl.karol202.bphelper.debate
 
-import android.content.Context
 import android.os.CountDownTimer
 import android.os.Parcelable
-import androidx.annotation.StringRes
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import pl.karol202.bphelper.Duration
-import pl.karol202.bphelper.R
 import pl.karol202.bphelper.minus
 import pl.karol202.bphelper.orThrow
 import pl.karol202.bphelper.settings.Settings
 
 interface TimerStateContext
 {
-	val ctx: Context
-
 	fun updateClock(duration: Duration)
 
 	fun updateClockOvertime(overtime: Boolean)
 
-	fun updateTimerButton(@StringRes text: Int)
+	fun updateTimerButtons()
 
 	fun playBellSound(times: Int)
 }
@@ -35,14 +30,15 @@ interface TimerState : Parcelable
 }
 
 @Parcelize
-class TimerStateEnabled private constructor(private var elapsedTime: Duration = Duration.zero,
-                                            private val timeChecks: TimeChecks = TimeChecks()) : TimerState
+class TimerStateRunning private constructor(private var elapsedTime: Duration,
+											private val timeChecks: TimeChecks = TimeChecks()) : TimerState
 {
 	companion object
 	{
 		private val TICK_INTERVAL = Duration.create(millis = 100)!!
 
-		fun create(stateContext: TimerStateContext) = TimerStateEnabled().apply { setContext(stateContext) }
+		fun create(stateContext: TimerStateContext, elapsedTime: Duration = Duration.zero) =
+				TimerStateRunning(elapsedTime).apply { setContext(stateContext) }
 	}
 
 	private inner class Timer(elapsedTime: Duration,
@@ -75,7 +71,7 @@ class TimerStateEnabled private constructor(private var elapsedTime: Duration = 
 		timer = Timer(elapsedTime, TICK_INTERVAL).apply { start() }
 		stateContext.updateClock(elapsedTime)
 		stateContext.updateClockOvertime(elapsedTime >= Settings.speechDuration)
-		stateContext.updateTimerButton(R.string.button_debate_timer_stop)
+		stateContext.updateTimerButtons()
 	}
 
 	override fun onExiting()
@@ -118,14 +114,43 @@ class TimerStateEnabled private constructor(private var elapsedTime: Duration = 
 
 	//When timer reaches 59:59.999
 	fun onTimerFinish() { }
+
+	fun getElapsedTime() = elapsedTime
 }
 
 @Parcelize
-class TimerStateDisabled private constructor() : TimerState
+class TimerStatePaused private constructor(val elapsedTime: Duration) : TimerState
 {
 	companion object
 	{
-		fun create(stateContext: TimerStateContext) = TimerStateDisabled().apply { setContext(stateContext) }
+		fun create(stateContext: TimerStateContext, elapsedTime: Duration) =
+			TimerStatePaused(elapsedTime).apply { setContext(stateContext) }
+	}
+
+	@IgnoredOnParcel
+	private lateinit var stateContext: TimerStateContext
+
+	override fun setContext(stateContext: TimerStateContext)
+	{
+		this.stateContext = stateContext
+	}
+
+	override fun onEntering()
+	{
+		stateContext.updateClock(elapsedTime)
+		stateContext.updateClockOvertime(elapsedTime >= Settings.speechDuration)
+		stateContext.updateTimerButtons()
+	}
+
+	override fun onExiting() { }
+}
+
+@Parcelize
+class TimerStateStopped private constructor() : TimerState
+{
+	companion object
+	{
+		fun create(stateContext: TimerStateContext) = TimerStateStopped().apply { setContext(stateContext) }
 	}
 
 	@IgnoredOnParcel
@@ -140,7 +165,7 @@ class TimerStateDisabled private constructor() : TimerState
 	{
 		stateContext.updateClock(Duration.zero)
 		stateContext.updateClockOvertime(false)
-		stateContext.updateTimerButton(R.string.button_debate_timer_start)
+		stateContext.updateTimerButtons()
 	}
 
 	override fun onExiting() { }

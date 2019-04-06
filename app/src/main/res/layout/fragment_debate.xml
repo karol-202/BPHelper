@@ -5,34 +5,50 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:keepScreenOn="true">
+        android:keepScreenOn="true" android:id="@+id/constraintLayoutDebate">
 
     <TextView
             android:id="@+id/textDebateTimer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextAppearance.MaterialComponents.Headline1"
-            android:textColor="?attr/colorAccent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/buttonDebateTime"/>
+            app:layout_constraintBottom_toTopOf="@+id/buttonDebateTimeStart"
+            style="@style/TextAppearance.MaterialComponents.Headline1"
+            android:textColor="?attr/colorAccent"/>
 
     <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonDebateTime"
+            android:id="@+id/buttonDebateTimeStop"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="4dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            app:layout_constraintBottom_toTopOf="@id/buttonDebateRecording"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/centralGuideline"
+            style="@style/Widget.MaterialComponents.Button.Icon"
+            app:icon="@drawable/ic_stop_white_24dp"
+            android:text="@string/button_debate_timer_stop"/>
+
+    <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonDebateTimeStart"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp"
+            android:layout_marginEnd="4dp"
             android:layout_marginBottom="8dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/centralGuideline"
             app:layout_constraintBottom_toTopOf="@id/buttonDebateRecording"
             style="@style/Widget.MaterialComponents.Button.Icon"
-            android:text="@string/button_debate_timer_start"
-            app:icon="@drawable/ic_timer_white_24dp"/>
+            app:icon="@drawable/ic_play_white_24dp"
+            android:text="@string/button_debate_timer_start"/>
 
     <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonDebateRecording"
@@ -47,6 +63,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             style="@style/Widget.MaterialComponents.Button.Icon"
-            android:text="@string/button_debate_recording_enable"
-            app:icon="@drawable/ic_mic_white_24dp"/>
+            app:icon="@drawable/ic_mic_white_24dp"
+            android:text="@string/button_debate_recording_enable"/>
+
+    <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/centralGuideline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -44,6 +44,8 @@
     <string name="button_prep_timer_stop">Stop!</string>
     <string name="button_debate_timer_start">Czas start!</string>
     <string name="button_debate_timer_stop">Czas stop!</string>
+    <string name="button_debate_timer_pause">Pauza</string>
+    <string name="button_debate_timer_resume">Wznów</string>
     <string name="button_debate_recording_enable">Nagrywaj</string>
     <string name="button_debate_recording_disable">Zakończ nagrywanie</string>
 

@@ -6,6 +6,8 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.transition.TransitionManager
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_debate.*
 import pl.karol202.bphelper.Duration
@@ -14,6 +16,7 @@ import pl.karol202.bphelper.components.ExtendedFragment
 import pl.karol202.bphelper.extensions.alertDialog
 import pl.karol202.bphelper.extensions.getColorCompat
 import java.io.File
+import kotlin.math.roundToInt
 
 class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateContext, OnRecordingStopListener
 {
@@ -22,12 +25,11 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 		private const val DIRECTORY_RECORDINGS = "Recordings"
 	}
 
-	override val ctx get() = requireContext()
 	override val onRecordingStopListener = this
 
 	private lateinit var bellPlayer: BellPlayer
 
-	private var _timerState by instanceStateOr<TimerState>(TimerStateDisabled.create(this))
+	private var _timerState by instanceStateOr<TimerState>(TimerStateStopped.create(this))
 	private var timerState: TimerState
 		get() = _timerState
 		set(value)
@@ -59,14 +61,25 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 		recordingState.setContext(this)
 		recordingState.onEntering()
 
-		buttonDebateTime.setOnClickListener { toggleTimerState() }
+		buttonDebateTimeStart.setOnClickListener { onTimerStartButtonClick() }
+		buttonDebateTimeStop.setOnClickListener { onTimerStopButtonClick() }
 		buttonDebateRecording.setOnClickListener { toggleRecording() }
 	}
 
-	private fun toggleTimerState()
+	private fun onTimerStartButtonClick()
 	{
-		if(timerState is TimerStateEnabled) timerState = TimerStateDisabled.create(this)
-		else if(timerState is TimerStateDisabled) timerState = TimerStateEnabled.create(this)
+		val previousState = timerState
+		when(previousState)
+		{
+			is TimerStateRunning -> timerState = TimerStatePaused.create(this, previousState.getElapsedTime())
+			is TimerStatePaused -> timerState = TimerStateRunning.create(this, previousState.elapsedTime)
+			is TimerStateStopped -> timerState = TimerStateRunning.create(this)
+		}
+	}
+
+	private fun onTimerStopButtonClick()
+	{
+		timerState = TimerStateStopped.create(this)
 	}
 
 	private fun toggleRecording()
@@ -77,6 +90,38 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 
 	private fun showFilenameAlertIfPermitted()
 	{
+		fun checkAndRequestAudioPermission(): Boolean
+		{
+			val hasPermission = checkPermission(Manifest.permission.RECORD_AUDIO)
+			if(!hasPermission) requestPermission(Manifest.permission.RECORD_AUDIO) { granted ->
+				if(granted) showFilenameAlertIfPermitted()
+			}
+			return hasPermission
+		}
+
+		fun checkStorageState() = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
+
+		fun checkAndRequestStoragePermission(): Boolean
+		{
+			val hasPermission = checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+			if(!hasPermission) requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) { granted ->
+				if(granted) showFilenameAlertIfPermitted()
+			}
+			return hasPermission
+		}
+
+		fun showExternalStorageErrorMessage()
+		{
+			Snackbar.make(view ?: return, R.string.text_recording_storage_error, Snackbar.LENGTH_SHORT).show()
+		}
+
+		fun getFileForRecording(filename: String): File
+		{
+			val recordingsDirectory = File(Environment.getExternalStorageDirectory(), DIRECTORY_RECORDINGS)
+			recordingsDirectory.mkdirs()
+			return File(recordingsDirectory, "$filename${DebateRecorderService.FILENAME_SUFFIX}")
+		}
+
 		if(!checkAndRequestAudioPermission()) return
 		if(!checkStorageState()) return showExternalStorageErrorMessage()
 		if(!checkAndRequestStoragePermission()) return
@@ -92,38 +137,6 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 				setRecordingEnabled(filename, file)
 			}
 		}.show()
-	}
-
-	private fun checkAndRequestAudioPermission(): Boolean
-	{
-		val hasPermission = checkPermission(Manifest.permission.RECORD_AUDIO)
-		if(!hasPermission) requestPermission(Manifest.permission.RECORD_AUDIO) { granted ->
-			if(granted) showFilenameAlertIfPermitted()
-		}
-		return hasPermission
-	}
-
-	private fun checkStorageState() = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
-
-	private fun checkAndRequestStoragePermission(): Boolean
-	{
-		val hasPermission = checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-		if(!hasPermission) requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) { granted ->
-			if(granted) showFilenameAlertIfPermitted()
-		}
-		return hasPermission
-	}
-
-	private fun showExternalStorageErrorMessage()
-	{
-		Snackbar.make(view ?: return, R.string.text_recording_storage_error, Snackbar.LENGTH_SHORT).show()
-	}
-
-	private fun getFileForRecording(filename: String): File
-	{
-		val recordingsDirectory = File(Environment.getExternalStorageDirectory(), DIRECTORY_RECORDINGS)
-		recordingsDirectory.mkdirs()
-		return File(recordingsDirectory, "$filename${DebateRecorderService.FILENAME_SUFFIX}")
 	}
 
 	private fun showRecordingStopAlert()
@@ -164,9 +177,45 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 		textDebateTimer.setTextColor(ctx.getColorCompat(color))
 	}
 
-	override fun updateTimerButton(text: Int)
+	override fun updateTimerButtons()
 	{
-		buttonDebateTime.setText(text)
+		fun setStartButtonConstraints(stopped: Boolean)
+		{
+			val constraints = ConstraintSet()
+			constraints.clone(constraintLayoutDebate)
+
+			if(stopped) constraints.connect(R.id.buttonDebateTimeStart, ConstraintSet.END, ConstraintSet.PARENT_ID, ConstraintSet.END)
+			else constraints.connect(R.id.buttonDebateTimeStart, ConstraintSet.END, R.id.buttonDebateTimeStop, ConstraintSet.START)
+
+			val margin = ctx.resources.getDimension(if(stopped) R.dimen.margin_button_debate_start_stopped
+			                                        else R.dimen.margin_button_debate_start_running).roundToInt()
+			constraints.setMargin(R.id.buttonDebateTimeStart, ConstraintSet.END, margin)
+
+			constraints.applyTo(constraintLayoutDebate)
+		}
+
+		TransitionManager.beginDelayedTransition(view as ViewGroup)
+		when(timerState)
+		{
+			is TimerStateRunning -> {
+				setStartButtonConstraints(false)
+				buttonDebateTimeStart.setIconResource(R.drawable.ic_pause_white_24dp)
+				buttonDebateTimeStart.setText(R.string.button_debate_timer_pause)
+				buttonDebateTimeStop.isClickable = true
+			}
+			is TimerStatePaused -> {
+				setStartButtonConstraints(false)
+				buttonDebateTimeStart.setIconResource(R.drawable.ic_play_white_24dp)
+				buttonDebateTimeStart.setText(R.string.button_debate_timer_resume)
+				buttonDebateTimeStop.isClickable = true
+			}
+			is TimerStateStopped -> {
+				setStartButtonConstraints(true)
+				buttonDebateTimeStart.setIconResource(R.drawable.ic_play_white_24dp)
+				buttonDebateTimeStart.setText(R.string.button_debate_timer_start)
+				buttonDebateTimeStop.isClickable = false
+			}
+		}
 	}
 
 	override fun playBellSound(times: Int) = bellPlayer.play(times)
@@ -179,15 +228,15 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 	//Will be called unless recording was stopped by button
 	override fun onRecordingStop(error: Boolean, filename: String?)
 	{
+		fun showRecordingStopMessage(error: Boolean, filename: String?)
+		{
+			val message = if(!error) getString(R.string.text_recording_saved, filename)
+			else getString(R.string.text_recording_error)
+			Snackbar.make(view ?: return, message, Snackbar.LENGTH_LONG).show()
+		}
+
 		if(context == null) return
 		setRecordingDisabled()
 		showRecordingStopMessage(error, filename)
-	}
-
-	private fun showRecordingStopMessage(error: Boolean, filename: String?)
-	{
-		val message = if(!error) getString(R.string.text_recording_saved, filename)
-					  else getString(R.string.text_recording_error)
-		Snackbar.make(view ?: return, message, Snackbar.LENGTH_LONG).show()
 	}
 }

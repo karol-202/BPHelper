@@ -5,7 +5,8 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:keepScreenOn="true" android:id="@+id/constraintLayoutDebate">
+        android:keepScreenOn="true"
+        android:id="@+id/constraintLayoutDebate">
 
     <TextView
             android:id="@+id/textDebateTimer"
@@ -24,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="6dp"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             app:layout_constraintBottom_toTopOf="@id/buttonDebateRecording"
@@ -72,4 +73,5 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package pl.karol202.bphelper.debate
 
 import android.Manifest
+import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.transition.TransitionManager
+import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_debate.*
 import pl.karol202.bphelper.Duration
@@ -28,6 +30,8 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 	override val onRecordingStopListener = this
 
 	private lateinit var bellPlayer: BellPlayer
+	private val drawablePlayToPause by lazy { AnimatedVectorDrawableCompat.create(ctx, R.drawable.anim_play_to_pause_white_24dp) }
+	private val drawablePauseToPlay by lazy { AnimatedVectorDrawableCompat.create(ctx, R.drawable.anim_pause_to_play_white_24dp) }
 
 	private var _timerState by instanceStateOr<TimerState>(TimerStateStopped.create(this))
 	private var timerState: TimerState
@@ -71,9 +75,12 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 		val previousState = timerState
 		when(previousState)
 		{
-			is TimerStateRunning -> timerState = TimerStatePaused.create(this, previousState.getElapsedTime())
-			is TimerStatePaused -> timerState = TimerStateRunning.create(this, previousState.elapsedTime)
-			is TimerStateStopped -> timerState = TimerStateRunning.create(this)
+			is TimerStateRunning -> timerState =
+					TimerStatePaused.create(this, previousState.getElapsedTime(), previousState.getTimeChecks())
+			is TimerStatePaused -> timerState =
+					TimerStateRunning.create(this, previousState.elapsedTime, previousState.timeChecks)
+			is TimerStateStopped -> timerState =
+					TimerStateRunning.create(this)
 		}
 	}
 
@@ -198,20 +205,23 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 		when(timerState)
 		{
 			is TimerStateRunning -> {
-				setStartButtonConstraints(false)
-				buttonDebateTimeStart.setIconResource(R.drawable.ic_pause_white_24dp)
+				setStartButtonConstraints(stopped = false)
+				if(buttonDebateTimeStart.icon != drawablePlayToPause)
+					buttonDebateTimeStart.icon = drawablePlayToPause?.apply { start() }
 				buttonDebateTimeStart.setText(R.string.button_debate_timer_pause)
 				buttonDebateTimeStop.isClickable = true
 			}
 			is TimerStatePaused -> {
-				setStartButtonConstraints(false)
-				buttonDebateTimeStart.setIconResource(R.drawable.ic_play_white_24dp)
+				setStartButtonConstraints(stopped = false)
+				if(buttonDebateTimeStart.icon != drawablePauseToPlay)
+					buttonDebateTimeStart.icon = drawablePauseToPlay?.apply { start() }
 				buttonDebateTimeStart.setText(R.string.button_debate_timer_resume)
 				buttonDebateTimeStop.isClickable = true
 			}
 			is TimerStateStopped -> {
-				setStartButtonConstraints(true)
-				buttonDebateTimeStart.setIconResource(R.drawable.ic_play_white_24dp)
+				setStartButtonConstraints(stopped = true)
+				if(buttonDebateTimeStart.icon != drawablePauseToPlay)
+					buttonDebateTimeStart.icon = drawablePauseToPlay?.apply { start() }
 				buttonDebateTimeStart.setText(R.string.button_debate_timer_start)
 				buttonDebateTimeStop.isClickable = false
 			}

@@ -31,30 +31,27 @@ interface TimerState : Parcelable
 
 @Parcelize
 class TimerStateRunning private constructor(private var elapsedTime: Duration,
-											private val timeChecks: TimeChecks = TimeChecks()) : TimerState
+											private var timeChecks: TimeChecks) : TimerState
 {
 	companion object
 	{
 		private val TICK_INTERVAL = Duration.create(millis = 100)!!
 
-		fun create(stateContext: TimerStateContext, elapsedTime: Duration = Duration.zero) =
-				TimerStateRunning(elapsedTime).apply { setContext(stateContext) }
+		fun create(stateContext: TimerStateContext,
+		           elapsedTime: Duration = Duration.zero,
+		           timeChecks: TimeChecks = TimeChecks()) =
+				TimerStateRunning(elapsedTime, timeChecks).apply { setContext(stateContext) }
 	}
 
 	private inner class Timer(elapsedTime: Duration,
 	                          tickInterval: Duration) :
 		CountDownTimer((Duration.max - elapsedTime).orThrow().timeInMillis.toLong(), tickInterval.timeInMillis.toLong())
 	{
-		override fun onTick(millisUntilFinished: Long) = onTimerUpdate((Duration.max - Duration.fromMillis(millisUntilFinished.toInt())).orThrow())
+		override fun onTick(millisUntilFinished: Long) =
+			onTimerUpdate((Duration.max - Duration.fromMillis(millisUntilFinished.toInt())).orThrow())
 
 		override fun onFinish() = onTimerFinish()
 	}
-
-	@Parcelize
-	data class TimeChecks(var speechDuration: Boolean = false,
-	                      var speechDurationMax: Boolean = false,
-	                      var poiStart: Boolean = false,
-	                      var poiEnd: Boolean = false) : Parcelable
 
 	@IgnoredOnParcel
 	private lateinit var stateContext: TimerStateContext
@@ -91,23 +88,23 @@ class TimerStateRunning private constructor(private var elapsedTime: Duration,
 	{
 		if(!timeChecks.poiStart && elapsedTime >= Settings.poiStart && Settings.poiStartEnabled)
 		{
-			timeChecks.poiStart = true
+			timeChecks = timeChecks.copy(poiStart = true)
 			stateContext.playBellSound(1)
 		}
 		if(!timeChecks.poiEnd && elapsedTime >= Settings.poiEnd && Settings.poiEndEnabled)
 		{
-			timeChecks.poiEnd = true
+			timeChecks = timeChecks.copy(poiEnd = true)
 			stateContext.playBellSound(1)
 		}
 		if(!timeChecks.speechDuration && elapsedTime >= Settings.speechDuration && Settings.speechDuration != Duration.zero)
 		{
-			timeChecks.speechDuration = true
+			timeChecks = timeChecks.copy(speechDuration = true)
 			stateContext.updateClockOvertime(true)
 			stateContext.playBellSound(2)
 		}
 		if(!timeChecks.speechDurationMax && elapsedTime >= Settings.speechDurationMax && Settings.speechDurationMax != Duration.zero)
 		{
-			timeChecks.speechDurationMax = true
+			timeChecks = timeChecks.copy(speechDurationMax = true)
 			stateContext.playBellSound(3)
 		}
 	}
@@ -116,15 +113,18 @@ class TimerStateRunning private constructor(private var elapsedTime: Duration,
 	fun onTimerFinish() { }
 
 	fun getElapsedTime() = elapsedTime
+
+	fun getTimeChecks() = timeChecks
 }
 
 @Parcelize
-class TimerStatePaused private constructor(val elapsedTime: Duration) : TimerState
+class TimerStatePaused private constructor(val elapsedTime: Duration,
+                                           val timeChecks: TimeChecks) : TimerState
 {
 	companion object
 	{
-		fun create(stateContext: TimerStateContext, elapsedTime: Duration) =
-			TimerStatePaused(elapsedTime).apply { setContext(stateContext) }
+		fun create(stateContext: TimerStateContext, elapsedTime: Duration, timeChecks: TimeChecks) =
+			TimerStatePaused(elapsedTime, timeChecks).apply { setContext(stateContext) }
 	}
 
 	@IgnoredOnParcel

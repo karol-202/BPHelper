@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="margin_button_debate_start_stopped">8dp</dimen>
-    <dimen name="margin_button_debate_start_running">4dp</dimen>
+    <dimen name="margin_button_debate_start_running">6dp</dimen>
 </resources>

@@ -167,8 +167,7 @@ class PrepTimerFragment : ExtendedFragment(),
 	private fun showDurationPickerDialog()
 	{
 		if(!state.allowsInitialDurationPicker) return
-		val fragment = DurationPickerFragment.create(state.initialDuration, this)
-		fragmentManager?.let { fragment.show(it) }
+		DurationPickerFragment.create(state.initialDuration, this).show(parentFragmentManager)
 	}
 
 	private fun changeState()

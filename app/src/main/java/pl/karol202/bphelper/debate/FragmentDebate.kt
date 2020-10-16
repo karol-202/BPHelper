@@ -1,7 +1,6 @@
 package pl.karol202.bphelper.debate
 
 import android.Manifest
-import android.graphics.drawable.AnimatedVectorDrawable
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -72,8 +71,7 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 
 	private fun onTimerStartButtonClick()
 	{
-		val previousState = timerState
-		when(previousState)
+		when(val previousState = timerState)
 		{
 			is TimerStateRunning -> timerState =
 					TimerStatePaused.create(this, previousState.getElapsedTime(), previousState.getTimeChecks())
@@ -124,7 +122,7 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 
 		fun getFileForRecording(filename: String): File
 		{
-			val recordingsDirectory = File(Environment.getExternalStorageDirectory(), DIRECTORY_RECORDINGS)
+			val recordingsDirectory = File(ctx.getExternalFilesDir(null), DIRECTORY_RECORDINGS)
 			recordingsDirectory.mkdirs()
 			return File(recordingsDirectory, "$filename${DebateRecorderService.FILENAME_SUFFIX}")
 		}

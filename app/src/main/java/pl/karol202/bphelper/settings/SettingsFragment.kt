@@ -19,12 +19,8 @@ class SettingsFragment : PreferenceFragmentCompat()
 		preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(onPreferenceChangeListener)
 	}
 
-	private fun updateAllPreferences()
-	{
-		preferenceScreen.sharedPreferences.all.keys.forEach {
-			updatePreference(findPreference(it))
-		}
-	}
+	private fun updateAllPreferences() =
+		preferenceScreen.sharedPreferences.all.keys.mapNotNull { findPreference(it) }.forEach { updatePreference(it) }
 
 	private fun updatePreference(preference: Preference)
 	{
@@ -32,9 +28,9 @@ class SettingsFragment : PreferenceFragmentCompat()
 			preference.summary = preference.duration.format(requireContext())
 
 		if(preference.key == "poiStart")
-			preference.isEnabled = (findPreference("poiStartEnabled") as SwitchPreferenceCompat).isChecked
+			preference.isEnabled = (findPreference("poiStartEnabled") as? SwitchPreferenceCompat)?.isChecked ?: true
 		else if(preference.key == "poiEnd")
-			preference.isEnabled = (findPreference("poiEndEnabled") as SwitchPreferenceCompat).isChecked
+			preference.isEnabled = (findPreference("poiEndEnabled") as? SwitchPreferenceCompat)?.isChecked ?: true
 	}
 
 	override fun onDestroy()
@@ -49,7 +45,7 @@ class SettingsFragment : PreferenceFragmentCompat()
 		{
 			val dialogFragment = DurationPreferenceDialogFragment.create(preference.key)
 			dialogFragment.setTargetFragment(this, 0)
-			dialogFragment.show(fragmentManager, "android.support.v7.preference.PreferenceFragment.DIALOG")
+			dialogFragment.show(parentFragmentManager, "android.support.v7.preference.PreferenceFragment.DIALOG")
 		}
 		else super.onDisplayPreferenceDialog(preference)
 	}

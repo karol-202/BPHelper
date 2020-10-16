@@ -70,12 +70,12 @@ class RecordingFilenameDialogBuilder(context: Context, @StyleRes style: Int = 0)
 	private fun checkAndApply(dialog: AlertDialog)
 	{
 		val filename = editRecordingFilename.text.toString()
-		if(checkFilenameValidity(filename) != RecordingFilenameDialogBuilder.Validity.VALID) return
+		if(checkFilenameValidity(filename) != Validity.VALID) return
 		onFilenameSetListener?.invoke(filename)
 		dialog.dismiss()
 	}
 
-	fun setFilenameValidityChecker(listener: (String) -> RecordingFilenameDialogBuilder.Validity)
+	fun setFilenameValidityChecker(listener: (String) -> Validity)
 	{
 		filenameValidityChecker = listener
 		updateFilenameValidity(editRecordingFilename.text.toString())

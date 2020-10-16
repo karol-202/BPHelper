@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.commit
 import androidx.fragment.app.transaction
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.navArgs
 import pl.karol202.bphelper.R
@@ -21,7 +22,7 @@ class TablesFragment : ExtendedFragment()
 
 	private var tableConfiguration by instanceStateOr { createTableConfiguration() }
 
-	private val membersViewModel by lazy { ViewModelProviders.of(act).get<MembersViewModel>() }
+	private val membersViewModel by lazy { ViewModelProvider(act).get<MembersViewModel>() }
 	private val members get() = membersViewModel.allMembers.value
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
@@ -36,7 +37,7 @@ class TablesFragment : ExtendedFragment()
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?)
 	{
 		super.onViewCreated(view, savedInstanceState)
-		childFragmentManager.transaction { addFragmentsForTableConfiguration() }
+		childFragmentManager.commit { addFragmentsForTableConfiguration() }
 	}
 
 	private fun FragmentTransaction.addFragmentsForTableConfiguration()

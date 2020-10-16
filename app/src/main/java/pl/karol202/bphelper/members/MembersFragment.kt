@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -24,7 +24,7 @@ class MembersFragment : Fragment()
 {
 	private val navController by lazy { NavHostFragment.findNavController(this) }
 
-	private val membersViewModel by lazy { ViewModelProviders.of(act).get<MembersViewModel>() }
+	private val membersViewModel by lazy { ViewModelProvider(act).get<MembersViewModel>() }
 	private val members get() = membersViewModel.allMembers.value
 
 	private val configurationAdapter = TableConfigurationAdapter()
@@ -48,7 +48,7 @@ class MembersFragment : Fragment()
 
 	private fun observeMembers()
 	{
-		membersViewModel.allMembers.observe(viewLifecycleOwner, Observer { members ->
+		membersViewModel.allMembers.observe(viewLifecycleOwner, { members ->
 			members?.let { membersAdapter.members = it }
 			updateErrorBanner()
 		})

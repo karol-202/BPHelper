@@ -26,8 +26,8 @@ interface RecordingState : Parcelable
 }
 
 @Parcelize
-class RecordingStateEnabled private constructor(val filename: String,
-                                                val file: File): RecordingState
+class RecordingStateEnabled(val filename: String,
+                            val file: File): RecordingState
 {
 	companion object
 	{
@@ -54,7 +54,7 @@ class RecordingStateEnabled private constructor(val filename: String,
 }
 
 @Parcelize
-class RecordingStateDisabled private constructor(): RecordingState
+class RecordingStateDisabled: RecordingState
 {
 	companion object
 	{

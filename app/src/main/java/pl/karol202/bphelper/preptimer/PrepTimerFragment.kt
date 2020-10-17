@@ -56,8 +56,8 @@ class PrepTimerFragment : ExtendedFragment(),
 	}
 
 	@Parcelize
-	private class EnabledState private constructor(override val initialDuration: Duration,
-	                                               private var timeLeft: Duration = initialDuration) : State
+	private class EnabledState(override val initialDuration: Duration,
+	                           private var timeLeft: Duration = initialDuration) : State
 	{
 		companion object
 		{
@@ -111,7 +111,7 @@ class PrepTimerFragment : ExtendedFragment(),
 	}
 
 	@Parcelize
-	private class DisabledState private constructor(override var initialDuration: Duration) : State
+	private class DisabledState(override var initialDuration: Duration) : State
 	{
 		companion object
 		{

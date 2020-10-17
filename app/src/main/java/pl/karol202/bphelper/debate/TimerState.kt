@@ -30,8 +30,8 @@ interface TimerState : Parcelable
 }
 
 @Parcelize
-class TimerStateRunning private constructor(private var elapsedTime: Duration,
-											private var timeChecks: TimeChecks) : TimerState
+class TimerStateRunning(private var elapsedTime: Duration,
+                        private var timeChecks: TimeChecks) : TimerState
 {
 	companion object
 	{
@@ -118,8 +118,8 @@ class TimerStateRunning private constructor(private var elapsedTime: Duration,
 }
 
 @Parcelize
-class TimerStatePaused private constructor(val elapsedTime: Duration,
-                                           val timeChecks: TimeChecks) : TimerState
+class TimerStatePaused(val elapsedTime: Duration,
+                       val timeChecks: TimeChecks) : TimerState
 {
 	companion object
 	{
@@ -146,7 +146,7 @@ class TimerStatePaused private constructor(val elapsedTime: Duration,
 }
 
 @Parcelize
-class TimerStateStopped private constructor() : TimerState
+class TimerStateStopped : TimerState
 {
 	companion object
 	{

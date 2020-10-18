@@ -36,7 +36,7 @@
 
     <fragment
             android:id="@+id/debateFragment"
-            android:name="pl.karol202.bphelper.debate.FragmentDebate"
+            android:name="pl.karol202.bphelper.debate.DebateFragment"
             android:label="@string/fragment_debate"
             tools:layout="@layout/fragment_debate"/>
 

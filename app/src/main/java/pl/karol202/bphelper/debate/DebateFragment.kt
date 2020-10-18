@@ -19,7 +19,7 @@ import pl.karol202.bphelper.extensions.getColorCompat
 import java.io.File
 import kotlin.math.roundToInt
 
-class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateContext, OnRecordingStopListener
+class DebateFragment : ExtendedFragment(), TimerStateContext, RecordingStateContext, OnRecordingStopListener
 {
 	companion object
 	{
@@ -155,12 +155,12 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 
 	private fun setRecordingEnabled(filename: String, file: File)
 	{
-		recordingState = RecordingStateEnabled.create(this@FragmentDebate, filename, file)
+		recordingState = RecordingStateEnabled.create(this@DebateFragment, filename, file)
 	}
 
 	private fun setRecordingDisabled()
 	{
-		recordingState = RecordingStateDisabled.create(this@FragmentDebate)
+		recordingState = RecordingStateDisabled.create(this@DebateFragment)
 	}
 
 	override fun onDestroyView()
@@ -178,7 +178,7 @@ class FragmentDebate : ExtendedFragment(), TimerStateContext, RecordingStateCont
 
 	override fun updateClockOvertime(overtime: Boolean)
 	{
-		val color = if(overtime) R.color.text_timer_overtime else R.color.colorAccent
+		val color = if(overtime) R.color.text_timer_overtime else R.color.color_primary
 		textDebateTimer.setTextColor(ctx.getColorCompat(color))
 	}
 

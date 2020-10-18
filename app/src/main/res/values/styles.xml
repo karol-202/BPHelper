@@ -1,17 +1,22 @@
 <resources>
     <style name="Base.AppTheme" parent="Theme.MaterialComponents">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorOnPrimary">@color/color_on_primary</item>
+
+        <item name="colorSecondary">@color/color_primary</item>
+        <item name="colorOnSecondary">@color/color_on_primary</item>
+
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
 
         <item name="selectableItemBackgroundBorderless">?android:attr/selectableItemBackground</item>
     </style>
-
     <style name="AppTheme" parent="Base.AppTheme"/>
 
     <style name="AppTheme.Launcher" parent="AppTheme">
         <item name="android:windowBackground">@drawable/background_splash_screen</item>
     </style>
+
+    <style name="Base.AppTheme.NumberPicker"/>
+    <style name="AppTheme.NumberPicker" parent="Base.AppTheme.NumberPicker"/>
 </resources>

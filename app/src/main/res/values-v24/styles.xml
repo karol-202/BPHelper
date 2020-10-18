@@ -1,0 +1,6 @@
+<resources>
+    <style name="Base.V24.AppTheme.NumberPicker" parent="Base.AppTheme.NumberPicker">
+        <item name="colorControlNormal">?colorSecondary</item>
+    </style>
+    <style name="AppTheme.NumberPicker" parent="Base.V24.AppTheme.NumberPicker"/>
+</resources>

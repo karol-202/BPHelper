@@ -24,13 +24,13 @@ class RecordingCallback(private val messenger: Messenger) : Parcelable, OnRecord
 	}
 
 	//onRecordingStopListener argument must be a fragment in order to wrapping it with WeakReference made sense
-	private class CallbackHandler(onRecordingStopListener: OnRecordingStopListener) : Handler()
+	private class CallbackHandler(onRecordingStopListener: OnRecordingStopListener) : Handler(Looper.getMainLooper())
 	{
 		private val listenerReference = WeakReference(onRecordingStopListener)
 
 		fun toMessenger() = Messenger(this)
 
-		override fun handleMessage(message: Message?) = when(message?.what)
+		override fun handleMessage(message: Message) = when(message.what)
 		{
 			MESSAGE_STOP -> handleStopMessage(message)
 			else -> Unit

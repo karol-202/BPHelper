@@ -11,11 +11,13 @@ import androidx.annotation.StringRes
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
 import kotlinx.android.synthetic.main.fragment_prep_timer.*
-import pl.karol202.bphelper.Duration
 import pl.karol202.bphelper.NotificationPreset
 import pl.karol202.bphelper.R
 import pl.karol202.bphelper.components.ExtendedFragment
-import pl.karol202.bphelper.orThrow
+import pl.karol202.bphelper.extensions.format
+import kotlin.time.Duration
+import kotlin.time.milliseconds
+import kotlin.time.minutes
 
 private interface StateContext
 {
@@ -32,8 +34,8 @@ class PrepTimerFragment : ExtendedFragment(),
 {
 	companion object
 	{
-		private val DEFAULT_DURATION = Duration.create(minutes = 15)!!
-		private val TICK_INTERVAL = Duration.create(millis = 100)!!
+		private val DEFAULT_DURATION = 15.minutes
+		private val TICK_INTERVAL = 100.milliseconds
 	}
 
 	object PrepTimeEndNotificationPreset : NotificationPreset()
@@ -65,11 +67,11 @@ class PrepTimerFragment : ExtendedFragment(),
 				EnabledState(initialDuration).apply { setContext(stateContext) }
 		}
 
-		private inner class Timer(initialDuration: Duration,
-		                          tickInterval: Duration) :
-			CountDownTimer(initialDuration.timeInMillis.toLong(), tickInterval.timeInMillis.toLong())
+		private inner class Timer(initialDuration: Duration) :
+			CountDownTimer(initialDuration.inMilliseconds.toLong(),
+			               TICK_INTERVAL.inMilliseconds.toLong())
 		{
-			override fun onTick(millisUntilFinished: Long) = onTimerUpdate(Duration.fromMillis(millisUntilFinished.toInt()).orThrow())
+			override fun onTick(millisUntilFinished: Long) = onTimerUpdate(millisUntilFinished.milliseconds)
 
 			override fun onFinish() = onTimerFinish()
 		}
@@ -87,7 +89,7 @@ class PrepTimerFragment : ExtendedFragment(),
 
 		override fun onEntering()
 		{
-			timer = Timer(timeLeft, TICK_INTERVAL).apply { start() }
+			timer = Timer(timeLeft).apply { start() }
 			stateContext.updateClock(timeLeft)
 			stateContext.updateButton(R.string.button_prep_timer_stop)
 		}

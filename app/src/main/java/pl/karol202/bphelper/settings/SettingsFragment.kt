@@ -6,6 +6,8 @@ import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
 import pl.karol202.bphelper.R
+import pl.karol202.bphelper.extensions.format
+import kotlin.time.Duration
 
 class SettingsFragment : PreferenceFragmentCompat()
 {

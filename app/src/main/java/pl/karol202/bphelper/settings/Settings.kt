@@ -3,30 +3,35 @@ package pl.karol202.bphelper.settings
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import androidx.core.graphics.luminance
 import androidx.preference.PreferenceManager
-import pl.karol202.bphelper.Duration
-import pl.karol202.bphelper.orThrow
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
+import kotlin.time.Duration
+import kotlin.time.milliseconds
+import kotlin.time.minutes
+import kotlin.time.seconds
 
 object Settings
 {
 	class PreferencesDelegate<T>(private val read: SharedPreferences.(String) -> T,
 	                             private val write: SharedPreferences.(String, T) -> Unit) : ReadWriteProperty<Settings, T>
 	{
-		override fun getValue(thisRef: Settings, property: KProperty<*>) = thisRef.sharedPreferences.read(property.name)
+		override fun getValue(thisRef: Settings, property: KProperty<*>) =
+			thisRef.sharedPreferences.read(property.name)
 
-		override fun setValue(thisRef: Settings, property: KProperty<*>, value: T) = thisRef.sharedPreferences.write(property.name, value)
+		override fun setValue(thisRef: Settings, property: KProperty<*>, value: T) =
+			thisRef.sharedPreferences.write(property.name, value)
 	}
 
 	private lateinit var sharedPreferences: SharedPreferences
 
-	val speechDuration by duration(Duration.create(minutes = 7).orThrow())
-	val speechDurationMax by duration(Duration.create(minutes = 7, seconds = 15).orThrow())
+	val speechDuration by duration(7.minutes)
+	val speechDurationMax by duration(7.minutes + 15.seconds)
 	val poiStartEnabled by boolean(true)
-	val poiStart by duration(Duration.create(minutes = 1).orThrow())
+	val poiStart by duration(1.minutes)
 	val poiEndEnabled by boolean(true)
-	val poiEnd by duration(Duration.create(minutes = 6).orThrow())
+	val poiEnd by duration(6.minutes)
 
 	fun init(context: Context)
 	{
@@ -38,6 +43,6 @@ object Settings
 		                    write = { key, value -> edit { putBoolean(key, value) } })
 
 	private fun duration(defaultValue: Duration) =
-		PreferencesDelegate(read = { key -> Duration.fromMillis(getInt(key, defaultValue.timeInMillis)).orThrow() },
-		                    write = { key, value -> edit { putInt(key, value.timeInMillis) } })
+		PreferencesDelegate(read = { key -> getInt(key, defaultValue.inMilliseconds.toInt()).milliseconds },
+		                    write = { key, value -> edit { putInt(key, value.inMilliseconds.toInt()) } })
 }

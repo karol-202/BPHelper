@@ -4,18 +4,18 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
 import androidx.preference.DialogPreference
-import pl.karol202.bphelper.Duration
 import pl.karol202.bphelper.R
-import pl.karol202.bphelper.orThrow
+import kotlin.time.Duration
+import kotlin.time.milliseconds
 
 class DurationPreference(context: Context, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) :
 	DialogPreference(context, attrs, defStyleAttr, defStyleRes)
 {
-	var duration: Duration = Duration.zero
+	var duration: Duration = Duration.ZERO
 		set(value)
 		{
 			field = value
-			persistInt(value.timeInMillis)
+			persistInt(value.inMilliseconds.toInt())
 		}
 
 	constructor(context: Context) : this(context, null)
@@ -34,7 +34,6 @@ class DurationPreference(context: Context, attrs: AttributeSet?, defStyleAttr: I
 	override fun onSetInitialValue(defaultValue: Any?)
 	{
 		val defaultValueInt = (defaultValue as? Int) ?: 0
-		val timeInMillis = this.getPersistedInt(defaultValueInt)
-		duration = Duration.fromMillis(timeInMillis) ?: Duration.fromMillis(defaultValueInt).orThrow()
+		duration = getPersistedInt(defaultValueInt).milliseconds
 	}
 }

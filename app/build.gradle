@@ -28,6 +28,7 @@ android {
     }
     kotlinOptions {
         jvmTarget = 1.8
+        freeCompilerArgs += "-Xopt-in=kotlin.time.ExperimentalTime"
     }
 }
 
@@ -47,12 +48,12 @@ dependencies {
     implementation "androidx.appcompat:appcompat:1.2.0"
     implementation "androidx.recyclerview:recyclerview:1.1.0"
     implementation "androidx.gridlayout:gridlayout:1.0.0"
-    implementation "androidx.constraintlayout:constraintlayout:2.0.2"
+    implementation "androidx.constraintlayout:constraintlayout:2.0.4"
     implementation "androidx.preference:preference:1.1.1"
     implementation "com.google.android.material:material:1.2.1"
 
     //Firebase
-    implementation "com.google.firebase:firebase-core:17.5.1"
+    implementation "com.google.firebase:firebase-core:18.0.0"
     implementation 'com.google.firebase:firebase-crashlytics:17.2.2'
 
     //Navigation

@@ -11,13 +11,14 @@ import androidx.transition.TransitionManager
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_debate.*
-import pl.karol202.bphelper.Duration
 import pl.karol202.bphelper.R
 import pl.karol202.bphelper.components.ExtendedFragment
 import pl.karol202.bphelper.extensions.alertDialog
+import pl.karol202.bphelper.extensions.format
 import pl.karol202.bphelper.extensions.getColorCompat
 import java.io.File
 import kotlin.math.roundToInt
+import kotlin.time.Duration
 
 class DebateFragment : ExtendedFragment(), TimerStateContext, RecordingStateContext, OnRecordingStopListener
 {

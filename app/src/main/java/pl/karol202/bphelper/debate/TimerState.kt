@@ -4,10 +4,11 @@ import android.os.CountDownTimer
 import android.os.Parcelable
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
-import pl.karol202.bphelper.Duration
-import pl.karol202.bphelper.minus
-import pl.karol202.bphelper.orThrow
 import pl.karol202.bphelper.settings.Settings
+import kotlin.time.Duration
+import kotlin.time.milliseconds
+import kotlin.time.minutes
+import kotlin.time.seconds
 
 interface TimerStateContext
 {
@@ -35,20 +36,21 @@ class TimerStateRunning(private var elapsedTime: Duration,
 {
 	companion object
 	{
-		private val TICK_INTERVAL = Duration.create(millis = 100)!!
+		private val TICK_INTERVAL = 100.milliseconds
+		private val MAX_TIME = 59.minutes + 59.seconds
 
 		fun create(stateContext: TimerStateContext,
-		           elapsedTime: Duration = Duration.zero,
+		           elapsedTime: Duration = Duration.ZERO,
 		           timeChecks: TimeChecks = TimeChecks()) =
 				TimerStateRunning(elapsedTime, timeChecks).apply { setContext(stateContext) }
 	}
 
-	private inner class Timer(elapsedTime: Duration,
-	                          tickInterval: Duration) :
-		CountDownTimer((Duration.max - elapsedTime).orThrow().timeInMillis.toLong(), tickInterval.timeInMillis.toLong())
+	private inner class Timer(elapsedTime: Duration) :
+		CountDownTimer((MAX_TIME - elapsedTime).inMilliseconds.toLong(),
+		               TICK_INTERVAL.inMilliseconds.toLong())
 	{
 		override fun onTick(millisUntilFinished: Long) =
-			onTimerUpdate((Duration.max - Duration.fromMillis(millisUntilFinished.toInt())).orThrow())
+			onTimerUpdate(MAX_TIME - millisUntilFinished.milliseconds)
 
 		override fun onFinish() = onTimerFinish()
 	}
@@ -65,7 +67,7 @@ class TimerStateRunning(private var elapsedTime: Duration,
 
 	override fun onEntering()
 	{
-		timer = Timer(elapsedTime, TICK_INTERVAL).apply { start() }
+		timer = Timer(elapsedTime).apply { start() }
 		stateContext.updateClock(elapsedTime)
 		stateContext.updateClockOvertime(elapsedTime >= Settings.speechDuration)
 		stateContext.updateTimerButtons()
@@ -96,13 +98,13 @@ class TimerStateRunning(private var elapsedTime: Duration,
 			timeChecks = timeChecks.copy(poiEnd = true)
 			stateContext.playBellSound(1)
 		}
-		if(!timeChecks.speechDuration && elapsedTime >= Settings.speechDuration && Settings.speechDuration != Duration.zero)
+		if(!timeChecks.speechDuration && elapsedTime >= Settings.speechDuration && Settings.speechDuration != Duration.ZERO)
 		{
 			timeChecks = timeChecks.copy(speechDuration = true)
 			stateContext.updateClockOvertime(true)
 			stateContext.playBellSound(2)
 		}
-		if(!timeChecks.speechDurationMax && elapsedTime >= Settings.speechDurationMax && Settings.speechDurationMax != Duration.zero)
+		if(!timeChecks.speechDurationMax && elapsedTime >= Settings.speechDurationMax && Settings.speechDurationMax != Duration.ZERO)
 		{
 			timeChecks = timeChecks.copy(speechDurationMax = true)
 			stateContext.playBellSound(3)
@@ -163,7 +165,7 @@ class TimerStateStopped : TimerState
 
 	override fun onEntering()
 	{
-		stateContext.updateClock(Duration.zero)
+		stateContext.updateClock(Duration.ZERO)
 		stateContext.updateClockOvertime(false)
 		stateContext.updateTimerButtons()
 	}

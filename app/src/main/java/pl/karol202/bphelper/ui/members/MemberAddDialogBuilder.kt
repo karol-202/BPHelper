@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.members
+package pl.karol202.bphelper.ui.members
 
 import android.content.Context
 import android.content.DialogInterface

@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.members
+package pl.karol202.bphelper.ui.members
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,19 +13,19 @@ import pl.karol202.bphelper.R
 import pl.karol202.bphelper.extensions.alertDialog
 import pl.karol202.bphelper.extensions.ctx
 
-class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
+class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<MemberEntity>>()
 {
-	abstract class ViewHolder<in M : Member?>(view: View) : RecyclerView.ViewHolder(view)
+	abstract class ViewHolder<in M : MemberEntity?>(view: View) : RecyclerView.ViewHolder(view)
 	{
 		abstract fun bind(member: M)
 	}
 
-	private inner class ViewHolderMember(override val containerView: View) : ViewHolder<Member>(containerView), LayoutContainer
+	private inner class ViewHolderMember(override val containerView: View) : ViewHolder<MemberEntity>(containerView), LayoutContainer
 	{
 		private val _checkMemberPresent = checkMemberPresent as CheckBox
 		private val _checkMemberIronman = checkMemberIronman as CheckBox
 
-		private var member: Member? = null
+		private var member: MemberEntity? = null
 
 		init
 		{
@@ -55,7 +55,7 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 			}
 		}
 
-		private fun showMemberDeleteDialog(member: Member) = with(containerView.ctx) {
+		private fun showMemberDeleteDialog(member: MemberEntity) = with(containerView.ctx) {
 			alertDialog {
 				setTitle(getString(R.string.alert_remove_member_title))
 				setMessage(getString(R.string.alert_remove_member, member.name))
@@ -66,7 +66,7 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 			}.show()
 		}
 
-		override fun bind(member: Member)
+		override fun bind(member: MemberEntity)
 		{
 			this.member = null
 
@@ -81,7 +81,7 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 		}
 	}
 
-	private inner class ViewHolderNoMember(override val containerView: View) : ViewHolder<Member?>(containerView), LayoutContainer
+	private inner class ViewHolderNoMember(override val containerView: View) : ViewHolder<MemberEntity?>(containerView), LayoutContainer
 	{
 		init
 		{
@@ -96,16 +96,16 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 					else -> MemberAddDialogBuilder.Validity.VALID
 				} }
 				setOnAddListener { name ->
-					memberAddListener?.invoke(Member(name, true))
+					memberAddListener?.invoke(MemberEntity(name, true))
 				}
 			}.show()
 		}
 
-		override fun bind(member: Member?) { }
+		override fun bind(member: MemberEntity?) { }
 	}
 
-	private class DiffCallback(private val oldList: List<Member>,
-	                           private val newList: List<Member>) : DiffUtil.Callback()
+	private class DiffCallback(private val oldList: List<MemberEntity>,
+	                           private val newList: List<MemberEntity>) : DiffUtil.Callback()
 	{
 		override fun getOldListSize() = oldList.size
 
@@ -122,10 +122,10 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 		const val TYPE_NO_MEMBER = 1
 	}
 
-	var memberAddListener: ((Member) -> Unit)? = null
-	var memberUpdateListener: ((Member) -> Unit)? = null
-	var memberRemoveListener: ((Member) -> Unit)? = null
-	var members = emptyList<Member>()
+	var memberAddListener: ((MemberEntity) -> Unit)? = null
+	var memberUpdateListener: ((MemberEntity) -> Unit)? = null
+	var memberRemoveListener: ((MemberEntity) -> Unit)? = null
+	var members = emptyList<MemberEntity>()
 		set(value)
 		{
 			val result = DiffUtil.calculateDiff(DiffCallback(field, value))
@@ -133,7 +133,7 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 			result.dispatchUpdatesTo(this)
 		}
 
-	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<Member>
+	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<MemberEntity>
 	{
 		val inflater = LayoutInflater.from(parent.ctx)
 		fun inflate(@LayoutRes layout: Int) = inflater.inflate(layout, parent, false)
@@ -146,7 +146,7 @@ class MembersAdapter : RecyclerView.Adapter<MembersAdapter.ViewHolder<Member>>()
 
 	override fun getItemViewType(position: Int) = if(position == members.size) TYPE_NO_MEMBER else TYPE_MEMBER
 
-	override fun onBindViewHolder(holder: ViewHolder<Member>, position: Int)
+	override fun onBindViewHolder(holder: ViewHolder<MemberEntity>, position: Int)
 	{
 		if(holder is ViewHolderMember) holder.bind(members[position])
 		else if(holder is ViewHolderNoMember) holder.bind(null)

@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.debate
+package pl.karol202.bphelper.ui.debate
 
 import android.content.Context
 import android.media.AudioAttributes

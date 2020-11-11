@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.debate
+package pl.karol202.bphelper.ui.debate
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

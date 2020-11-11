@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.tables
+package pl.karol202.bphelper.ui.tables
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,14 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.commit
-import androidx.fragment.app.transaction
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.navArgs
 import pl.karol202.bphelper.R
 import pl.karol202.bphelper.components.ExtendedFragment
 import pl.karol202.bphelper.extensions.act
-import pl.karol202.bphelper.members.MembersViewModel
+import pl.karol202.bphelper.viewmodel.members.MembersViewModelImpl
 
 class TablesFragment : ExtendedFragment()
 {
@@ -22,7 +21,7 @@ class TablesFragment : ExtendedFragment()
 
 	private var tableConfiguration by instanceStateOr { createTableConfiguration() }
 
-	private val membersViewModel by lazy { ViewModelProvider(act).get<MembersViewModel>() }
+	private val membersViewModel by lazy { ViewModelProvider(act).get<MembersViewModelImpl>() }
 	private val members get() = membersViewModel.allMembers.value
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =

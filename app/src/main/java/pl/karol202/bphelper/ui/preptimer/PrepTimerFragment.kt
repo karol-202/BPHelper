@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.preptimer
+package pl.karol202.bphelper.ui.preptimer
 
 import android.content.Context
 import android.os.Bundle

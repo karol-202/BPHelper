@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.tables
+package pl.karol202.bphelper.ui.tables
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_table.*
 import pl.karol202.bphelper.components.ExtendedFragment
 import pl.karol202.bphelper.R
-import pl.karol202.bphelper.extensions.ctx
 import pl.karol202.bphelper.extensions.setArguments
 import pl.karol202.bphelper.extensions.to
 

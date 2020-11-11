@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.preptimer
+package pl.karol202.bphelper.ui.preptimer
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.NumberPicker
-import androidx.appcompat.app.AlertDialog
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.dialog_duration_picker.*
 import pl.karol202.bphelper.R

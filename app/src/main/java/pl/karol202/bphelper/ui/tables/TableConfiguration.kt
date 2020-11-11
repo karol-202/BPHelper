@@ -1,10 +1,10 @@
-package pl.karol202.bphelper.tables
+package pl.karol202.bphelper.ui.tables
 
 import android.os.Parcelable
 import androidx.annotation.StringRes
 import kotlinx.android.parcel.Parcelize
 import pl.karol202.bphelper.R
-import pl.karol202.bphelper.members.Member
+import pl.karol202.bphelper.ui.members.MemberEntity
 
 enum class TableConfigurationType(@StringRes val visibleName: Int,
                                   private val factory: TableConfigurationFactory)
@@ -13,11 +13,11 @@ enum class TableConfigurationType(@StringRes val visibleName: Int,
 	TYPE_2X3(R.string.table_configuration_2x3, TableConfiguration2X3),
 	TYPE_2X4(R.string.table_configuration_2x4, TableConfiguration2X4);
 
-	fun createForMembers(members: List<Member>) = factory.createForMembers(members)
+	fun createForMembers(members: List<MemberEntity>) = factory.createForMembers(members)
 
-	fun isPossibleForMembers(members: List<Member>) = factory.isPossibleForMembers(members)
+	fun isPossibleForMembers(members: List<MemberEntity>) = factory.isPossibleForMembers(members)
 
-	fun getRemainingSeatsForMembers(members: List<Member>) = factory.getRemainingSeatsForMembers(members)
+	fun getRemainingSeatsForMembers(members: List<MemberEntity>) = factory.getRemainingSeatsForMembers(members)
 
 	companion object
 	{
@@ -32,21 +32,21 @@ sealed class TableConfiguration : Parcelable
 	interface Table : Parcelable
 	{
 		val name: Int
-		val allMembers: List<Member>
+		val allMembers: List<MemberEntity>
 	}
 
 	class TableBuilder<T : Table>(private val size: Int,
-	                              private val buildFunction: (List<Member>) -> T?)
+	                              private val buildFunction: (List<MemberEntity>) -> T?)
 	{
-		private val members = mutableListOf<Member>()
+		private val members = mutableListOf<MemberEntity>()
 		private val freeSeats get() = size - members.size
 
-		fun add(member: Member)
+		fun add(member: MemberEntity)
 		{
 			if(isApplicableFor(member)) repeat(member.occupiedSeats) { members.add(member) }
 		}
 
-		fun isApplicableFor(member: Member) = freeSeats >= member.occupiedSeats
+		fun isApplicableFor(member: MemberEntity) = freeSeats >= member.occupiedSeats
 
 		fun shuffle() = apply { members.shuffle() }
 
@@ -60,10 +60,10 @@ sealed class TableConfiguration : Parcelable
 
 		private val tables get() = tableNames.size
 		private val seats get() = tables * seatsPerTable
-		private val ironmansPerTable get() = seatsPerTable / Member.SEATS_IRONMAN // Decimal part discarded
+		private val ironmansPerTable get() = seatsPerTable / MemberEntity.SEATS_IRONMAN // Decimal part discarded
 		private val maxIronmans get() = ironmansPerTable * tables
 
-		fun createForMembers(members: List<Member>): TableConfiguration?
+		fun createForMembers(members: List<MemberEntity>): TableConfiguration?
 		{
 			if(!isPossibleForMembers(members)) return null
 			val tablesBuilders = createBuilders()
@@ -74,25 +74,25 @@ sealed class TableConfiguration : Parcelable
 			return createFromTables(tables)
 		}
 
-		fun isPossibleForMembers(members: List<Member>): Boolean
+		fun isPossibleForMembers(members: List<MemberEntity>): Boolean
 		{
 			if(!checkMembersAmount(members)) return false
 			return members.filter { it.present && it.ironman }.size <= maxIronmans
 		}
 
-		private fun checkMembersAmount(members: List<Member>) = getRemainingSeatsForMembers(members) == 0
+		private fun checkMembersAmount(members: List<MemberEntity>) = getRemainingSeatsForMembers(members) == 0
 
 		//Returns positive number if there are too few members and negative number if there are too many members
-		fun getRemainingSeatsForMembers(members: List<Member>) = seats - getOccupiedSeatsAmount(members)
+		fun getRemainingSeatsForMembers(members: List<MemberEntity>) = seats - getOccupiedSeatsAmount(members)
 
-		private fun getOccupiedSeatsAmount(members: List<Member>) =
+		private fun getOccupiedSeatsAmount(members: List<MemberEntity>) =
 			members.filter { it.present }.map { it.occupiedSeats }.sum()
 
 		private fun createBuilders() = tableNames.map { name ->
 			TableBuilder(seatsPerTable) { members -> createTable(name, members) }
 		}
 
-		protected abstract fun createTable(name: Int, members: List<Member>): T
+		protected abstract fun createTable(name: Int, members: List<MemberEntity>): T
 
 		protected abstract fun createFromTables(tables: List<T>): TableConfiguration
 	}
@@ -106,8 +106,8 @@ data class TableConfiguration4X2(val openingGov: Table,
 {
 	@Parcelize
 	data class Table(@StringRes override val name: Int,
-	                 val first: Member,
-	                 val second: Member) : TableConfiguration.Table
+	                 val first: MemberEntity,
+	                 val second: MemberEntity) : TableConfiguration.Table
 	{
 		override val allMembers get() = listOf(first, second)
 	}
@@ -117,7 +117,7 @@ data class TableConfiguration4X2(val openingGov: Table,
 		override val tableNames = listOf(R.string.table_name_og, R.string.table_name_oo, R.string.table_name_cg, R.string.table_name_co)
 		override val seatsPerTable = 2
 
-		override fun createTable(name: Int, members: List<Member>) = Table(name, members[0], members[1])
+		override fun createTable(name: Int, members: List<MemberEntity>) = Table(name, members[0], members[1])
 
 		override fun createFromTables(tables: List<Table>) =
 			TableConfiguration4X2(tables[0], tables[1], tables[2], tables[3])
@@ -130,9 +130,9 @@ data class TableConfiguration2X3(val gov: Table,
 {
 	@Parcelize
 	data class Table(@StringRes override val name: Int,
-	                 val first: Member,
-	                 val second: Member,
-	                 val third: Member) : TableConfiguration.Table
+	                 val first: MemberEntity,
+	                 val second: MemberEntity,
+	                 val third: MemberEntity) : TableConfiguration.Table
 	{
 		override val allMembers get() = listOf(first, second, third)
 	}
@@ -142,7 +142,7 @@ data class TableConfiguration2X3(val gov: Table,
 		override val tableNames = listOf(R.string.table_name_gov, R.string.table_name_opp)
 		override val seatsPerTable = 3
 
-		override fun createTable(name: Int, members: List<Member>) = Table(name, members[0], members[1], members[2])
+		override fun createTable(name: Int, members: List<MemberEntity>) = Table(name, members[0], members[1], members[2])
 
 		override fun createFromTables(tables: List<Table>) = TableConfiguration2X3(tables[0], tables[1])
 	}
@@ -154,10 +154,10 @@ data class TableConfiguration2X4(val gov: Table,
 {
 	@Parcelize
 	data class Table(@StringRes override val name: Int,
-	                 val first: Member,
-	                 val second: Member,
-	                 val third: Member,
-	                 val fourth: Member) : TableConfiguration.Table
+	                 val first: MemberEntity,
+	                 val second: MemberEntity,
+	                 val third: MemberEntity,
+	                 val fourth: MemberEntity) : TableConfiguration.Table
 	{
 		override val allMembers get() = listOf(first, second, third, fourth)
 	}
@@ -167,7 +167,7 @@ data class TableConfiguration2X4(val gov: Table,
 		override val tableNames = listOf(R.string.table_name_gov, R.string.table_name_opp)
 		override val seatsPerTable = 4
 
-		override fun createTable(name: Int, members: List<Member>) =
+		override fun createTable(name: Int, members: List<MemberEntity>) =
 			Table(name, members[0], members[1], members[2], members[3])
 
 		override fun createFromTables(tables: List<Table>) = TableConfiguration2X4(tables[0], tables[1])

@@ -27,7 +27,7 @@
         </activity>
 
         <service
-            android:name=".debate.DebateRecorderService"
+            android:name="pl.karol202.bphelper.ui.debate.DebateRecorderService"
             android:exported="false"/>
 
     </application>

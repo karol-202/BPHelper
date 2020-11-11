@@ -1,11 +1,10 @@
-package pl.karol202.bphelper.members
+package pl.karol202.bphelper.ui.members
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.get
 import androidx.navigation.fragment.NavHostFragment
@@ -17,14 +16,15 @@ import pl.karol202.bphelper.extensions.act
 import pl.karol202.bphelper.extensions.alertDialog
 import pl.karol202.bphelper.extensions.ctx
 import pl.karol202.bphelper.extensions.setOnItemSelectedListener
-import pl.karol202.bphelper.tables.TableConfigurationAdapter
-import pl.karol202.bphelper.tables.TableConfigurationType
+import pl.karol202.bphelper.ui.tables.TableConfigurationAdapter
+import pl.karol202.bphelper.ui.tables.TableConfigurationType
+import pl.karol202.bphelper.viewmodel.members.MembersViewModelImpl
 
 class MembersFragment : Fragment()
 {
 	private val navController by lazy { NavHostFragment.findNavController(this) }
 
-	private val membersViewModel by lazy { ViewModelProvider(act).get<MembersViewModel>() }
+	private val membersViewModel by lazy { ViewModelProvider(act).get<MembersViewModelImpl>() }
 	private val members get() = membersViewModel.allMembers.value
 
 	private val configurationAdapter = TableConfigurationAdapter()
@@ -92,10 +92,10 @@ class MembersFragment : Fragment()
 		}
 	}
 
-	private fun List<Member>.getRemainingSeatsForMembers() =
+	private fun List<MemberEntity>.getRemainingSeatsForMembers() =
 		tableConfigurationType.getRemainingSeatsForMembers(this)
 
-	private fun List<Member>.isConfigurationValidForMembers() =
+	private fun List<MemberEntity>.isConfigurationValidForMembers() =
 		tableConfigurationType.isPossibleForMembers(this)
 
 	private fun navigateToTablesFragment()

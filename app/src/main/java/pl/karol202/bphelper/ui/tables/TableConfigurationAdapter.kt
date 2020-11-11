@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.tables
+package pl.karol202.bphelper.ui.tables
 
 import android.content.Context
 import android.view.LayoutInflater

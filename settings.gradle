@@ -1,1 +1,6 @@
+include ':domain'
+include ':data'
+include ':presentation'
+include ':framework'
+include ':ui'
 include ':app'

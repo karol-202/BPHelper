@@ -4,12 +4,12 @@
     <PreferenceCategory
             app:title="@string/preference_speech_category">
 
-        <pl.karol202.bphelper.settings.DurationPreference
+        <pl.karol202.bphelper.ui.settings.DurationPreference
                 app:key="speechDuration"
                 app:title="@string/preference_speech_duration"
                 app:defaultValue="420000"/>
 
-        <pl.karol202.bphelper.settings.DurationPreference
+        <pl.karol202.bphelper.ui.settings.DurationPreference
                 app:key="speechDurationMax"
                 app:title="@string/preference_speech_duration_max"
                 app:defaultValue="435000"/>
@@ -24,7 +24,7 @@
                 app:title="@string/preference_poi_start_enabled"
                 app:defaultValue="true"/>
 
-        <pl.karol202.bphelper.settings.DurationPreference
+        <pl.karol202.bphelper.ui.settings.DurationPreference
                 app:key="poiStart"
                 app:title="@string/preference_poi_start"
                 app:defaultValue="60000"/>
@@ -39,7 +39,7 @@
                 app:title="@string/preference_poi_end_enabled"
                 app:defaultValue="true"/>
 
-        <pl.karol202.bphelper.settings.DurationPreference
+        <pl.karol202.bphelper.ui.settings.DurationPreference
                 app:key="poiEnd"
                 app:title="@string/preference_poi_end"
                 app:defaultValue="360000"/>

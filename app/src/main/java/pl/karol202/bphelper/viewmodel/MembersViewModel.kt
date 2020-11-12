@@ -2,10 +2,9 @@ package pl.karol202.bphelper.viewmodel
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.zip
 import pl.karol202.bphelper.data.entity.MemberEntity
-import pl.karol202.bphelper.model.Member
+import pl.karol202.bphelper.domain.model.Member
 import pl.karol202.bphelper.repository.MemberRepository
 
 class MembersViewModel(private val memberRepository: MemberRepository) : ViewModel()

@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.item_member.*
 import pl.karol202.bphelper.R
 import pl.karol202.bphelper.extensions.alertDialog
 import pl.karol202.bphelper.extensions.ctx
-import pl.karol202.bphelper.model.Member
+import pl.karol202.bphelper.domain.model.Member
 
 class MemberAdapter(private val memberAddListener: () -> Unit,
                     private val memberUpdateListener: (Member) -> Unit,

@@ -38,7 +38,11 @@ androidExtensions {
 }
 
 dependencies {
-    implementation(":presentation")
+    implementation(project(":domain"))
+    implementation(project(":data"))
+    implementation(project(":framework"))
+    implementation(project(":presentation"))
+    implementation(project(":ui"))
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"

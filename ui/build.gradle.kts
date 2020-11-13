@@ -44,4 +44,8 @@ dependencies {
     implementation(project(":presentation"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.10")
+
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0")
+
+    implementation("org.koin:koin-androidx-viewmodel:2.2.0")
 }

@@ -8,13 +8,13 @@ import pl.karol202.bphelper.framework.room.entity.MemberRoomEntity
 interface MemberDao
 {
 	@Insert
-	fun insert(vararg member: MemberRoomEntity)
+	fun insert(member: MemberRoomEntity): Int
 
 	@Update
-	fun update(vararg member: MemberRoomEntity)
+	fun update(member: MemberRoomEntity)
 
 	@Delete
-	fun delete(vararg member: MemberRoomEntity)
+	fun delete(member: MemberRoomEntity)
 
 	@Query("SELECT * FROM members ORDER BY name ASC")
 	fun getAll(): Flow<List<MemberRoomEntity>>

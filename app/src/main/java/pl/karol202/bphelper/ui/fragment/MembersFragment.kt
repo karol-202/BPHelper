@@ -18,7 +18,7 @@ import pl.karol202.bphelper.ui.adapter.MemberAdapter
 import pl.karol202.bphelper.ui.adapter.TableConfigurationAdapter
 import pl.karol202.bphelper.ui.members.MembersFragmentDirections
 import pl.karol202.bphelper.TableConfigurationType
-import pl.karol202.bphelper.viewmodel.MembersViewModel
+import pl.karol202.bphelper.presentation.viewmodel.MembersViewModel
 
 class MembersFragment : Fragment()
 {

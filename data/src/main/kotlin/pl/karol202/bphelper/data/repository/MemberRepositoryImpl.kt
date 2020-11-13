@@ -10,6 +10,7 @@ import pl.karol202.bphelper.data.entity.toEntity
 import pl.karol202.bphelper.data.entity.toModel
 import pl.karol202.bphelper.data.entity.toPresenceEntity
 import pl.karol202.bphelper.domain.model.Member
+import pl.karol202.bphelper.domain.model.NewMember
 import pl.karol202.bphelper.domain.repository.MemberRepository
 
 class MemberRepositoryImpl(private val memberDataStore: MemberDataStore,
@@ -21,9 +22,9 @@ class MemberRepositoryImpl(private val memberDataStore: MemberDataStore,
 		}
 	}
 
-	override suspend fun addMember(member: Member) = withContext(Dispatchers.IO) {
-		memberDataStore.addMember(member.toEntity())
-		memberPresenceDataStore.setMemberPresence(member.id, member.toPresenceEntity())
+	override suspend fun addMember(member: NewMember) = withContext(Dispatchers.IO) {
+		val created = memberDataStore.addMember(member.toEntity())
+		memberPresenceDataStore.setMemberPresence(created.id, member.toPresenceEntity())
 	}
 
 	override suspend fun updateMember(member: Member) = withContext(Dispatchers.IO) {

@@ -13,7 +13,7 @@ import pl.karol202.bphelper.*
 import pl.karol202.bphelper.components.ExtendedFragment
 import pl.karol202.bphelper.extensions.act
 import pl.karol202.bphelper.ui.tables.*
-import pl.karol202.bphelper.viewmodel.MembersViewModel
+import pl.karol202.bphelper.presentation.viewmodel.MembersViewModel
 
 class TablesFragment : ExtendedFragment()
 {

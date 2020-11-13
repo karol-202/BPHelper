@@ -5,7 +5,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import pl.karol202.bphelper.data.dataModule
 import pl.karol202.bphelper.repository.repositoryModule
-import pl.karol202.bphelper.viewmodel.viewModelModule
+import pl.karol202.bphelper.ui.viewModelModule
 
 class BPHelperApplication : Application()
 {

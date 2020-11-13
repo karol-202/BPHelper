@@ -18,6 +18,7 @@ import pl.karol202.bphelper.ui.dialog.MemberAddDialogBuilder
 import pl.karol202.bphelper.ui.extensions.alertDialog
 import pl.karol202.bphelper.ui.extensions.collectIn
 import pl.karol202.bphelper.ui.extensions.ctx
+import pl.karol202.bphelper.ui.extensions.simpleItemAnimator
 import pl.karol202.bphelper.ui.viewmodel.AndroidMembersViewModel
 
 class MembersFragment : Fragment()
@@ -56,6 +57,7 @@ class MembersFragment : Fragment()
 		recycler_members.layoutManager = LinearLayoutManager(ctx)
 		recycler_members.adapter = membersAdapter
 		recycler_members.addItemDecoration(DividerItemDecoration(ctx, DividerItemDecoration.VERTICAL))
+		recycler_members.simpleItemAnimator?.supportsChangeAnimations = false
 	}
 
 	private fun initDrawButton()

@@ -6,8 +6,12 @@ import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
 
 val View.ctx: Context get() = context
+
+val RecyclerView.simpleItemAnimator get() = itemAnimator as? SimpleItemAnimator
 
 fun TextView.addAfterTextChangedListener(block: (String) -> Unit) = addTextChangedListener(object : TextWatcher {
 	override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }

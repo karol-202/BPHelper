@@ -73,7 +73,7 @@
     <string name="preference_poi_end_enabled">Dzwonek</string>
     <string name="preference_poi_end">Czas</string>
 
-    <string name="time_format">%02d:%02d</string>
+    <string name="time_format">%1$02d:%2$02d</string>
     <string name="duration_divider">:</string>
 
     <string name="table_configuration_4x2">4x2</string>

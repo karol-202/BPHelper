@@ -13,5 +13,5 @@ interface MembersViewModel : Closeable
 
 	fun updateMember(member: MemberViewData)
 
-	fun removeMember(memberId: Int)
+	fun removeMember(memberId: Long)
 }

@@ -21,7 +21,7 @@ class MembersViewModelImpl(private val memberRepository: MemberRepository) : Bas
 		memberRepository.updateMember(member.toModel())
 	}
 
-	override fun removeMember(memberId: Int) = launch {
+	override fun removeMember(memberId: Long) = launch {
 		memberRepository.removeMember(memberId)
 	}
 }

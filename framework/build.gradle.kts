@@ -7,6 +7,11 @@ plugins {
 android {
     compileSdkVersion(30)
 
+    defaultConfig {
+        minSdkVersion(17)
+        targetSdkVersion(30)
+    }
+
     kapt {
         arguments {
             //arg("room.schemaLocation", "$projectDir/schemas")

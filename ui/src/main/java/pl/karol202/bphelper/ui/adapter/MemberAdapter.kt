@@ -40,11 +40,13 @@ class MemberAdapter(private val onMemberAdd: () -> Unit,
 		{
 			text_member_name.text = member.name
 
+			checkMemberPresent.setOnCheckedChangeListener(null)
 			checkMemberPresent.isChecked = member.present
 			checkMemberPresent.setOnCheckedChangeListener { _, checked ->
 				onMemberUpdate(member.copy(present = checked))
 			}
 
+			checkMemberIronman.setOnCheckedChangeListener(null)
 			checkMemberIronman.visibility = if(member.present) View.VISIBLE else View.GONE
 			checkMemberIronman.isChecked = member.ironman
 			checkMemberIronman.setOnCheckedChangeListener { _, checked ->

@@ -31,8 +31,7 @@ class MemberRepositoryImpl(private val memberDataStore: MemberDataStore,
 		memberPresenceDataStore.setMemberPresence(member.id, member.presence.toEntity())
 	}
 
-	override suspend fun removeMember(memberId: Long)
-	{
+	override suspend fun removeMember(memberId: Long) = withContext(Dispatchers.IO) {
 		memberDataStore.removeMember(memberId)
 		memberPresenceDataStore.removeMemberPresence(memberId)
 	}

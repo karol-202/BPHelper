@@ -27,9 +27,9 @@
             </intent-filter>
         </activity>
 
-        <service
+        <!--<service
             android:name="pl.karol202.bphelper.service.DebateRecorderService"
-            android:exported="false"/>
+            android:exported="false"/>-->
 
     </application>
 

@@ -5,33 +5,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_members.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import pl.karol202.bphelper.R
-import pl.karol202.bphelper.extensions.alertDialog
-import pl.karol202.bphelper.extensions.ctx
-import pl.karol202.bphelper.extensions.setOnItemSelectedListener
+import pl.karol202.bphelper.presentation.viewdata.MemberViewData
+import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.adapter.MemberAdapter
-import pl.karol202.bphelper.ui.adapter.TableConfigurationAdapter
-import pl.karol202.bphelper.ui.members.MembersFragmentDirections
-import pl.karol202.bphelper.TableConfigurationType
-import pl.karol202.bphelper.presentation.viewmodel.MembersViewModel
+import pl.karol202.bphelper.ui.dialog.MemberAddDialogBuilder
+import pl.karol202.bphelper.ui.extensions.alertDialog
+import pl.karol202.bphelper.ui.extensions.collectIn
+import pl.karol202.bphelper.ui.extensions.ctx
+import pl.karol202.bphelper.ui.viewmodel.AndroidMembersViewModel
 
 class MembersFragment : Fragment()
 {
-	private val navController by lazy { NavHostFragment.findNavController(this) }
+	//private val navController by lazy { NavHostFragment.findNavController(this) }
 
-	private val membersViewModel by sharedViewModel<MembersViewModel>()
+	private val membersViewModel by sharedViewModel<AndroidMembersViewModel>()
 
-	private val configurationAdapter = TableConfigurationAdapter()
-	private val membersAdapter = MemberAdapter(memberAddListener = { showMemberAddDialog() },
-	                                           memberUpdateListener = { membersViewModel.updateMember(it) },
-	                                           memberRemoveListener = { membersViewModel.removeMember(it) })
-
-	private var tableConfigurationType = TableConfigurationType.TYPE_4X2
+	private val membersAdapter = MemberAdapter(onMemberAdd = { showMemberAddDialog() },
+	                                           onMemberUpdate = { membersViewModel.updateMember(it) },
+	                                           onMemberRemove = { showMemberRemoveDialog(it) })
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
 		inflater.inflate(R.layout.fragment_members, container, false)
@@ -41,47 +38,30 @@ class MembersFragment : Fragment()
 		super.onViewCreated(view, savedInstanceState)
 		observeMembers()
 
-		initConfigurationSpinner()
 		initRecyclerView()
 		initDrawButton()
-		updateErrorBanner()
+		//updateErrorBanner()
 	}
 
 	private fun observeMembers()
 	{
-		membersViewModel.allMembers.observe(viewLifecycleOwner, { members ->
-			members?.let { membersAdapter.members = it }
-			updateErrorBanner()
-		})
-	}
-
-	private fun initConfigurationSpinner()
-	{
-		spinnerTableConfiguration.apply {
-			adapter = configurationAdapter
-			setSelection(configurationAdapter.getPosition(tableConfigurationType))
-			setOnItemSelectedListener { _, _, position, _ ->
-				tableConfigurationType = TableConfigurationType.values()[position]
-				updateErrorBanner()
-			}
+		membersViewModel.allMembers.collectIn(lifecycleScope) { members ->
+			membersAdapter.members = members
+			//updateErrorBanner()
 		}
 	}
 
 	private fun initRecyclerView()
 	{
-		membersAdapter.memberAddListener =
-		membersAdapter.memberUpdateListener =
-		membersAdapter.memberRemoveListener =
-
-		recyclerMembers.layoutManager = LinearLayoutManager(ctx)
-		recyclerMembers.adapter = membersAdapter
-		recyclerMembers.addItemDecoration(DividerItemDecoration(ctx, DividerItemDecoration.VERTICAL))
+		recycler_members.layoutManager = LinearLayoutManager(ctx)
+		recycler_members.adapter = membersAdapter
+		recycler_members.addItemDecoration(DividerItemDecoration(ctx, DividerItemDecoration.VERTICAL))
 	}
 
 	private fun initDrawButton()
 	{
-		fabDraw.setOnClickListener {
-			val members = members ?: return@setOnClickListener
+		button_draw.setOnClickListener {
+			/*val members = members ?: return@setOnClickListener
 			val remainingSeats = members.getRemainingSeatsForMembers()
 			val valid = members.isConfigurationValidForMembers()
 			when
@@ -89,11 +69,11 @@ class MembersFragment : Fragment()
 				remainingSeats != 0 -> showMembersAmountAlert(remainingSeats)
 				!valid -> showMembersInvalidAlert()
 				else -> navigateToTablesFragment()
-			}
+			}*/
 		}
 	}
 
-	private fun List<MemberEntity>.getRemainingSeatsForMembers() =
+	/*private fun List<MemberEntity>.getRemainingSeatsForMembers() =
 		tableConfigurationType.getRemainingSeatsForMembers(this)
 
 	private fun List<MemberEntity>.isConfigurationValidForMembers() =
@@ -139,18 +119,29 @@ class MembersFragment : Fragment()
 			valid != true -> getString(R.string.text_configuration_invalid)
 			else -> null
 		}
-	}
+	}*/
 
 	private fun showMemberAddDialog() {
-		memberAddDialog {
-			setNameValidityChecker { name -> when {
-				name.isBlank() -> MemberAddDialogBuilder.Validity.EMPTY
-				members.map { it.name }.contains(name) -> MemberAddDialogBuilder.Validity.BUSY
-				else -> MemberAddDialogBuilder.Validity.VALID
-			} }
-			setOnAddListener { name ->
-				memberAddListener?.invoke(MemberEntity(name, true))
+		MemberAddDialogBuilder(
+			context = ctx,
+		    nameValidator = { name -> when {
+			    name.isBlank() -> MemberAddDialogBuilder.Validity.EMPTY
+			    else -> MemberAddDialogBuilder.Validity.VALID
+		    } },
+		    onApply = { name ->
+			    membersViewModel.addMember(name)
+		    }).show()
+	}
+
+	private fun showMemberRemoveDialog(member: MemberViewData)
+	{
+		alertDialog {
+			setTitle(getString(R.string.alert_remove_member_title))
+			setMessage(getString(R.string.alert_remove_member, member.name))
+			setPositiveButton(R.string.action_remove) { _, _ ->
+				membersViewModel.removeMember(member.id)
 			}
+			setNegativeButton(R.string.action_cancel, null)
 		}.show()
 	}
 }

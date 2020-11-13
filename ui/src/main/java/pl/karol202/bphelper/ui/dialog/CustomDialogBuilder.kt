@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.extensions
+package pl.karol202.bphelper.ui.dialog
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,8 +8,6 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StyleRes
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.extensions.LayoutContainer
-
-fun Context.alertDialog(init: AlertDialog.Builder.() -> Unit) = AlertDialog.Builder(this).apply(init)
 
 abstract class CustomDialogBuilder(context: Context, @LayoutRes layout: Int, @StyleRes style: Int = 0) :
 	AlertDialog.Builder(context, style), LayoutContainer

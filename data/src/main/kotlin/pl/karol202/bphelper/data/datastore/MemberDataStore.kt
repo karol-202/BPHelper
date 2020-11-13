@@ -12,5 +12,5 @@ interface MemberDataStore
 
 	suspend fun updateMember(member: MemberEntity)
 
-	suspend fun removeMember(member: MemberEntity)
+	suspend fun removeMember(memberId: Long)
 }

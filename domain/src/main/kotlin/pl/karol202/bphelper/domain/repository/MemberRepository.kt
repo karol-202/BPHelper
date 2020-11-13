@@ -12,5 +12,5 @@ interface MemberRepository
 
 	suspend fun updateMember(member: Member)
 
-	suspend fun removeMember(member: Member)
+	suspend fun removeMember(memberId: Long)
 }

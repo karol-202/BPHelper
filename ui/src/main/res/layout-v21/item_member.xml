@@ -11,16 +11,16 @@
             android:orientation="horizontal"
             android:gravity="center_vertical">
 
-        <!--AppCompatCheckBox due to bug loads its resources every time its instantiated,
+        <!--Due to a bug AppCompatCheckBox loads its resources every time its instantiated,
             so its use here would make app unresponsive-->
         <android.widget.CheckBox
-                android:id="@+id/checkMemberPresent"
+                android:id="@+id/check_member_present"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"/>
 
         <TextView
-                android:id="@+id/textMemberName"
+                android:id="@+id/text_member_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
@@ -33,7 +33,7 @@
                 android:layout_weight="1"/>
 
         <ImageButton
-                android:id="@+id/buttonMemberDelete"
+                android:id="@+id/button_member_delete"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginEnd="4dp"
@@ -43,7 +43,7 @@
     </LinearLayout>
 
     <android.widget.CheckBox
-            android:id="@+id/checkMemberIronman"
+            android:id="@+id/check_member_ironman"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"

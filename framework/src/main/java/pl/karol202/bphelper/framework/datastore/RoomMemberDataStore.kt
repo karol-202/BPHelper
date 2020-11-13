@@ -21,5 +21,5 @@ class RoomMemberDataStore(private val memberDao: MemberDao) : MemberDataStore
 
 	override suspend fun updateMember(member: MemberEntity) = memberDao.update(member.toRoomEntity())
 
-	override suspend fun removeMember(member: MemberEntity) = memberDao.delete(member.toRoomEntity())
+	override suspend fun removeMember(memberId: Long) = memberDao.delete(memberId)
 }

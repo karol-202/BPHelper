@@ -17,7 +17,6 @@
     <string name="text_no_member">Dodaj członka</string>
     <string name="text_hint_member_name">Nazwa</string>
     <string name="text_member_name_empty_error">Nazwa nie może być pusta</string>
-    <string name="text_member_name_busy_error">Nazwa zajęta</string>
     <string name="text_configuration_invalid">Niewłaściwa konfiguracja</string>
     <string name="text_ironman">Ironman</string>
     <string name="text_loading">Ładowanie…</string>

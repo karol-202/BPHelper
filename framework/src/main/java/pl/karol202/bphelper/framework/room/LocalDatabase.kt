@@ -4,11 +4,12 @@ import android.content.Context
 import androidx.room.*
 import pl.karol202.bphelper.data.entity.MemberEntity
 import pl.karol202.bphelper.framework.room.dao.MemberDao
+import pl.karol202.bphelper.framework.room.entity.MemberRoomEntity
 
 private const val DATABASE_NAME = "bphelper.local"
 private const val DATABASE_VERSION = 5
 
-@Database(entities = [MemberEntity::class], version = DATABASE_VERSION, exportSchema = false)
+@Database(entities = [MemberRoomEntity::class], version = DATABASE_VERSION, exportSchema = false)
 abstract class LocalDatabase : RoomDatabase()
 {
 	companion object

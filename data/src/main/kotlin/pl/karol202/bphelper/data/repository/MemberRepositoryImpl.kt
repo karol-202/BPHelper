@@ -5,10 +5,9 @@ import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.withContext
 import pl.karol202.bphelper.data.datastore.MemberDataStore
 import pl.karol202.bphelper.data.datastore.MemberPresenceDataStore
-import pl.karol202.bphelper.data.entity.MemberPresenceEntity
+import pl.karol202.bphelper.data.entity.MemberEntity
 import pl.karol202.bphelper.data.entity.toEntity
 import pl.karol202.bphelper.data.entity.toModel
-import pl.karol202.bphelper.data.entity.toPresenceEntity
 import pl.karol202.bphelper.domain.model.Member
 import pl.karol202.bphelper.domain.model.NewMember
 import pl.karol202.bphelper.domain.repository.MemberRepository
@@ -18,23 +17,23 @@ class MemberRepositoryImpl(private val memberDataStore: MemberDataStore,
 {
 	override val allMembers = memberDataStore.allMembers.zip(memberPresenceDataStore.membersPresences) { members, presences ->
 		members.map { member ->
-			member.toModel(presences[member.id] ?: MemberPresenceEntity.DEFAULT)
+			member.toModel(presences[member.id] ?: MemberEntity.Presence.NONE)
 		}
 	}
 
 	override suspend fun addMember(member: NewMember) = withContext(Dispatchers.IO) {
 		val created = memberDataStore.addMember(member.toEntity())
-		memberPresenceDataStore.setMemberPresence(created.id, member.toPresenceEntity())
+		memberPresenceDataStore.setMemberPresence(created.id, member.presence.toEntity())
 	}
 
 	override suspend fun updateMember(member: Member) = withContext(Dispatchers.IO) {
 		memberDataStore.updateMember(member.toEntity())
-		memberPresenceDataStore.setMemberPresence(member.id, member.toPresenceEntity())
+		memberPresenceDataStore.setMemberPresence(member.id, member.presence.toEntity())
 	}
 
-	override suspend fun removeMember(member: Member)
+	override suspend fun removeMember(memberId: Long)
 	{
-		memberDataStore.removeMember(member.toEntity())
-		memberPresenceDataStore.removeMemberPresence(member.id)
+		memberDataStore.removeMember(memberId)
+		memberPresenceDataStore.removeMemberPresence(memberId)
 	}
 }

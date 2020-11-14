@@ -13,7 +13,7 @@ tasks {
 }
 
 dependencies {
-    implementation(project(":domain"))
+    implementation(project(":interactors"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.10")
 

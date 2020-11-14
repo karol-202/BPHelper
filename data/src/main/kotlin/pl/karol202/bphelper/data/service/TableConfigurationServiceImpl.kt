@@ -1,7 +1,7 @@
 package pl.karol202.bphelper.data.service
 
 import pl.karol202.bphelper.domain.model.*
-import pl.karol202.bphelper.domain.service.TableConfiguratorService
+import pl.karol202.bphelper.domain.service.TableConfigurationService
 import pl.karol202.bphelper.domain.util.Either
 import pl.karol202.bphelper.domain.util.left
 import pl.karol202.bphelper.domain.util.right
@@ -13,7 +13,7 @@ private val Member.occupiedSeats get() = when(presence)
 	Member.Presence.NONE -> 0
 }
 
-class TableConfiguratorServiceImpl : TableConfiguratorService
+class TableConfigurationServiceImpl : TableConfigurationService
 {
 	data class State(val tables: List<TableState>)
 	{

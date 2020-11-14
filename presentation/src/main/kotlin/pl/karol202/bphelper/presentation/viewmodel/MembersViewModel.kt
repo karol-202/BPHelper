@@ -5,7 +5,7 @@ import pl.karol202.bphelper.domain.model.Member
 import pl.karol202.bphelper.presentation.viewdata.MemberViewData
 import java.io.Closeable
 
-interface MembersViewModel : Closeable
+interface MembersViewModel : ViewModel
 {
 	val allMembers: Flow<List<MemberViewData>>
 

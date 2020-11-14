@@ -51,6 +51,7 @@ class MemberAddDialogBuilder(context: Context,
 	private fun checkAndApply(dialog: AlertDialog)
 	{
 		val name = edit_member_name.text.toString()
+		updateNameValidity(name)
 		if(nameValidator(name) != Validity.VALID) return
 		onApply(name)
 		dialog.dismiss()

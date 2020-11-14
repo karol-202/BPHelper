@@ -6,6 +6,9 @@ data class Member(val id: Long,
 {
     enum class Presence
     {
-        NONE, PRESENT, IRONMAN
+        NONE, PRESENT, IRONMAN;
+
+        val isPresent get() = this != NONE
+        val isIronman get() = this == IRONMAN
     }
 }

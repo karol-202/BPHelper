@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
 import androidx.preference.DialogPreference
-import pl.karol202.bphelper.R
+import pl.karol202.bphelper.ui.R
 import kotlin.time.Duration
 import kotlin.time.milliseconds
 

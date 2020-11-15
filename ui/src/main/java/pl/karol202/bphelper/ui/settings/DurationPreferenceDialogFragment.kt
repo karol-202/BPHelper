@@ -2,10 +2,10 @@ package pl.karol202.bphelper.ui.settings
 
 import android.view.View
 import android.widget.NumberPicker
-import pl.karol202.bphelper.R
-import pl.karol202.bphelper.components.ExtendedPreferenceDialogFragmentCompat
-import pl.karol202.bphelper.extensions.FragmentArgument
-import pl.karol202.bphelper.extensions.setArguments
+import pl.karol202.bphelper.ui.R
+import pl.karol202.bphelper.ui.components.ExtendedPreferenceDialogFragmentCompat
+import pl.karol202.bphelper.ui.extensions.FragmentArgument
+import pl.karol202.bphelper.ui.extensions.setArguments
 import kotlin.time.minutes
 import kotlin.time.seconds
 

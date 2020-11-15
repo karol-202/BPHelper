@@ -8,34 +8,10 @@ plugins {
 android {
     compileSdkVersion(30)
 
-
     defaultConfig {
         minSdkVersion(17)
         targetSdkVersion(30)
-
-        /*versionCode = 1
-        versionName = "1.0"
-
-        kapt {
-            arguments {
-                arg("room.schemaLocation", "$projectDir/schemas")
-                arg("room.incremental", true)
-            }
-        }*/
     }
-
-    /*buildTypes["release"].apply {
-        isMinifyEnabled = false
-        proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
-    }
-
-
-
-    kotlinOptions {
-        kotlinOptions.freeCompilerArgs += listOf("-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                                                 "-Xopt-in=kotlinx.coroutines.FlowPreview",
-                                                 "-Xopt-in=kotlinx.serialization.UnstableDefault")
-    }*/
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -44,6 +20,7 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
+        kotlinOptions.freeCompilerArgs += listOf("-Xopt-in=kotlin.time.ExperimentalTime")
     }
 }
 

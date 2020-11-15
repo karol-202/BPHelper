@@ -34,10 +34,10 @@
             android:id="@+id/debateFragment"
             android:name="pl.karol202.bphelper.ui.fragment.DebateFragment"
             android:label="@string/fragment_debate"
-            tools:layout="@layout/fragment_debate"/>
+            tools:layout="@layout/fragment_debate"/>-->
 
     <fragment
             android:id="@+id/settingsFragment"
             android:name="pl.karol202.bphelper.ui.settings.SettingsFragment"
-            android:label="@string/fragment_settings"/>-->
+            android:label="@string/fragment_settings"/>
 </navigation>

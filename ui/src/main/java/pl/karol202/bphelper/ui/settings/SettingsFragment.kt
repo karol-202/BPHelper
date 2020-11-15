@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import androidx.preference.SwitchPreferenceCompat
-import pl.karol202.bphelper.R
-import pl.karol202.bphelper.extensions.format
+import pl.karol202.bphelper.ui.R
+import pl.karol202.bphelper.ui.extensions.format
 
 class SettingsFragment : PreferenceFragmentCompat()
 {

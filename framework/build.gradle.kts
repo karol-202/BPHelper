@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.kapt")
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.4.10"
 }
 
 android {
@@ -14,7 +15,6 @@ android {
 
     kapt {
         arguments {
-            //arg("room.schemaLocation", "$projectDir/schemas")
             arg("room.incremental", true)
         }
     }
@@ -24,6 +24,8 @@ dependencies {
     implementation(project(":data"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.10")
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
 
     implementation("androidx.preference:preference:1.1.1")
 

@@ -8,6 +8,8 @@ sealed class Either<out A, out B>
 
 		override fun <NB> mapRight(transform: (Nothing) -> NB) = this
 
+		override fun <R> fold(ifLeft: (A) -> R, ifRight: (Nothing) -> R) = ifLeft(value)
+
 		override fun leftOrNull() = value
 
 		override fun rightOrNull() = null
@@ -19,6 +21,8 @@ sealed class Either<out A, out B>
 
 		override fun <NB> mapRight(transform: (B) -> NB) = Right(transform(value))
 
+		override fun <R> fold(ifLeft: (Nothing) -> R, ifRight: (B) -> R) = ifRight(value)
+
 		override fun leftOrNull() = null
 
 		override fun rightOrNull() = value
@@ -27,6 +31,8 @@ sealed class Either<out A, out B>
 	abstract fun <NA> mapLeft(transform: (A) -> NA): Either<NA, B>
 
 	abstract fun <NB> mapRight(transform: (B) -> NB): Either<A, NB>
+
+	abstract fun <R> fold(ifLeft: (A) -> R, ifRight: (B) -> R): R
 
 	abstract fun leftOrNull(): A?
 

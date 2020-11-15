@@ -12,18 +12,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_members.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import pl.karol202.bphelper.presentation.viewdata.MemberViewData
+import pl.karol202.bphelper.presentation.viewdata.TableConfigurationErrorViewData
+import pl.karol202.bphelper.presentation.viewmodel.MembersViewModel
 import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.adapter.MemberAdapter
 import pl.karol202.bphelper.ui.dialog.MemberAddDialogBuilder
-import pl.karol202.bphelper.ui.extensions.alertDialog
-import pl.karol202.bphelper.ui.extensions.collectIn
-import pl.karol202.bphelper.ui.extensions.ctx
-import pl.karol202.bphelper.ui.extensions.simpleItemAnimator
+import pl.karol202.bphelper.ui.extensions.*
 import pl.karol202.bphelper.ui.viewmodel.AndroidMembersViewModel
 
 class MembersFragment : Fragment()
 {
-	//private val navController by lazy { NavHostFragment.findNavController(this) }
+	private val navController by lazy { NavHostFragment.findNavController(this) }
 
 	private val membersViewModel by sharedViewModel<AndroidMembersViewModel>()
 
@@ -38,6 +37,7 @@ class MembersFragment : Fragment()
 	{
 		super.onViewCreated(view, savedInstanceState)
 		observeMembers()
+		observeTableDrawResult()
 
 		initRecyclerView()
 		initDrawButton()
@@ -48,7 +48,17 @@ class MembersFragment : Fragment()
 	{
 		membersViewModel.allMembers.collectIn(lifecycleScope) { members ->
 			membersAdapter.members = members
-			//updateErrorBanner()
+		}
+	}
+
+	private fun observeTableDrawResult()
+	{
+		membersViewModel.tableDrawResult.handleEventsIn(lifecycleScope) { result ->
+			when(result)
+			{
+				is MembersViewModel.TableDrawResult.GoToTables -> navigateToTablesFragment()
+				is MembersViewModel.TableDrawResult.Error -> showErrorSnackbar(result.error)
+			}
 		}
 	}
 
@@ -63,65 +73,29 @@ class MembersFragment : Fragment()
 	private fun initDrawButton()
 	{
 		button_draw.setOnClickListener {
-			/*val members = members ?: return@setOnClickListener
-			val remainingSeats = members.getRemainingSeatsForMembers()
-			val valid = members.isConfigurationValidForMembers()
-			when
-			{
-				remainingSeats != 0 -> showMembersAmountAlert(remainingSeats)
-				!valid -> showMembersInvalidAlert()
-				else -> navigateToTablesFragment()
-			}*/
+			membersViewModel.tryToDrawTables()
 		}
 	}
-
-	/*private fun List<MemberEntity>.getRemainingSeatsForMembers() =
-		tableConfigurationType.getRemainingSeatsForMembers(this)
-
-	private fun List<MemberEntity>.isConfigurationValidForMembers() =
-		tableConfigurationType.isPossibleForMembers(this)
 
 	private fun navigateToTablesFragment()
 	{
-		if(navController.currentDestination?.id != R.id.membersFragment) return
+		println("tables")
+		/*if(navController.currentDestination?.id != R.id.membersFragment) return
 		val action = MembersFragmentDirections.toTablesFragment(tableConfigurationType.name)
-		navController.navigate(action)
+		navController.navigate(action)*/
 	}
 
-	private fun showMembersAmountAlert(remainingSeats: Int)
+	private fun showErrorSnackbar(error: TableConfigurationErrorViewData) = when(error)
 	{
-		if(remainingSeats > 0)
-			showMembersAlert(resources.getQuantityString(R.plurals.text_too_few_members, remainingSeats, remainingSeats))
-		else if(remainingSeats < 0)
-			showMembersAlert(resources.getQuantityString(R.plurals.text_too_many_members, -remainingSeats, -remainingSeats))
+		is TableConfigurationErrorViewData.TooFewMembers ->
+			showSnackbar(resources.getQuantityString(R.plurals.text_too_few_members,
+			                                         error.missingAmount, error.missingAmount))
+		is TableConfigurationErrorViewData.TooManyMembers ->
+			showSnackbar(resources.getQuantityString(R.plurals.text_too_many_members,
+			                                         error.exceedingAmount, error.exceedingAmount))
+		is TableConfigurationErrorViewData.ConfigurationImpossible ->
+			showSnackbar(R.string.text_configuration_invalid)
 	}
-
-	private fun showMembersInvalidAlert() = showMembersAlert(getString(R.string.text_configuration_invalid))
-
-	private fun showMembersAlert(message: String)
-	{
-		ctx.alertDialog {
-			setTitle(getString(R.string.alert_cannot_draw_title))
-			setMessage(message)
-			setNegativeButton(R.string.action_cancel) { dialog, _ ->
-				dialog.dismiss()
-			}
-		}.show()
-	}
-
-	private fun updateErrorBanner()
-	{
-		val remainingSeats = members?.getRemainingSeatsForMembers()
-		val valid = members?.isConfigurationValidForMembers()
-		textMembersError.text = when
-		{
-			remainingSeats == null -> getString(R.string.text_loading)
-			remainingSeats > 0 -> resources.getQuantityString(R.plurals.text_too_few_members, remainingSeats, remainingSeats)
-			remainingSeats < 0 -> resources.getQuantityString(R.plurals.text_too_many_members, -remainingSeats, -remainingSeats)
-			valid != true -> getString(R.string.text_configuration_invalid)
-			else -> null
-		}
-	}*/
 
 	private fun showMemberAddDialog() {
 		MemberAddDialogBuilder(

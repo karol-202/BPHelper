@@ -1,6 +1,10 @@
 package pl.karol202.bphelper.domain.model
 
-enum class TableConfigurationError
+sealed class TableConfigurationError
 {
-	TOO_FEW_MEMBERS, TOO_MANY_MEMBERS, CONFIGURATION_IMPOSSIBLE
+	class TooFewMembers(val missingAmount: Int) : TableConfigurationError()
+
+	class TooManyMembers(val exceedingAmount: Int) : TableConfigurationError()
+
+	object ConfigurationImpossible : TableConfigurationError()
 }

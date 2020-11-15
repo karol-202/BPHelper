@@ -34,8 +34,8 @@ class TableConfigurationServiceImpl : TableConfigurationService
 			Either<TableConfigurationError, TableConfiguration>
 	{
 		val remainingSeats = getRemainingSeats(tableConfigurationType, members)
-		if(remainingSeats > 0) return TableConfigurationError.TOO_FEW_MEMBERS.left()
-		if(remainingSeats < 0) return TableConfigurationError.TOO_MANY_MEMBERS.left()
+		if(remainingSeats > 0) return TableConfigurationError.TooFewMembers(remainingSeats).left()
+		if(remainingSeats < 0) return TableConfigurationError.TooManyMembers(-remainingSeats).left()
 
 		val sortedMembers = members.filter { it.presence.isPresent }.sortedByDescending { it.presence.isIronman }
 		val initialState = State(tableConfigurationType.tableTypes.map { State.TableState(it) })
@@ -44,7 +44,7 @@ class TableConfigurationServiceImpl : TableConfigurationService
 				.withIndex()
 				.filter { (_, table) -> table.remainingSeats >= member.occupiedSeats }
 				.randomOrNull()
-				?: return TableConfigurationError.CONFIGURATION_IMPOSSIBLE.left()
+				?: return TableConfigurationError.ConfigurationImpossible.left()
 			state.withUpdatedTable(index, targetTable.withMember(member))
 		}
 		return TableConfiguration(finalState.tables.map { Table(it.type.role, it.members) }).right()
@@ -56,8 +56,8 @@ class TableConfigurationServiceImpl : TableConfigurationService
 		val remainingSeats = getRemainingSeats(tableConfigurationType, members)
 		return when
 		{
-			remainingSeats > 0 -> Either.Left(TableConfigurationError.TOO_FEW_MEMBERS)
-			remainingSeats < 0 -> Either.Left(TableConfigurationError.TOO_MANY_MEMBERS)
+			remainingSeats > 0 -> Either.Left(TableConfigurationError.TooFewMembers(remainingSeats))
+			remainingSeats < 0 -> Either.Left(TableConfigurationError.TooManyMembers(-remainingSeats))
 			else -> createConfiguration(tableConfigurationType, members).mapRight { Unit }
 		}
 	}

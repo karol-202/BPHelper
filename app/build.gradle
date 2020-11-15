@@ -41,6 +41,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
     implementation(project(":framework"))
+    implementation(project(":interactors"))
     implementation(project(":presentation"))
     implementation(project(":ui"))
 

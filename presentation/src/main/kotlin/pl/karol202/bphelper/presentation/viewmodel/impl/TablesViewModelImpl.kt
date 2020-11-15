@@ -1,28 +1,29 @@
 package pl.karol202.bphelper.presentation.viewmodel.impl
 
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import pl.karol202.bphelper.domain.model.TableConfiguration
 import pl.karol202.bphelper.domain.model.TableConfigurationError
 import pl.karol202.bphelper.domain.repository.MemberRepository
 import pl.karol202.bphelper.domain.repository.SettingsRepository
 import pl.karol202.bphelper.domain.service.TableConfigurationService
 import pl.karol202.bphelper.domain.util.Either
+import pl.karol202.bphelper.interactors.usecases.table.DrawTableConfigurationUseCase
+import pl.karol202.bphelper.presentation.util.Event
 import pl.karol202.bphelper.presentation.viewmodel.TablesViewModel
 
-class TablesViewModelImpl(private val tableConfigurationService: TableConfigurationService,
-                          private val membersRepository: MemberRepository,
-                          private val settingsRepository: SettingsRepository) : BaseViewModel(), TablesViewModel
+class TablesViewModelImpl(private val drawTableConfigurationUseCase: DrawTableConfigurationUseCase) :
+	BaseViewModel(), TablesViewModel
 {
-	private val tableConfigurationResult = MutableStateFlow<Either<TableConfigurationError, TableConfiguration>?>(null)
+	private val _tableConfiguration = MutableStateFlow<TableConfiguration?>(null)
+	private val _error = MutableStateFlow<Event<TableConfigurationError>?>(null)
 
-	override val tableConfiguration = tableConfigurationResult.map { it?.rightOrNull() }
-	override val error = tableConfigurationResult.map { it?.leftOrNull() }
+	override val tableConfiguration: Flow<TableConfiguration?> = _tableConfiguration
+	override val error: Flow<Event<TableConfigurationError>> = _error.filterNotNull()
 
 	fun draw() = launch {
-		tableConfigurationResult.value =
-			tableConfigurationService.createConfiguration(settingsRepository.settings.tableConfigurationType,
-			                                              membersRepository.allMembers.first())
+		drawTableConfigurationUseCase().let { result ->
+			_tableConfiguration.value = result.rightOrNull()
+			if(result is Either.Left) _error.value = Event(result.value)
+		}
 	}
 }

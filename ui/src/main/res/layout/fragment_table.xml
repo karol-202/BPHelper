@@ -6,15 +6,17 @@
         android:orientation="vertical">
 
     <TextView
-            android:id="@+id/textTableName"
+            android:id="@+id/text_table_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAlignment="center"
-            android:text="og" style="@style/TextAppearance.MaterialComponents.Headline6" android:textAllCaps="true"
-            android:layout_marginTop="8dp" android:layout_marginBottom="8dp"/>
-    
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textAllCaps="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"/>
+
     <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerTable"
+            android:id="@+id/recycler_table"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"/>

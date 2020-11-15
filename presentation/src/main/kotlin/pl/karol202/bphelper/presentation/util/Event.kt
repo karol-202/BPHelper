@@ -8,4 +8,6 @@ class Event<T : Any>(private val content: T)
 
 	@Synchronized
 	fun getIfNotConsumed() = if(!consumed) content.also { consumed = true } else null
+
+	fun <R : Any> map(transform: (T) -> R) = Event(transform(content))
 }

@@ -44,21 +44,15 @@ class MembersFragment : Fragment()
 		//updateErrorBanner()
 	}
 
-	private fun observeMembers()
-	{
-		membersViewModel.allMembers.collectIn(lifecycleScope) { members ->
-			membersAdapter.members = members
-		}
+	private fun observeMembers() = membersViewModel.allMembers.collectIn(lifecycleScope) { members ->
+		membersAdapter.members = members
 	}
 
-	private fun observeTableDrawResult()
-	{
-		membersViewModel.tableDrawResult.handleEventsIn(lifecycleScope) { result ->
-			when(result)
-			{
-				is MembersViewModel.TableDrawResult.GoToTables -> navigateToTablesFragment()
-				is MembersViewModel.TableDrawResult.Error -> showErrorSnackbar(result.error)
-			}
+	private fun observeTableDrawResult() = membersViewModel.tableDrawResult.handleEventsIn(lifecycleScope) { result ->
+		when(result)
+		{
+			is MembersViewModel.TableDrawResult.GoToTables -> navigateToTablesFragment()
+			is MembersViewModel.TableDrawResult.Error -> showErrorSnackbar(result.error)
 		}
 	}
 
@@ -79,10 +73,8 @@ class MembersFragment : Fragment()
 
 	private fun navigateToTablesFragment()
 	{
-		println("tables")
-		/*if(navController.currentDestination?.id != R.id.membersFragment) return
-		val action = MembersFragmentDirections.toTablesFragment(tableConfigurationType.name)
-		navController.navigate(action)*/
+		if(navController.currentDestination?.id != R.id.membersFragment) return
+		navController.navigate(MembersFragmentDirections.toTablesFragment())
 	}
 
 	private fun showErrorSnackbar(error: TableConfigurationErrorViewData) = when(error)

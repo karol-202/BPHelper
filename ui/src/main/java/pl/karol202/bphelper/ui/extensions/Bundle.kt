@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.extensions
+package pl.karol202.bphelper.ui.extensions
 
 import android.os.Bundle
 import android.os.Parcelable

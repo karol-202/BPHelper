@@ -10,25 +10,21 @@
             android:label="@string/fragment_members"
             tools:layout="@layout/fragment_members">
 
-        <!--<action android:id="@+id/toTablesFragment"
+        <action android:id="@+id/toTablesFragment"
                 app:destination="@id/tablesFragment"
                 app:enterAnim="@anim/nav_default_enter_anim"
                 app:exitAnim="@anim/nav_default_exit_anim"
                 app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>-->
-    </fragment>
-
-    <!--<fragment
-            android:id="@+id/tablesFragment"
-            android:name="pl.karol202.bphelper.ui.fragment.TablesFragment"
-            android:label="@string/fragment_tables"
-            tools:layout="@layout/fragment_tables_2">
-
-        <argument android:name="tableConfigurationType"
-                  app:argType="string"/>
+                app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
 
     <fragment
+            android:id="@+id/tablesFragment"
+            android:name="pl.karol202.bphelper.ui.fragment.TablesFragment"
+            android:label="@string/fragment_tables"
+            tools:layout="@layout/fragment_tables_2"/>
+
+    <!--<fragment
             android:id="@+id/prepTimerFragment"
             android:name="pl.karol202.bphelper.ui.fragment.PrepTimerFragment"
             android:label="@string/fragment_prep_timer"

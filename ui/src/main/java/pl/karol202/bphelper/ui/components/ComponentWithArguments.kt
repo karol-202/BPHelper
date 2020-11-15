@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.components
+package pl.karol202.bphelper.ui.components
 
 import android.os.Bundle
 

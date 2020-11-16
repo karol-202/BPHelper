@@ -20,7 +20,7 @@ android {
 
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
-        kotlinOptions.freeCompilerArgs += listOf("-Xopt-in=kotlin.time.ExperimentalTime")
+        freeCompilerArgs = listOf("-Xopt-in=kotlin.time.ExperimentalTime")
     }
 }
 

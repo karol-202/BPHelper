@@ -7,11 +7,13 @@ import pl.karol202.bphelper.data.repository.MemberRepositoryImpl
 import pl.karol202.bphelper.data.repository.SettingsRepositoryImpl
 import pl.karol202.bphelper.data.service.NotificationServiceImpl
 import pl.karol202.bphelper.data.service.PrepTimerServiceImpl
+import pl.karol202.bphelper.data.service.SoundServiceImpl
 import pl.karol202.bphelper.data.service.TableConfigurationServiceImpl
 import pl.karol202.bphelper.domain.repository.MemberRepository
 import pl.karol202.bphelper.domain.repository.SettingsRepository
 import pl.karol202.bphelper.domain.service.NotificationService
 import pl.karol202.bphelper.domain.service.PrepTimerService
+import pl.karol202.bphelper.domain.service.SoundService
 import pl.karol202.bphelper.domain.service.TableConfigurationService
 
 fun dataModule() = module {
@@ -23,4 +25,5 @@ fun dataModule() = module {
 	single<TableConfigurationService> { TableConfigurationServiceImpl() }
 	single<PrepTimerService> { PrepTimerServiceImpl(get()) }
 	single<NotificationService> { NotificationServiceImpl(get()) }
+	single<SoundService> { SoundServiceImpl(get()) }
 }

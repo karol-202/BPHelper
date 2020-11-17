@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.framework.notification
+package pl.karol202.bphelper.framework.controller
 
 import android.app.NotificationChannel
 import android.content.Context
@@ -6,14 +6,14 @@ import android.os.Build
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import pl.karol202.bphelper.data.notification.NotificationManager
+import pl.karol202.bphelper.data.controller.NotificationController
 import pl.karol202.bphelper.framework.R
 import pl.karol202.bphelper.framework.extensions.doOnApi
 
 private const val ID_PREP_TIMER_FINISH = 1
 
-class NotificationManagerImpl(private val context: Context,
-                              private val notificationManager: NotificationManagerCompat) : NotificationManager
+class NotificationControllerImpl(private val context: Context,
+                                 private val notificationManager: NotificationManagerCompat) : NotificationController
 {
 	enum class Channel(val id: String,
 	                   @StringRes val nameRes: Int,

@@ -6,12 +6,14 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 import pl.karol202.bphelper.data.datastore.MemberDataStore
 import pl.karol202.bphelper.data.datastore.SettingsDataStore
-import pl.karol202.bphelper.data.notification.NotificationManager
-import pl.karol202.bphelper.data.timer.DecrementTimer
+import pl.karol202.bphelper.data.controller.NotificationController
+import pl.karol202.bphelper.data.controller.DecrementTimerController
+import pl.karol202.bphelper.data.controller.SoundController
 import pl.karol202.bphelper.framework.datastore.RoomMemberDataStore
 import pl.karol202.bphelper.framework.datastore.SharedPrefsSettingsDataStore
-import pl.karol202.bphelper.framework.notification.NotificationManagerImpl
-import pl.karol202.bphelper.framework.provider.DecrementTimerImpl
+import pl.karol202.bphelper.framework.controller.NotificationControllerImpl
+import pl.karol202.bphelper.framework.controller.DecrementTimerControllerImpl
+import pl.karol202.bphelper.framework.controller.SoundControllerImpl
 import pl.karol202.bphelper.framework.room.LocalDatabase
 
 fun frameworkModule() = module {
@@ -24,7 +26,7 @@ fun frameworkModule() = module {
 	single<MemberDataStore> { RoomMemberDataStore(get()) }
 	single<SettingsDataStore> { SharedPrefsSettingsDataStore(get()) }
 
-	single<DecrementTimer.Factory> { DecrementTimerImpl.Factory }
-
-	single<NotificationManager> { NotificationManagerImpl(androidContext(), get()) }
+	single<DecrementTimerController.Factory> { DecrementTimerControllerImpl.Factory }
+	single<NotificationController> { NotificationControllerImpl(androidContext(), get()) }
+	single<SoundController> { SoundControllerImpl(androidContext()) }
 }

@@ -2,9 +2,8 @@ package pl.karol202.bphelper.data.service
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
-import pl.karol202.bphelper.data.timer.DecrementTimer
+import pl.karol202.bphelper.data.controller.DecrementTimerController
 import pl.karol202.bphelper.domain.service.PrepTimerService
 import kotlin.time.Duration
 import kotlin.time.milliseconds
@@ -13,7 +12,7 @@ import kotlin.time.minutes
 private val INITIAL_DURATION = 15.minutes
 private val INTERVAL = 100.milliseconds
 
-class PrepTimerServiceImpl(private val decrementTimerFactory: DecrementTimer.Factory) : PrepTimerService
+class PrepTimerServiceImpl(private val decrementTimerControllerFactory: DecrementTimerController.Factory) : PrepTimerService
 {
 	private var timer = createTimer(INITIAL_DURATION)
 
@@ -58,8 +57,8 @@ class PrepTimerServiceImpl(private val decrementTimerFactory: DecrementTimer.Fac
 	}
 
 	private fun createTimer(initialDuration: Duration) =
-		decrementTimerFactory.create(durationMillis = initialDuration.inMilliseconds.toLong(),
-		                             interval = INTERVAL.inMilliseconds.toLong(),
-		                             onTick = this::onTick,
-		                             onFinish = this::onFinish)
+		decrementTimerControllerFactory.create(durationMillis = initialDuration.inMilliseconds.toLong(),
+		                                       interval = INTERVAL.inMilliseconds.toLong(),
+		                                       onTick = this::onTick,
+		                                       onFinish = this::onFinish)
 }

@@ -7,7 +7,8 @@ plugins {
 tasks {
     withType<KotlinCompile> {
         kotlinOptions {
-            freeCompilerArgs = listOf("-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+            freeCompilerArgs = listOf("-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                                      "-Xopt-in=kotlin.time.ExperimentalTime")
         }
     }
 }

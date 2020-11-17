@@ -6,7 +6,7 @@
         android:layout_height="match_parent">
 
     <TextView
-            android:id="@+id/textPrepTimer"
+            android:id="@+id/text_prep_timer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextAppearance.MaterialComponents.Headline1"
@@ -14,10 +14,10 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/buttonPrepTimerStart"/>
+            app:layout_constraintBottom_toTopOf="@+id/button_prep_timer_start"/>
 
     <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonPrepTimerStart"
+            android:id="@+id/button_prep_timer_start"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

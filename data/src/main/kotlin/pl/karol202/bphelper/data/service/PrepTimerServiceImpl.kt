@@ -23,6 +23,7 @@ class PrepTimerServiceImpl(private val decrementTimerFactory: DecrementTimer.Fac
 
 	override fun start()
 	{
+		updateTimer(_timerValue.value)
 		timer.start()
 		_timerActive.value = true
 	}
@@ -33,11 +34,7 @@ class PrepTimerServiceImpl(private val decrementTimerFactory: DecrementTimer.Fac
 		_timerActive.value = false
 	}
 
-	override fun setDuration(duration: Duration)
-	{
-		timer.stop()
-		timer = createTimer(duration)
-	}
+	override fun setDuration(duration: Duration) = updateTimer(duration)
 
 	private fun onTick(durationMillis: Long)
 	{
@@ -48,6 +45,13 @@ class PrepTimerServiceImpl(private val decrementTimerFactory: DecrementTimer.Fac
 	{
 		_timerValue.value = Duration.ZERO
 		_timerActive.value = false
+	}
+
+	private fun updateTimer(initialDuration: Duration)
+	{
+		timer.stop()
+		timer = createTimer(initialDuration)
+		_timerValue.value = initialDuration
 	}
 
 	private fun createTimer(initialDuration: Duration) =

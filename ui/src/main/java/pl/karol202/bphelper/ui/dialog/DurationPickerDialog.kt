@@ -8,8 +8,8 @@ import android.view.View
 import android.widget.NumberPicker
 import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.dialog_duration_picker.*
-import pl.karol202.bphelper.R
-import pl.karol202.bphelper.components.ExtendedAlertDialog
+import pl.karol202.bphelper.ui.R
+import pl.karol202.bphelper.ui.components.ExtendedAlertDialog
 import kotlin.time.Duration
 import kotlin.time.minutes
 import kotlin.time.seconds

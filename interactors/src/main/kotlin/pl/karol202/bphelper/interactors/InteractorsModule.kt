@@ -3,6 +3,8 @@ package pl.karol202.bphelper.interactors
 import org.koin.dsl.module
 import pl.karol202.bphelper.interactors.usecases.member.*
 import pl.karol202.bphelper.interactors.usecases.member.impl.*
+import pl.karol202.bphelper.interactors.usecases.notification.ShowPrepTimerFinishNotificationUseCase
+import pl.karol202.bphelper.interactors.usecases.notification.impl.ShowPrepTimerFinishNotificationUseCaseImpl
 import pl.karol202.bphelper.interactors.usecases.preptimer.*
 import pl.karol202.bphelper.interactors.usecases.preptimer.impl.*
 import pl.karol202.bphelper.interactors.usecases.settings.GetSettingsUseCase
@@ -26,7 +28,10 @@ fun interactorsModule() = module {
 
 	single<GetPrepTimerDurationFlowUseCase> { GetPrepTimerDurationFlowUseCaseImpl(get()) }
 	single<GetPrepTimerActiveFlowUseCase> { GetPrepTimerActiveFlowUseCaseImpl(get()) }
+	single<GetPrepTimerFinishEventFlowUseCase> { GetPrepTimerFinishEventFlowUseCaseImpl(get()) }
 	single<SetPrepTimerDurationUseCase> { SetPrepTimerDurationUseCaseImpl(get()) }
 	single<StartPrepTimerUseCase> { StartPrepTimerUseCaseImpl(get()) }
 	single<StopPrepTimerUseCase> { StopPrepTimerUseCaseImpl(get()) }
+
+	single<ShowPrepTimerFinishNotificationUseCase> { ShowPrepTimerFinishNotificationUseCaseImpl(get()) }
 }

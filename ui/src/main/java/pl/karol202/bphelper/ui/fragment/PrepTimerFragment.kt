@@ -7,28 +7,16 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.fragment_prep_timer.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import pl.karol202.bphelper.presentation.util.collectIn
 import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.components.ExtendedFragment
 import pl.karol202.bphelper.ui.dialog.fragment.DurationPickerFragment
-import pl.karol202.bphelper.ui.extensions.collectIn
 import pl.karol202.bphelper.ui.extensions.format
 import pl.karol202.bphelper.ui.viewmodel.AndroidPrepTimerViewModel
 import kotlin.time.Duration
 
 class PrepTimerFragment : ExtendedFragment(), DurationPickerFragment.OnDurationSetListener
 {
-	/*object PrepTimeEndNotificationPreset : NotificationPreset()
-	{
-		override val title = R.string.notification_prep_time_end
-	}*/
-
-		/*
-		private fun onTimerFinish()
-		{
-			PrepTimeEndNotificationPreset.show(stateContext.ctx)
-		}
-		*/
-
 	private val prepTimerViewModel by sharedViewModel<AndroidPrepTimerViewModel>()
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =

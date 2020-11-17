@@ -11,5 +11,5 @@ import pl.karol202.bphelper.presentation.viewmodel.impl.TablesViewModelImpl
 fun presentationModule() = module {
 	single<MembersViewModel> { MembersViewModelImpl(get(), get(), get(), get(), get()) }
 	single<TablesViewModel> { TablesViewModelImpl(get()) }
-	single<PrepTimerViewModel> { PrepTimerViewModelImpl(get(), get(), get(), get(), get()) }
+	single<PrepTimerViewModel> { PrepTimerViewModelImpl(get(), get(), get(), get(), get(), get(), get()) }
 }

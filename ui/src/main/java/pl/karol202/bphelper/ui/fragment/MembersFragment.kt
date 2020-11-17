@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_members.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import pl.karol202.bphelper.presentation.util.collectIn
 import pl.karol202.bphelper.presentation.viewdata.MemberViewData
 import pl.karol202.bphelper.presentation.viewdata.TableConfigurationErrorViewData
 import pl.karol202.bphelper.presentation.viewmodel.MembersViewModel

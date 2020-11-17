@@ -7,6 +7,7 @@ interface PrepTimerService
 {
 	val timerValue: Flow<Duration>
 	val timerActive: Flow<Boolean>
+	val timerFinishEvent: Flow<Any>
 
 	fun start()
 

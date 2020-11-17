@@ -22,6 +22,7 @@ android {
 
 dependencies {
     implementation(project(":data"))
+    implementation(project(":res"))
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.10")
 

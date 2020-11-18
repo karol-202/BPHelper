@@ -1,8 +1,9 @@
 package pl.karol202.bphelper.interactors.usecases.settings
 
+import kotlinx.coroutines.flow.Flow
 import pl.karol202.bphelper.domain.model.Settings
 
-interface GetSettingsUseCase
+interface GetSettingsFlowUseCase
 {
-	suspend operator fun invoke(): Settings
+	operator fun invoke(): Flow<Settings>
 }

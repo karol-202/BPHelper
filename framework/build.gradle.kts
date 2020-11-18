@@ -18,6 +18,10 @@ android {
             arg("room.incremental", true)
         }
     }
+
+    kotlinOptions {
+        freeCompilerArgs = listOf("-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+    }
 }
 
 dependencies {
@@ -34,4 +38,6 @@ dependencies {
     kapt("androidx.room:room-compiler:2.2.5")
 
     implementation("org.koin:koin-androidx-viewmodel:2.2.0")
+
+    implementation("com.github.tfcporciuncula:flow-preferences:1.3.3")
 }

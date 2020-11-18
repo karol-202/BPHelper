@@ -16,44 +16,44 @@ class PrepTimerServiceImpl(private val decrementTimerControllerFactory: Decremen
 {
 	private var timer = createTimer(INITIAL_DURATION)
 
-	private val _timerValue = MutableStateFlow(INITIAL_DURATION)
-	private val _timerActive = MutableStateFlow(false)
+	private val _value = MutableStateFlow(INITIAL_DURATION)
+	private val _active = MutableStateFlow(false)
 
-	override val timerValue: Flow<Duration> = _timerValue
-	override val timerActive: Flow<Boolean> = _timerActive
-	override val timerFinishEvent = _timerValue.filter { !it.isPositive() }
+	override val value: Flow<Duration> = _value
+	override val active: Flow<Boolean> = _active
+	override val finishNotificationEvent = _value.filter { !it.isPositive() }
 
 	override fun start()
 	{
-		_timerActive.value = true
-		updateTimer(_timerValue.value)
+		_active.value = true
+		updateTimer(_value.value)
 		timer.start()
 	}
 
 	override fun stop()
 	{
 		timer.stop()
-		_timerActive.value = false
+		_active.value = false
 	}
 
 	override fun setDuration(duration: Duration) = updateTimer(duration)
 
 	private fun onTick(durationMillis: Long)
 	{
-		_timerValue.value = durationMillis.milliseconds
+		_value.value = durationMillis.milliseconds
 	}
 
 	private fun onFinish()
 	{
-		_timerValue.value = Duration.ZERO
-		_timerActive.value = false
+		_value.value = Duration.ZERO
+		_active.value = false
 	}
 
 	private fun updateTimer(initialDuration: Duration)
 	{
 		timer.stop()
 		timer = createTimer(initialDuration)
-		_timerValue.value = initialDuration
+		_value.value = initialDuration
 	}
 
 	private fun createTimer(initialDuration: Duration) =

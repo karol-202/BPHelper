@@ -5,5 +5,5 @@ import pl.karol202.bphelper.interactors.usecases.preptimer.GetPrepTimerDurationF
 
 class GetPrepTimerDurationFlowUseCaseImpl(private val prepTimerService: PrepTimerService) : GetPrepTimerDurationFlowUseCase
 {
-	override fun invoke() = prepTimerService.timerValue
+	override fun invoke() = prepTimerService.value
 }

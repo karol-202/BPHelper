@@ -5,9 +5,9 @@ import kotlin.time.Duration
 
 interface PrepTimerService
 {
-	val timerValue: Flow<Duration>
-	val timerActive: Flow<Boolean>
-	val timerFinishEvent: Flow<Any>
+	val value: Flow<Duration>
+	val active: Flow<Boolean>
+	val finishNotificationEvent: Flow<Duration>
 
 	fun start()
 

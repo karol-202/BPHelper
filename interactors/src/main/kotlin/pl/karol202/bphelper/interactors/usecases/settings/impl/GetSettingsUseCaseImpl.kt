@@ -1,9 +1,9 @@
 package pl.karol202.bphelper.interactors.usecases.settings.impl
 
-import pl.karol202.bphelper.domain.repository.SettingsRepository
+import kotlinx.coroutines.flow.first
 import pl.karol202.bphelper.interactors.usecases.settings.GetSettingsUseCase
 
-class GetSettingsUseCaseImpl(private val settingsRepository: SettingsRepository) : GetSettingsUseCase
+class GetSettingsUseCaseImpl(private val getSettingsFlowUseCaseImpl: GetSettingsFlowUseCaseImpl) : GetSettingsUseCase
 {
-	override fun invoke() = settingsRepository.settings
+	override suspend fun invoke() = getSettingsFlowUseCaseImpl().first()
 }

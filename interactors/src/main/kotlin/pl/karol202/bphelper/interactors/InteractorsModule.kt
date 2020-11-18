@@ -28,7 +28,7 @@ fun interactorsModule() = module {
 
 	single<GetPrepTimerDurationFlowUseCase> { GetPrepTimerDurationFlowUseCaseImpl(get()) }
 	single<GetPrepTimerActiveFlowUseCase> { GetPrepTimerActiveFlowUseCaseImpl(get()) }
-	single<GetPrepTimerFinishEventFlowUseCase> { GetPrepTimerFinishEventFlowUseCaseImpl(get()) }
+	single<GetPrepTimerFinishNotificationEventFlowUseCase> { GetPrepTimerFinishNotificationEventFlowUseCaseImpl(get()) }
 	single<SetPrepTimerDurationUseCase> { SetPrepTimerDurationUseCaseImpl(get()) }
 	single<StartPrepTimerUseCase> { StartPrepTimerUseCaseImpl(get()) }
 	single<StopPrepTimerUseCase> { StopPrepTimerUseCaseImpl(get()) }

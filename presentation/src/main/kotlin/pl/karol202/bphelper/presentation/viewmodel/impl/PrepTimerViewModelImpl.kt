@@ -9,7 +9,7 @@ import kotlin.time.Duration
 
 class PrepTimerViewModelImpl(getPrepTimerDurationFlowUseCase: GetPrepTimerDurationFlowUseCase,
                              getPrepTimerActiveFlowUseCase: GetPrepTimerActiveFlowUseCase,
-                             private val getPrepTimerFinishEventFlowUseCase: GetPrepTimerFinishEventFlowUseCase,
+                             private val getPrepTimerFinishNotificationEventFlowUseCase: GetPrepTimerFinishNotificationEventFlowUseCase,
                              private val startPrepTimerUseCase: StartPrepTimerUseCase,
                              private val stopPrepTimerUseCase: StopPrepTimerUseCase,
                              private val setPrepTimerDurationUseCase: SetPrepTimerDurationUseCase,
@@ -28,7 +28,7 @@ class PrepTimerViewModelImpl(getPrepTimerDurationFlowUseCase: GetPrepTimerDurati
 	}
 
 	private fun showNotificationWhenTimerStops() =
-		getPrepTimerFinishEventFlowUseCase().collectIn(viewModelScope) { showPrepTimerFinishNotificationUseCase() }
+		getPrepTimerFinishNotificationEventFlowUseCase().collectIn(viewModelScope) { showPrepTimerFinishNotificationUseCase() }
 
 	override fun toggle() = launch {
 		if(!timerActive.first()) startPrepTimerUseCase() else stopPrepTimerUseCase()

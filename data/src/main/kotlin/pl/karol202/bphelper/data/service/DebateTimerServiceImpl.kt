@@ -18,6 +18,9 @@ class DebateTimerServiceImpl(private val incrementTimerControllerFactory: Increm
                              settingsRepository: SettingsRepository) :
 	DebateTimerService
 {
+	// Look at overtime and poi
+	private class Box(val duration: Duration)
+
 	private var timer = createTimer(Duration.ZERO)
 
 	private val _value = MutableStateFlow(Duration.ZERO)
@@ -25,24 +28,31 @@ class DebateTimerServiceImpl(private val incrementTimerControllerFactory: Increm
 
 	override val value: Flow<Duration> = _value
 	override val active: Flow<Boolean> = _active
-	override val overtime = value.zip(settingsRepository.settings) { value, settings ->
+
+	/* Boxing Duration is a workaround for KT-43249 (compiler bug related to wrong code generated for suspend lambdas with
+	inline class parameters). Should be resolved in 1.4.30  */
+	override val overtime = value.map { Box(it) }.combine(settingsRepository.settings) { value, settings ->
 		when
 		{
-			value >= settings.speechDurationMax -> Overtime.HARD
-			value >= settings.speechDuration -> Overtime.SOFT
+			value.duration >= settings.speechDurationMax -> Overtime.HARD
+			value.duration >= settings.speechDuration -> Overtime.SOFT
 			else -> Overtime.NONE
 		}
 	}.distinctUntilChanged()
+
 	override val overtimeBellEvent = overtime.filter { it != Overtime.NONE }
-	override val poi = value.zip(settingsRepository.settings) { value, settings ->
+
+	// As above
+	override val poi = value.map { Box(it) }.combine(settingsRepository.settings) { value, settings ->
 		when
 		{
-			value >= settings.poiEnd -> PoiStatus.AFTER
-			value >= settings.poiStart -> PoiStatus.NOW
+			value.duration >= settings.poiEnd -> PoiStatus.AFTER
+			value.duration >= settings.poiStart -> PoiStatus.NOW
 			else -> PoiStatus.BEFORE
 		}
 	}.distinctUntilChanged()
-	override val poiBellEvent = poi.zip(settingsRepository.settings) { poi, settings -> poi to settings }
+
+	override val poiBellEvent = poi.combine(settingsRepository.settings) { poi, settings -> poi to settings }
 		.filter { (poi, settings) ->
 			(poi == PoiStatus.NOW && settings.poiStartBellEnabled) || (poi == PoiStatus.AFTER && settings.poiEndBellEnabled)
 		}
@@ -61,7 +71,11 @@ class DebateTimerServiceImpl(private val incrementTimerControllerFactory: Increm
 		_active.value = false
 	}
 
-	override fun reset() = updateTimer(Duration.ZERO)
+	override fun reset()
+	{
+		updateTimer(Duration.ZERO)
+		_active.value = false
+	}
 
 	private fun onTick(durationMillis: Long)
 	{

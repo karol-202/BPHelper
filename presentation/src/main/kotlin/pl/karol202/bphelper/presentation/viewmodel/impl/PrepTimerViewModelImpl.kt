@@ -31,7 +31,7 @@ class PrepTimerViewModelImpl(getPrepTimerDurationFlowUseCase: GetPrepTimerDurati
 		getPrepTimerFinishNotificationEventFlowUseCase().collectIn(viewModelScope) { showPrepTimerFinishNotificationUseCase() }
 
 	override fun toggle() = launch {
-		if(!timerActive.first()) startPrepTimerUseCase() else stopPrepTimerUseCase()
+		if(!timerActive.value) startPrepTimerUseCase() else stopPrepTimerUseCase()
 	}
 
 	override fun setDuration(duration: Duration) = launch { setPrepTimerDurationUseCase(duration) }

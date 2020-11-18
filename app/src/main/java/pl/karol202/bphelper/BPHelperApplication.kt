@@ -8,6 +8,7 @@ import pl.karol202.bphelper.interactors.interactorsModule
 import pl.karol202.bphelper.framework.frameworkModule
 import pl.karol202.bphelper.presentation.presentationModule
 import pl.karol202.bphelper.ui.uiModule
+import pl.karol202.bphelper.ui.viewmodel.AndroidMembersViewModel
 
 class BPHelperApplication : Application()
 {

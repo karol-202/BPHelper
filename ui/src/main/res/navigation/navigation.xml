@@ -30,11 +30,11 @@
             android:label="@string/fragment_prep_timer"
             tools:layout="@layout/fragment_prep_timer"/>
 
-    <!--<fragment
+    <fragment
             android:id="@+id/debateFragment"
             android:name="pl.karol202.bphelper.ui.fragment.DebateFragment"
             android:label="@string/fragment_debate"
-            tools:layout="@layout/fragment_debate"/>-->
+            tools:layout="@layout/fragment_debate"/>
 
     <fragment
             android:id="@+id/settingsFragment"

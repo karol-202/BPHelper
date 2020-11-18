@@ -4,5 +4,5 @@ import pl.karol202.bphelper.domain.service.SoundService
 
 interface PlaySoundUseCase
 {
-	fun play(sound: SoundService.Sound)
+	operator fun invoke(sound: SoundService.Sound)
 }

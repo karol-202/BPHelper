@@ -1,6 +1,7 @@
 package pl.karol202.bphelper.data.repository
 
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.zip
 import kotlinx.coroutines.withContext
 import pl.karol202.bphelper.data.datastore.MemberDataStore
@@ -15,7 +16,7 @@ import pl.karol202.bphelper.domain.repository.MemberRepository
 class MemberRepositoryImpl(private val memberDataStore: MemberDataStore,
                            private val memberPresenceDataStore: MemberPresenceDataStore) : MemberRepository
 {
-	override val allMembers = memberDataStore.allMembers.zip(memberPresenceDataStore.membersPresences) { members, presences ->
+	override val allMembers = memberDataStore.allMembers.combine(memberPresenceDataStore.membersPresences) { members, presences ->
 		members.map { member ->
 			member.toModel(presences[member.id] ?: MemberEntity.Presence.NONE)
 		}

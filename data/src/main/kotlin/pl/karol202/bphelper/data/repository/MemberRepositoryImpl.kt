@@ -1,9 +1,6 @@
 package pl.karol202.bphelper.data.repository
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.zip
-import kotlinx.coroutines.withContext
 import pl.karol202.bphelper.data.datastore.MemberDataStore
 import pl.karol202.bphelper.data.datastore.MemberPresenceDataStore
 import pl.karol202.bphelper.data.entity.MemberEntity
@@ -22,17 +19,20 @@ class MemberRepositoryImpl(private val memberDataStore: MemberDataStore,
 		}
 	}
 
-	override suspend fun addMember(member: NewMember) = withContext(Dispatchers.IO) {
+	override suspend fun addMember(member: NewMember)
+	{
 		val created = memberDataStore.addMember(member.toEntity())
 		memberPresenceDataStore.setMemberPresence(created.id, member.presence.toEntity())
 	}
 
-	override suspend fun updateMember(member: Member) = withContext(Dispatchers.IO) {
+	override suspend fun updateMember(member: Member)
+	{
 		memberDataStore.updateMember(member.toEntity())
 		memberPresenceDataStore.setMemberPresence(member.id, member.presence.toEntity())
 	}
 
-	override suspend fun removeMember(memberId: Long) = withContext(Dispatchers.IO) {
+	override suspend fun removeMember(memberId: Long)
+	{
 		memberDataStore.removeMember(memberId)
 		memberPresenceDataStore.removeMemberPresence(memberId)
 	}

@@ -11,7 +11,7 @@
     <string name="alert_remove_member">Czy na pewno chcesz usunąć %s?</string>
     <string name="alert_cannot_draw_title">Nie można losować</string>
     <string name="alert_set_prep_time">Ile czasu na przygotowanie?</string>
-	<string name="alert_recording_filename_title">Podaj nazwę pliku</string>
+	<string name="alert_recording_name_title">Podaj nazwę pliku</string>
 	<string name="alert_recording_stop_title">Na pewno chcesz zakończyć nagrywanie?</string>
 
     <string name="text_no_member">Dodaj członka</string>
@@ -23,7 +23,7 @@
     <string name="text_filename_empty">Nazwa pusta</string>
     <string name="text_filename_busy">Nazwa zajęta. Plik zostanie nadpisany</string>
 	<string name="text_recording_storage_error">Nie można zapisać pliku</string>
-	<string name="text_recording_saved">Nagranie zapisane: %s</string>
+	<string name="text_recording_saved">Nagranie zapisane</string>
     <string name="text_recording_error">Błąd nagrywania</string>
 
     <plurals name="text_too_few_members">

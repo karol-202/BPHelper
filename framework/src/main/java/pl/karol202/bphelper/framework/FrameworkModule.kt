@@ -26,11 +26,11 @@ fun frameworkModule() = module {
 
 	single<MemberDataStore> { RoomMemberDataStore(get()) }
 	single<SettingsDataStore> { SharedPrefsSettingsDataStore(get()) }
+	single<RecordingDataStore> { RecordingDataStoreImpl(androidContext()) }
 
 	single<DecrementTimerController.Factory> { DecrementTimerControllerImpl.Factory }
 	single<IncrementTimerController.Factory> { IncrementTimerControllerImpl.Factory }
 	single<NotificationController> { NotificationControllerImpl(androidContext(), get()) } bind NotificationControllerImpl::class
 	single<SoundController> { SoundControllerImpl(androidContext()) }
 	single<RecordingController> { RecordingControllerImpl(androidContext()) }
-	single<RecordingDataStore> { RecordingDataStoreImpl() }
 }

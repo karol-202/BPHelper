@@ -2,13 +2,15 @@ package pl.karol202.bphelper.presentation.viewmodel.impl
 
 import kotlinx.coroutines.flow.*
 import pl.karol202.bphelper.domain.service.DebateTimerService.Overtime
-import pl.karol202.bphelper.domain.service.SoundService
-import pl.karol202.bphelper.interactors.usecases.debate.*
+import pl.karol202.bphelper.domain.service.SoundService.Sound
 import pl.karol202.bphelper.interactors.usecases.debatetimer.*
+import pl.karol202.bphelper.interactors.usecases.recording.*
 import pl.karol202.bphelper.interactors.usecases.sound.PlaySoundUseCase
 import pl.karol202.bphelper.presentation.util.collectIn
+import pl.karol202.bphelper.presentation.viewdata.RecordingStatusViewData
+import pl.karol202.bphelper.presentation.viewdata.TimerStatusViewData
+import pl.karol202.bphelper.presentation.viewdata.toViewData
 import pl.karol202.bphelper.presentation.viewmodel.DebateViewModel
-import pl.karol202.bphelper.presentation.viewmodel.DebateViewModel.TimerStatus
 import kotlin.time.Duration
 
 class DebateViewModelImpl(getDebateTimerValueFlowUseCase: GetDebateTimerValueFlowUseCase,
@@ -19,7 +21,13 @@ class DebateViewModelImpl(getDebateTimerValueFlowUseCase: GetDebateTimerValueFlo
                           private val startDebateTimerUseCase: StartDebateTimerUseCase,
                           private val pauseDebateTimerUseCase: PauseDebateTimerUseCase,
                           private val resetDebateTimerUseCase: ResetDebateTimerUseCase,
-                          private val playSoundUseCase: PlaySoundUseCase) : BaseViewModel(), DebateViewModel
+                          private val playSoundUseCase: PlaySoundUseCase,
+                          getRecordingFlowUseCase: GetRecordingFlowUseCase,
+                          getRecordingEventFlowUseCase: GetRecordingEventFlowUseCase,
+                          private val startRecordingUseCase: StartRecordingUseCase,
+                          private val stopRecordingUseCase: StopRecordingUseCase,
+                          private val isRecordingNameAvailableUseCase: IsRecordingNameAvailableUseCase) :
+	BaseViewModel(), DebateViewModel
 {
 	// Look at timerStatus
 	private class Box(val duration: Duration)
@@ -31,12 +39,21 @@ class DebateViewModelImpl(getDebateTimerValueFlowUseCase: GetDebateTimerValueFlo
 	override val timerStatus = getDebateTimerActiveFlowUseCase().combine(timerValue.map { Box(it) }) { active, value ->
 		when
 		{
-			active -> TimerStatus.ACTIVE
-			value.duration.isPositive() -> TimerStatus.PAUSED
-			else -> TimerStatus.STOPPED
+			active -> TimerStatusViewData.ACTIVE
+			value.duration.isPositive() -> TimerStatusViewData.PAUSED
+			else -> TimerStatusViewData.STOPPED
 		}
-	}.stateIn(viewModelScope, SharingStarted.Eagerly, TimerStatus.STOPPED)
-	override val overtime = getDebateTimerOvertimeFlowUseCase().map { it != Overtime.NONE }
+	}.stateIn(viewModelScope, SharingStarted.Eagerly, TimerStatusViewData.STOPPED)
+
+	override val timerOvertime = getDebateTimerOvertimeFlowUseCase().map { it != Overtime.NONE }
+
+	override val recordingStatus = getRecordingFlowUseCase().map {
+		if(it) RecordingStatusViewData.ACTIVE else RecordingStatusViewData.STOPPED
+	}.stateIn(viewModelScope, SharingStarted.Eagerly, RecordingStatusViewData.STOPPED)
+
+	override val recordingEvent = getRecordingEventFlowUseCase().map { it.toViewData() }
+
+	override val currentRecordingStatus get() = recordingStatus.value
 
 	init
 	{
@@ -47,23 +64,29 @@ class DebateViewModelImpl(getDebateTimerValueFlowUseCase: GetDebateTimerValueFlo
 	private fun setupOvertimeBell() = getDebateTimerOvertimeBellEventFlowUseCase().collectIn(viewModelScope) {
 		when(it)
 		{
-			Overtime.SOFT -> playSoundUseCase(SoundService.Sound.DOUBLE_BELL)
-			Overtime.HARD -> playSoundUseCase(SoundService.Sound.TRIPLE_BELL)
+			Overtime.SOFT -> playSoundUseCase(Sound.DOUBLE_BELL)
+			Overtime.HARD -> playSoundUseCase(Sound.TRIPLE_BELL)
 			else -> Unit
 		}
 	}
 
 	private fun setupPoiBell() = getDebateTimerPoiBellEventFlowUseCase().collectIn(viewModelScope) {
-		playSoundUseCase(SoundService.Sound.SINGLE_BELL)
+		playSoundUseCase(Sound.SINGLE_BELL)
 	}
 
-	override fun toggle() = launch {
+	override fun toggleTimer() = launch {
 		when(timerStatus.value)
 		{
-			TimerStatus.ACTIVE -> pauseDebateTimerUseCase()
+			TimerStatusViewData.ACTIVE -> pauseDebateTimerUseCase()
 			else -> startDebateTimerUseCase()
 		}
 	}
 
-	override fun reset() = launch { resetDebateTimerUseCase() }
+	override fun resetTimer() = launch { resetDebateTimerUseCase() }
+
+	override fun startRecording(recordingName: String) = launch { startRecordingUseCase(recordingName) }
+
+	override fun stopRecording() = launch { stopRecordingUseCase() }
+
+	override fun isRecordingNameAvailable(recordingName: String) = isRecordingNameAvailableUseCase(recordingName)
 }

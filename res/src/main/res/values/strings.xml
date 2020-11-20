@@ -11,7 +11,7 @@
     <string name="alert_remove_member">Do you want do remove %s?</string>
     <string name="alert_cannot_draw_title">Cannot continue</string>
     <string name="alert_set_prep_time">Set preparation time</string>
-	<string name="alert_recording_filename_title">Type filename</string>
+	<string name="alert_recording_name_title">Type filename</string>
 	<string name="alert_recording_stop_title">Do you want to finish recording?</string>
 
     <string name="text_no_member">New member</string>
@@ -23,7 +23,7 @@
     <string name="text_filename_empty">Filename is empty</string>
     <string name="text_filename_busy">Name is busy. File will be overwritten</string>
 	<string name="text_recording_storage_error">Cannot save file</string>
-	<string name="text_recording_saved">Recording saved: %s</string>
+	<string name="text_recording_saved">Recording saved</string>
     <string name="text_recording_error">Recording error</string>
 
     <plurals name="text_too_few_members">

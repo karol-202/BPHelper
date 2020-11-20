@@ -8,4 +8,6 @@ interface RecordingDataStore
 	fun createRecording(recording: NewRecordingEntity): RecordingEntity?
 
 	fun updateRecording(recording: RecordingEntity)
+
+	fun isNameAvailable(name: String): Boolean
 }

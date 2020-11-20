@@ -6,16 +6,16 @@
         android:layout_height="wrap_content">
 
     <NumberPicker
-            android:id="@+id/numberPickerMinutes"
+            android:id="@+id/numberPicker_minutes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:descendantFocusability="blocksDescendants"
             android:theme="@style/AppTheme.NumberPicker"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/textViewPickerDivider"/>
+            app:layout_constraintEnd_toStartOf="@id/textView_picker_divider"/>
     <TextView
-            android:id="@+id/textViewPickerDivider"
+            android:id="@+id/textView_picker_divider"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/duration_divider"
@@ -24,13 +24,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"/>
     <NumberPicker
-            android:id="@+id/numberPickerSeconds"
+            android:id="@+id/numberPicker_seconds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:descendantFocusability="blocksDescendants"
             android:theme="@style/AppTheme.NumberPicker"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toEndOf="@id/textViewPickerDivider"/>
+            app:layout_constraintStart_toEndOf="@id/textView_picker_divider"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

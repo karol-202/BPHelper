@@ -1,8 +1,6 @@
 package pl.karol202.bphelper.interactors
 
 import org.koin.dsl.module
-import pl.karol202.bphelper.interactors.usecases.debate.*
-import pl.karol202.bphelper.interactors.usecases.debate.impl.*
 import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerActiveFlowUseCase
 import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerOvertimeBellEventFlowUseCase
 import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerOvertimeFlowUseCase
@@ -27,14 +25,8 @@ import pl.karol202.bphelper.interactors.usecases.notification.ShowPrepTimerFinis
 import pl.karol202.bphelper.interactors.usecases.notification.impl.ShowPrepTimerFinishNotificationUseCaseImpl
 import pl.karol202.bphelper.interactors.usecases.preptimer.*
 import pl.karol202.bphelper.interactors.usecases.preptimer.impl.*
-import pl.karol202.bphelper.interactors.usecases.recording.GetRecordingErrorEventFlowUseCase
-import pl.karol202.bphelper.interactors.usecases.recording.GetRecordingFlowUseCase
-import pl.karol202.bphelper.interactors.usecases.recording.StartRecordingUseCase
-import pl.karol202.bphelper.interactors.usecases.recording.StopRecordingUseCase
-import pl.karol202.bphelper.interactors.usecases.recording.impl.GetRecordingErrorEventFlowUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.recording.impl.GetRecordingFlowUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.recording.impl.StartRecordingUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.recording.impl.StopRecordingUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.recording.*
+import pl.karol202.bphelper.interactors.usecases.recording.impl.*
 import pl.karol202.bphelper.interactors.usecases.settings.GetSettingsFlowUseCase
 import pl.karol202.bphelper.interactors.usecases.settings.GetSettingsUseCase
 import pl.karol202.bphelper.interactors.usecases.settings.impl.GetSettingsFlowUseCaseImpl
@@ -81,7 +73,8 @@ fun interactorsModule() = module {
 	single<PlaySoundUseCase> { PlaySoundUseCaseImpl(get()) }
 
 	single<GetRecordingFlowUseCase> { GetRecordingFlowUseCaseImpl(get()) }
-	single<GetRecordingErrorEventFlowUseCase> { GetRecordingErrorEventFlowUseCaseImpl(get()) }
+	single<GetRecordingEventFlowUseCase> { GetRecordingEventFlowUseCaseImpl(get()) }
 	single<StartRecordingUseCase> { StartRecordingUseCaseImpl(get()) }
 	single<StopRecordingUseCase> { StopRecordingUseCaseImpl(get()) }
+	single<IsRecordingNameAvailableUseCase> { IsRecordingNameAvailableUseCaseImpl(get()) }
 }

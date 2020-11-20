@@ -25,8 +25,8 @@ class DurationPickerDialog(context: Context,
 	private var currentMinutes by instanceStateOr { initialDuration.inMinutes.toInt() }
 	private var currentSeconds by instanceStateOr { initialDuration.inSeconds.toInt() % 60 }
 
-	private val numberPickerMinutes = (this as LayoutContainer).numberPickerMinutes
-	private val numberPickerSeconds = (this as LayoutContainer).numberPickerSeconds
+	private val numberPickerMinutes = (this as LayoutContainer).numberPicker_minutes
+	private val numberPickerSeconds = (this as LayoutContainer).numberPicker_seconds
 
 	init
 	{

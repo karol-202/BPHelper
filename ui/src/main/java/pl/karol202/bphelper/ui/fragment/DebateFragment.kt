@@ -1,8 +1,6 @@
 package pl.karol202.bphelper.ui.fragment
 
-import android.Manifest
 import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,18 +12,20 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_debate.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import pl.karol202.bphelper.presentation.util.collectIn
-import pl.karol202.bphelper.presentation.viewmodel.DebateViewModel
+import pl.karol202.bphelper.presentation.viewdata.RecordingEventViewData
+import pl.karol202.bphelper.presentation.viewdata.RecordingStatusViewData
+import pl.karol202.bphelper.presentation.viewdata.TimerStatusViewData
 import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.components.ExtendedFragment
+import pl.karol202.bphelper.ui.dialog.RecordingNameDialogBuilder
+import pl.karol202.bphelper.ui.extensions.alertDialog
 import pl.karol202.bphelper.ui.extensions.format
 import pl.karol202.bphelper.ui.extensions.getColorCompat
+import pl.karol202.bphelper.ui.extensions.showSnackbar
 import pl.karol202.bphelper.ui.viewmodel.AndroidDebateViewModel
-import pl.karol202.bphelper.ui.viewmodel.AndroidMembersViewModel
-import java.io.File
 import kotlin.math.roundToInt
-import kotlin.time.Duration
 
-class DebateFragment : ExtendedFragment()//, TimerStateContext, RecordingStateContext, OnRecordingStopListener
+class DebateFragment : ExtendedFragment()
 {
 	private val debateViewModel by sharedViewModel<AndroidDebateViewModel>()
 
@@ -45,6 +45,8 @@ class DebateFragment : ExtendedFragment()//, TimerStateContext, RecordingStateCo
 		observeTimerValue()
 		observeTimerStatus()
 		observeTimerOvertime()
+		observeRecordingStatus()
+		observeRecordingEvent()
 
 		initButtons()
 	}
@@ -57,19 +59,70 @@ class DebateFragment : ExtendedFragment()//, TimerStateContext, RecordingStateCo
 		updateTimerButtons(status)
 	}
 
-	private fun observeTimerOvertime() = debateViewModel.overtime.collectIn(lifecycleScope) { overtime ->
+	private fun observeTimerOvertime() = debateViewModel.timerOvertime.collectIn(lifecycleScope) { overtime ->
 		val color = if(overtime) R.color.text_timer_overtime else R.color.color_primary
 		text_debate_timer.setTextColor(ctx.getColorCompat(color))
 	}
 
-	private fun initButtons()
-	{
-		button_debate_time_start.setOnClickListener { debateViewModel.toggle() }
-		button_debate_time_stop.setOnClickListener { debateViewModel.reset() }
-		//button_debate_recording.setOnClickListener { toggleRecording() }
+	private fun observeRecordingStatus() = debateViewModel.recordingStatus.collectIn(lifecycleScope) { status ->
+		button_debate_recording.setText(when(status)
+		{
+			RecordingStatusViewData.ACTIVE -> R.string.button_debate_recording_disable
+			RecordingStatusViewData.STOPPED -> R.string.button_debate_recording_enable
+		})
 	}
 
-	private fun updateTimerButtons(status: DebateViewModel.TimerStatus)
+	private fun observeRecordingEvent() = debateViewModel.recordingEvent.collectIn(lifecycleScope) { event ->
+		showRecordingEventSnackbar(event)
+	}
+
+	private fun initButtons()
+	{
+		button_debate_time_start.setOnClickListener { debateViewModel.toggleTimer() }
+		button_debate_time_stop.setOnClickListener { debateViewModel.resetTimer() }
+		button_debate_recording.setOnClickListener { toggleRecording() }
+	}
+
+	private fun toggleRecording() = when(debateViewModel.currentRecordingStatus)
+	{
+		RecordingStatusViewData.ACTIVE -> showRecordingStopAlert()
+		RecordingStatusViewData.STOPPED -> showFilenameAlertIfPermitted()
+	}
+
+	private fun showRecordingStopAlert()
+	{
+		alertDialog {
+			setTitle(R.string.alert_recording_stop_title)
+			setPositiveButton(R.string.action_finish) { _, _ -> debateViewModel.stopRecording() }
+			setNegativeButton(R.string.action_cancel, null)
+		}.show()
+	}
+
+	private fun showFilenameAlertIfPermitted()
+	{
+		RecordingNameDialogBuilder(
+			context = ctx,
+			nameValidator = { name -> when
+			{
+				name.isEmpty() -> RecordingNameDialogBuilder.Validity.EMPTY
+				!debateViewModel.isRecordingNameAvailable(name) -> RecordingNameDialogBuilder.Validity.BUSY
+				else -> RecordingNameDialogBuilder.Validity.VALID
+			} },
+			onApply = { debateViewModel.startRecording(it) }
+		).show()
+	}
+
+	private fun showRecordingEventSnackbar(event: RecordingEventViewData)
+	{
+		val message = when(event)
+		{
+			RecordingEventViewData.FINISH -> R.string.text_recording_saved
+			RecordingEventViewData.ERROR -> R.string.text_recording_error
+		}
+		showSnackbar(message, Snackbar.LENGTH_LONG)
+	}
+
+	private fun updateTimerButtons(status: TimerStatusViewData)
 	{
 		fun setStartButtonConstraints(stopped: Boolean)
 		{
@@ -91,21 +144,21 @@ class DebateFragment : ExtendedFragment()//, TimerStateContext, RecordingStateCo
 		TransitionManager.beginDelayedTransition(view as ViewGroup)
 		when(status)
 		{
-			DebateViewModel.TimerStatus.ACTIVE -> {
+			TimerStatusViewData.ACTIVE -> {
 				setStartButtonConstraints(stopped = false)
 				if(button_debate_time_start.icon != drawablePlayToPause)
 					button_debate_time_start.icon = drawablePlayToPause?.apply { start() }
 				button_debate_time_start.setText(R.string.button_debate_timer_pause)
 				button_debate_time_stop.isClickable = true
 			}
-			DebateViewModel.TimerStatus.PAUSED -> {
+			TimerStatusViewData.PAUSED -> {
 				setStartButtonConstraints(stopped = false)
 				if(button_debate_time_start.icon != drawablePauseToPlay)
 					button_debate_time_start.icon = drawablePauseToPlay?.apply { start() }
 				button_debate_time_start.setText(R.string.button_debate_timer_resume)
 				button_debate_time_stop.isClickable = true
 			}
-			DebateViewModel.TimerStatus.STOPPED -> {
+			TimerStatusViewData.STOPPED -> {
 				setStartButtonConstraints(stopped = true)
 				if(button_debate_time_start.icon != drawablePauseToPlay)
 					button_debate_time_start.icon = drawablePauseToPlay?.apply { start() }
@@ -115,32 +168,7 @@ class DebateFragment : ExtendedFragment()//, TimerStateContext, RecordingStateCo
 		}
 	}
 
-	/*companion object
-	{
-		private const val DIRECTORY_RECORDINGS = "Recordings"
-	}
-
-	override val onRecordingStopListener = this
-
-	private var _recordingState by instanceStateOr<RecordingState>(RecordingStateDisabled.create(this))
-	private var recordingState: RecordingState
-		get() = _recordingState
-		set(value)
-		{
-			_recordingState.onExiting()
-			_recordingState = value
-			_recordingState.onEntering()
-		}
-
-	private fun toggleRecording()
-	{
-		if(recordingState is RecordingStateEnabled) showRecordingStopAlert()
-		else if(recordingState is RecordingStateDisabled) showFilenameAlertIfPermitted()
-	}
-
-	private fun showFilenameAlertIfPermitted()
-	{
-		fun checkAndRequestAudioPermission(): Boolean
+	/*fun checkAndRequestAudioPermission(): Boolean
 		{
 			val hasPermission = checkPermission(Manifest.permission.RECORD_AUDIO)
 			if(!hasPermission) requestPermission(Manifest.permission.RECORD_AUDIO) { granted ->
@@ -148,8 +176,6 @@ class DebateFragment : ExtendedFragment()//, TimerStateContext, RecordingStateCo
 			}
 			return hasPermission
 		}
-
-		fun checkStorageState() = Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED
 
 		fun checkAndRequestStoragePermission(): Boolean
 		{
@@ -160,78 +186,6 @@ class DebateFragment : ExtendedFragment()//, TimerStateContext, RecordingStateCo
 			return hasPermission
 		}
 
-		fun showExternalStorageErrorMessage()
-		{
-			Snackbar.make(view ?: return, R.string.text_recording_storage_error, Snackbar.LENGTH_SHORT).show()
-		}
-
-		fun getFileForRecording(filename: String): File
-		{
-			val recordingsDirectory = File(ctx.getExternalFilesDir(null), DIRECTORY_RECORDINGS)
-			recordingsDirectory.mkdirs()
-			return File(recordingsDirectory, "$filename${DebateRecorderService.FILENAME_SUFFIX}")
-		}
-
 		if(!checkAndRequestAudioPermission()) return
-		if(!checkStorageState()) return showExternalStorageErrorMessage()
-		if(!checkAndRequestStoragePermission()) return
-		ctx.recordingFilenameDialog {
-			setFilenameValidityChecker { filename -> when
-			{
-				filename.isEmpty() -> RecordingFilenameDialogBuilder.Validity.EMPTY
-				getFileForRecording(filename).exists() -> RecordingFilenameDialogBuilder.Validity.BUSY
-				else -> RecordingFilenameDialogBuilder.Validity.VALID
-			} }
-			setOnFilenameSetListener { filename ->
-				val file = getFileForRecording(filename)
-				setRecordingEnabled(filename, file)
-			}
-		}.show()
-	}
-
-	private fun showRecordingStopAlert()
-	{
-		ctx.alertDialog {
-			setTitle(R.string.alert_recording_stop_title)
-			setPositiveButton(R.string.action_finish) { _, _ -> setRecordingDisabled() }
-			setNegativeButton(R.string.action_cancel, null)
-		}.show()
-	}
-
-	private fun setRecordingEnabled(filename: String, file: File)
-	{
-		recordingState = RecordingStateEnabled.create(this@DebateFragment, filename, file)
-	}
-
-	private fun setRecordingDisabled()
-	{
-		recordingState = RecordingStateDisabled.create(this@DebateFragment)
-	}
-
-	override fun onDestroyView()
-	{
-		super.onDestroyView()
-		timerState.onExiting()
-		recordingState.onExiting()
-	}
-
-	override fun updateRecordingButton(text: Int)
-	{
-		buttonDebateRecording.setText(text)
-	}
-
-	//Will be called unless recording was stopped by button
-	override fun onRecordingStop(error: Boolean, filename: String?)
-	{
-		fun showRecordingStopMessage(error: Boolean, filename: String?)
-		{
-			val message = if(!error) getString(R.string.text_recording_saved, filename)
-			else getString(R.string.text_recording_error)
-			Snackbar.make(view ?: return, message, Snackbar.LENGTH_LONG).show()
-		}
-
-		if(context == null) return
-		setRecordingDisabled()
-		showRecordingStopMessage(error, filename)
-	}*/
+		if(!checkAndRequestStoragePermission()) return*/
 }

@@ -1,20 +1,29 @@
 package pl.karol202.bphelper.presentation.viewmodel
 
 import kotlinx.coroutines.flow.Flow
+import pl.karol202.bphelper.presentation.viewdata.RecordingEventViewData
+import pl.karol202.bphelper.presentation.viewdata.RecordingStatusViewData
+import pl.karol202.bphelper.presentation.viewdata.TimerStatusViewData
 import kotlin.time.Duration
 
 interface DebateViewModel : ViewModel
 {
-	enum class TimerStatus
-	{
-		ACTIVE, PAUSED, STOPPED
-	}
-
 	val timerValue: Flow<Duration>
-	val timerStatus: Flow<TimerStatus>
-	val overtime: Flow<Boolean>
+	val timerStatus: Flow<TimerStatusViewData>
+	val timerOvertime: Flow<Boolean>
 
-	fun toggle()
+	val recordingStatus: Flow<RecordingStatusViewData>
+	val recordingEvent: Flow<RecordingEventViewData>
 
-	fun reset()
+	val currentRecordingStatus: RecordingStatusViewData
+
+	fun toggleTimer()
+
+	fun resetTimer()
+
+	fun startRecording(recordingName: String)
+
+	fun stopRecording()
+
+	fun isRecordingNameAvailable(recordingName: String): Boolean
 }

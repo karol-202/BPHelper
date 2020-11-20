@@ -23,6 +23,13 @@ class RecordingDataStoreImpl(private val context: Context) : RecordingDataStore
 		context.contentResolver.update(Uri.parse(recording.uri), recording.toContentValues(), null, null)
 	}
 
+	override fun isNameAvailable(name: String) =
+		context.contentResolver.query(getAudioUri(),
+		                              arrayOf(MediaStore.Audio.Media._ID),
+		                              "${MediaStore.Video.Media.DISPLAY_NAME} = ?",
+		                              arrayOf(name),
+		                              null)?.use { !it.moveToFirst() } ?: true
+
 	private fun getAudioUri() = doOnApi(Build.VERSION_CODES.Q, block = {
 		MediaStore.Audio.Media.getContentUri(MediaStore.VOLUME_EXTERNAL_PRIMARY)
 	}, fallback = {

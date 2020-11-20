@@ -4,7 +4,7 @@
              android:layout_height="match_parent">
 
 	<com.google.android.material.textfield.TextInputLayout
-			android:id="@+id/textInputLayoutRecordingFilename"
+			android:id="@+id/textInputLayout_recording_name"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="8dp"
@@ -13,7 +13,7 @@
 			style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
 		<com.google.android.material.textfield.TextInputEditText
-				android:id="@+id/editRecordingFilename"
+				android:id="@+id/edit_recording_name"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content" />
 

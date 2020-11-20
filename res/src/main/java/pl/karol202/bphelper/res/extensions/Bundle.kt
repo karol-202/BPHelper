@@ -1,8 +1,12 @@
-package pl.karol202.bphelper.ui.extensions
+package pl.karol202.bphelper.res.extensions
 
 import android.os.Bundle
 import android.os.Parcelable
 import java.io.Serializable
+
+fun Bundle.set(vararg values: Pair<String, Any?>) = also {
+	values.forEach { (key, value) -> this[key] = value }
+}
 
 operator fun Bundle.set(key: String, value: Any?)
 {

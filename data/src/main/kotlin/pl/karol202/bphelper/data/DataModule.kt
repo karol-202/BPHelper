@@ -21,4 +21,5 @@ fun dataModule() = module {
 	single<DebateTimerService> { DebateTimerServiceImpl(get(), get()) }
 	single<NotificationService> { NotificationServiceImpl(get()) }
 	single<SoundService> { SoundServiceImpl(get()) }
+	single<RecordingService> { RecordingServiceImpl(get()) }
 }

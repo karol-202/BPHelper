@@ -3,6 +3,7 @@ package pl.karol202.bphelper.data.service
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.map
 import pl.karol202.bphelper.data.controller.DecrementTimerController
 import pl.karol202.bphelper.domain.service.PrepTimerService
 import kotlin.time.Duration
@@ -21,7 +22,7 @@ class PrepTimerServiceImpl(private val decrementTimerControllerFactory: Decremen
 
 	override val value: Flow<Duration> = _value
 	override val active: Flow<Boolean> = _active
-	override val finishNotificationEvent = _value.filter { !it.isPositive() }
+	override val finishNotificationEvent = _value.filter { !it.isPositive() }.map { Unit }
 
 	override fun start()
 	{

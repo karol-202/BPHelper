@@ -5,5 +5,5 @@ import kotlin.time.Duration
 
 interface GetPrepTimerFinishNotificationEventFlowUseCase
 {
-	operator fun invoke(): Flow<Any>
+	operator fun invoke(): Flow<Unit>
 }

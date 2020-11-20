@@ -7,7 +7,7 @@ interface PrepTimerService
 {
 	val value: Flow<Duration>
 	val active: Flow<Boolean>
-	val finishNotificationEvent: Flow<Duration>
+	val finishNotificationEvent: Flow<Unit>
 
 	fun start()
 

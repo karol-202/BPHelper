@@ -1,7 +1,7 @@
 package pl.karol202.bphelper.ui.components
 
 import android.os.Bundle
-import pl.karol202.bphelper.res.extensions.set
+import pl.karol202.bphelper.ui.extensions.set
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 

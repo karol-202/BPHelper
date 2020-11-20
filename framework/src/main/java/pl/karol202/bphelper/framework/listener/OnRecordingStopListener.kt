@@ -2,9 +2,6 @@ package pl.karol202.bphelper.framework.listener
 
 import android.os.*
 import kotlinx.android.parcel.Parcelize
-import pl.karol202.bphelper.res.extensions.set
-import java.lang.ref.Reference
-import java.lang.ref.WeakReference
 
 fun interface OnRecordingStopListener
 {
@@ -45,6 +42,8 @@ private class MessengerOnRecordingStopListener(private val messenger: Messenger)
 
 	override fun onRecordingStop(error: Boolean) = messenger.send(Message.obtain().apply {
 		what = MESSAGE_ID
-		data = Bundle().set(ARG_STOP_ERROR to error)
+		data = Bundle().apply {
+			putBoolean(ARG_STOP_ERROR, error)
+		}
 	})
 }

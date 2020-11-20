@@ -3,12 +3,38 @@ package pl.karol202.bphelper.interactors
 import org.koin.dsl.module
 import pl.karol202.bphelper.interactors.usecases.debate.*
 import pl.karol202.bphelper.interactors.usecases.debate.impl.*
+import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerActiveFlowUseCase
+import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerOvertimeBellEventFlowUseCase
+import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerOvertimeFlowUseCase
+import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerPoiBellEventFlowUseCase
+import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerPoiFlowUseCase
+import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerValueFlowUseCase
+import pl.karol202.bphelper.interactors.usecases.debatetimer.PauseDebateTimerUseCase
+import pl.karol202.bphelper.interactors.usecases.debatetimer.ResetDebateTimerUseCase
+import pl.karol202.bphelper.interactors.usecases.debatetimer.StartDebateTimerUseCase
+import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.GetDebateTimerActiveFlowUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.GetDebateTimerOvertimeBellEventFlowUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.GetDebateTimerOvertimeFlowUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.GetDebateTimerPoiBellEventFlowUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.GetDebateTimerPoiFlowUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.GetDebateTimerValueFlowUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.PauseDebateTimerUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.ResetDebateTimerUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.StartDebateTimerUseCaseImpl
 import pl.karol202.bphelper.interactors.usecases.member.*
 import pl.karol202.bphelper.interactors.usecases.member.impl.*
 import pl.karol202.bphelper.interactors.usecases.notification.ShowPrepTimerFinishNotificationUseCase
 import pl.karol202.bphelper.interactors.usecases.notification.impl.ShowPrepTimerFinishNotificationUseCaseImpl
 import pl.karol202.bphelper.interactors.usecases.preptimer.*
 import pl.karol202.bphelper.interactors.usecases.preptimer.impl.*
+import pl.karol202.bphelper.interactors.usecases.recording.GetRecordingErrorEventFlowUseCase
+import pl.karol202.bphelper.interactors.usecases.recording.GetRecordingFlowUseCase
+import pl.karol202.bphelper.interactors.usecases.recording.StartRecordingUseCase
+import pl.karol202.bphelper.interactors.usecases.recording.StopRecordingUseCase
+import pl.karol202.bphelper.interactors.usecases.recording.impl.GetRecordingErrorEventFlowUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.recording.impl.GetRecordingFlowUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.recording.impl.StartRecordingUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.recording.impl.StopRecordingUseCaseImpl
 import pl.karol202.bphelper.interactors.usecases.settings.GetSettingsFlowUseCase
 import pl.karol202.bphelper.interactors.usecases.settings.GetSettingsUseCase
 import pl.karol202.bphelper.interactors.usecases.settings.impl.GetSettingsFlowUseCaseImpl
@@ -53,4 +79,9 @@ fun interactorsModule() = module {
 	single<ResetDebateTimerUseCase> { ResetDebateTimerUseCaseImpl(get()) }
 
 	single<PlaySoundUseCase> { PlaySoundUseCaseImpl(get()) }
+
+	single<GetRecordingFlowUseCase> { GetRecordingFlowUseCaseImpl(get()) }
+	single<GetRecordingErrorEventFlowUseCase> { GetRecordingErrorEventFlowUseCaseImpl(get()) }
+	single<StartRecordingUseCase> { StartRecordingUseCaseImpl(get()) }
+	single<StopRecordingUseCase> { StopRecordingUseCaseImpl(get()) }
 }

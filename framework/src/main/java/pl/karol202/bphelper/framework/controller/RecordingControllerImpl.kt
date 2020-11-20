@@ -6,8 +6,10 @@ import pl.karol202.bphelper.framework.androidservice.RecordingAndroidService
 
 class RecordingControllerImpl(private val context: Context) : RecordingController
 {
-	override fun start(filePath: String, onStop: (error: Boolean) -> Unit) =
-		RecordingAndroidService.start(context, filePath, onStop)
+	override val recordingExtension = RecordingAndroidService.FILE_EXTENSION
+
+	override fun start(recordingUri: String, onStop: (error: Boolean) -> Unit) =
+		RecordingAndroidService.start(context, recordingUri, onStop)
 
 	override fun stop() =
 		RecordingAndroidService.stop(context)

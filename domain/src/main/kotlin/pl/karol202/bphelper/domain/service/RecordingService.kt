@@ -7,7 +7,7 @@ interface RecordingService
 	val recording: Flow<Boolean>
 	val errorEvent: Flow<Unit>
 
-	fun start(filePath: String)
+	fun start(recordingName: String)
 
 	fun stop()
 }

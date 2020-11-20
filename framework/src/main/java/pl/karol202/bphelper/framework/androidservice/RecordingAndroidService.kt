@@ -11,7 +11,6 @@ import android.os.IBinder
 import org.koin.android.ext.android.inject
 import pl.karol202.bphelper.framework.controller.NotificationControllerImpl
 import pl.karol202.bphelper.framework.extensions.doOnApi
-import pl.karol202.bphelper.framework.extensions.set
 import pl.karol202.bphelper.framework.listener.OnRecordingStopListener
 import pl.karol202.bphelper.framework.listener.ParcelableOnRecordingStopListener
 
@@ -19,16 +18,18 @@ class RecordingAndroidService : Service()
 {
     companion object
     {
+	    const val FILE_EXTENSION = "aac"
+
 	    private const val ARG_NOTIFICATION_STOP = "stop"
-	    private const val ARG_FILE_PATH = "file_path"
+	    private const val ARG_RECORDING_URI = "recording_uri"
 	    private const val ARG_CALLBACK = "callback"
 
-    	fun start(context: Context, filePath: String, recordingStopListener: OnRecordingStopListener)
+    	fun start(context: Context, recordingUri: String, recordingStopListener: OnRecordingStopListener)
 	    {
-		    val intent = Intent(context, RecordingAndroidService::class.java).set(
-			    ARG_FILE_PATH to filePath,
-			    ARG_CALLBACK to recordingStopListener.toParcelable(),
-		    )
+		    val intent = Intent(context, RecordingAndroidService::class.java).apply {
+			    putExtra(ARG_RECORDING_URI, recordingUri)
+			    putExtra(ARG_CALLBACK, recordingStopListener.toParcelable())
+		    }
 		    doOnApi(Build.VERSION_CODES.O, block = {
 			    context.startForegroundService(intent)
 		    }, fallback = {
@@ -58,7 +59,7 @@ class RecordingAndroidService : Service()
 	    if(intent != null)
 	    {
 		    if(intent.isNotificationStop()) stop(error = false)
-		    else start(intent.getFilePath(), intent.getRecordingListener())
+		    else start(intent.getRecordingUri(), intent.getRecordingListener())
 	    }
         return START_NOT_STICKY
     }
@@ -70,23 +71,25 @@ class RecordingAndroidService : Service()
 	}
 
 	private fun Intent.isNotificationStop() = this.getBooleanExtra(ARG_NOTIFICATION_STOP, false)
-	private fun Intent.getFilePath() = this.getStringExtra(ARG_FILE_PATH) ?: throw IllegalArgumentException("No file")
+	private fun Intent.getRecordingUri() = this.getStringExtra(ARG_RECORDING_URI) ?: throw IllegalArgumentException("No uri")
 	private fun Intent.getRecordingListener() = this.getParcelableExtra<ParcelableOnRecordingStopListener>(ARG_CALLBACK)
 
-	private fun start(file: String, recordingListener: OnRecordingStopListener?)
+	private fun start(uri: String, recordingListener: OnRecordingStopListener?)
 	{
 		this.recordingListener = recordingListener
 		if(started) return
 
 		startForeground(NotificationControllerImpl.ID_RECORDING, createForegroundNotification())
-		startRecording(file)
+		startRecording(uri)
 
 		started = true
 	}
 
 	private fun createForegroundNotification(): Notification
 	{
-		val intent = Intent(this, RecordingAndroidService::class.java).set(ARG_NOTIFICATION_STOP to true)
+		val intent = Intent(this, RecordingAndroidService::class.java).apply {
+			putExtra(ARG_NOTIFICATION_STOP, true)
+		}
 		val pendingIntent = PendingIntent.getService(this, 0, intent, 0)
 		return notificationController.buildRecordingNotification(pendingIntent)
 	}
@@ -102,12 +105,12 @@ class RecordingAndroidService : Service()
 		stopped = true
 	}
 
-	private fun startRecording(filePath: String) = try
+	private fun startRecording(uri: String) = try
 	{
 		mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
 		mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS)
 		mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-		mediaRecorder.setOutputFile(filePath)
+		mediaRecorder.setOutputFile(uri)
 		mediaRecorder.prepare()
 		mediaRecorder.start()
 	}

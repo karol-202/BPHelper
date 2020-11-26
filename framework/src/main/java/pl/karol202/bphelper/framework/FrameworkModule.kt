@@ -33,4 +33,5 @@ fun frameworkModule() = module {
 	single<NotificationController> { NotificationControllerImpl(androidContext(), get()) } bind NotificationControllerImpl::class
 	single<SoundController> { SoundControllerImpl(androidContext()) }
 	single<RecordingController> { RecordingControllerImpl(androidContext()) }
+	single<PermissionController> { PermissionControllerImpl(androidContext()) }
 }

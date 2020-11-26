@@ -18,10 +18,7 @@ import pl.karol202.bphelper.presentation.viewdata.TimerStatusViewData
 import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.components.ExtendedFragment
 import pl.karol202.bphelper.ui.dialog.RecordingNameDialogBuilder
-import pl.karol202.bphelper.ui.extensions.alertDialog
-import pl.karol202.bphelper.ui.extensions.format
-import pl.karol202.bphelper.ui.extensions.getColorCompat
-import pl.karol202.bphelper.ui.extensions.showSnackbar
+import pl.karol202.bphelper.ui.extensions.*
 import pl.karol202.bphelper.ui.viewmodel.AndroidDebateViewModel
 import kotlin.math.roundToInt
 
@@ -78,7 +75,7 @@ class DebateFragment : ExtendedFragment()
 
 	private fun initButtons()
 	{
-		button_debate_time_start.setOnClickListener { debateViewModel.toggleTimer() }
+		button_debate_time_toggle.setOnClickListener { debateViewModel.toggleTimer() }
 		button_debate_time_stop.setOnClickListener { debateViewModel.resetTimer() }
 		button_debate_recording.setOnClickListener { toggleRecording() }
 	}
@@ -86,7 +83,7 @@ class DebateFragment : ExtendedFragment()
 	private fun toggleRecording() = when(debateViewModel.currentRecordingStatus)
 	{
 		RecordingStatusViewData.ACTIVE -> showRecordingStopAlert()
-		RecordingStatusViewData.STOPPED -> showFilenameAlertIfPermitted()
+		RecordingStatusViewData.STOPPED -> showFilenameAlert()
 	}
 
 	private fun showRecordingStopAlert()
@@ -98,7 +95,7 @@ class DebateFragment : ExtendedFragment()
 		}.show()
 	}
 
-	private fun showFilenameAlertIfPermitted()
+	private fun showFilenameAlert()
 	{
 		RecordingNameDialogBuilder(
 			context = ctx,
@@ -129,14 +126,14 @@ class DebateFragment : ExtendedFragment()
 			val constraints = ConstraintSet()
 			constraints.clone(constraintLayout_debate)
 
-			if(stopped) constraints.connect(R.id.button_debate_time_start, ConstraintSet.END,
+			if(stopped) constraints.connect(R.id.button_debate_time_toggle, ConstraintSet.END,
 			                                ConstraintSet.PARENT_ID, ConstraintSet.END)
-			else constraints.connect(R.id.button_debate_time_start, ConstraintSet.END,
+			else constraints.connect(R.id.button_debate_time_toggle, ConstraintSet.END,
 			                         R.id.button_debate_time_stop, ConstraintSet.START)
 
 			val margin = ctx.resources.getDimension(if(stopped) R.dimen.margin_button_debate_start_stopped
 			                                        else R.dimen.margin_button_debate_start_running).roundToInt()
-			constraints.setMargin(R.id.button_debate_time_start, ConstraintSet.END, margin)
+			constraints.setMargin(R.id.button_debate_time_toggle, ConstraintSet.END, margin)
 
 			constraints.applyTo(constraintLayout_debate)
 		}
@@ -146,46 +143,25 @@ class DebateFragment : ExtendedFragment()
 		{
 			TimerStatusViewData.ACTIVE -> {
 				setStartButtonConstraints(stopped = false)
-				if(button_debate_time_start.icon != drawablePlayToPause)
-					button_debate_time_start.icon = drawablePlayToPause?.apply { start() }
-				button_debate_time_start.setText(R.string.button_debate_timer_pause)
+				if(button_debate_time_toggle.icon != drawablePlayToPause)
+					button_debate_time_toggle.icon = drawablePlayToPause?.apply { start() }
+				button_debate_time_toggle.setText(R.string.button_debate_timer_pause)
 				button_debate_time_stop.isClickable = true
 			}
 			TimerStatusViewData.PAUSED -> {
 				setStartButtonConstraints(stopped = false)
-				if(button_debate_time_start.icon != drawablePauseToPlay)
-					button_debate_time_start.icon = drawablePauseToPlay?.apply { start() }
-				button_debate_time_start.setText(R.string.button_debate_timer_resume)
+				if(button_debate_time_toggle.icon != drawablePauseToPlay)
+					button_debate_time_toggle.icon = drawablePauseToPlay?.apply { start() }
+				button_debate_time_toggle.setText(R.string.button_debate_timer_resume)
 				button_debate_time_stop.isClickable = true
 			}
 			TimerStatusViewData.STOPPED -> {
 				setStartButtonConstraints(stopped = true)
-				if(button_debate_time_start.icon != drawablePauseToPlay)
-					button_debate_time_start.icon = drawablePauseToPlay?.apply { start() }
-				button_debate_time_start.setText(R.string.button_debate_timer_start)
+				if(button_debate_time_toggle.icon != drawablePauseToPlay)
+					button_debate_time_toggle.icon = drawablePauseToPlay?.apply { start() }
+				button_debate_time_toggle.setText(R.string.button_debate_timer_start)
 				button_debate_time_stop.isClickable = false
 			}
 		}
 	}
-
-	/*fun checkAndRequestAudioPermission(): Boolean
-		{
-			val hasPermission = checkPermission(Manifest.permission.RECORD_AUDIO)
-			if(!hasPermission) requestPermission(Manifest.permission.RECORD_AUDIO) { granted ->
-				if(granted) showFilenameAlertIfPermitted()
-			}
-			return hasPermission
-		}
-
-		fun checkAndRequestStoragePermission(): Boolean
-		{
-			val hasPermission = checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-			if(!hasPermission) requestPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) { granted ->
-				if(granted) showFilenameAlertIfPermitted()
-			}
-			return hasPermission
-		}
-
-		if(!checkAndRequestAudioPermission()) return
-		if(!checkAndRequestStoragePermission()) return*/
 }

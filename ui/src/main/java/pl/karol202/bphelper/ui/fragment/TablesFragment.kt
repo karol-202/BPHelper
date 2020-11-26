@@ -36,7 +36,7 @@ class TablesFragment : ExtendedFragment()
 		replaceContent(configuration)
 	}
 
-	private fun observeError() = tablesViewModel.error.collectIn(lifecycleScope) { error ->
+	private fun observeError() = tablesViewModel.error.collectIn(lifecycleScope) {
 		navController.popBackStack()
 	}
 

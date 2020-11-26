@@ -23,6 +23,10 @@ import pl.karol202.bphelper.interactors.usecases.member.*
 import pl.karol202.bphelper.interactors.usecases.member.impl.*
 import pl.karol202.bphelper.interactors.usecases.notification.ShowPrepTimerFinishNotificationUseCase
 import pl.karol202.bphelper.interactors.usecases.notification.impl.ShowPrepTimerFinishNotificationUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.permission.GetPermissionRequestFlowUseCase
+import pl.karol202.bphelper.interactors.usecases.permission.MarkPermissionRequestProcessedUseCase
+import pl.karol202.bphelper.interactors.usecases.permission.impl.GetPermissionRequestFlowUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.permission.impl.MarkPermissionRequestProcessedUseCaseImpl
 import pl.karol202.bphelper.interactors.usecases.preptimer.*
 import pl.karol202.bphelper.interactors.usecases.preptimer.impl.*
 import pl.karol202.bphelper.interactors.usecases.recording.*
@@ -77,4 +81,7 @@ fun interactorsModule() = module {
 	single<StartRecordingUseCase> { StartRecordingUseCaseImpl(get()) }
 	single<StopRecordingUseCase> { StopRecordingUseCaseImpl(get()) }
 	single<IsRecordingNameAvailableUseCase> { IsRecordingNameAvailableUseCaseImpl(get()) }
+
+	single<MarkPermissionRequestProcessedUseCase> { MarkPermissionRequestProcessedUseCaseImpl(get()) }
+	single<GetPermissionRequestFlowUseCase> { GetPermissionRequestFlowUseCaseImpl(get()) }
 }

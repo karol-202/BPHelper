@@ -29,8 +29,8 @@ class DurationPreferenceDialogFragment : ExtendedPreferenceDialogFragmentCompat(
 
 	private fun initNumberPickers(view: View)
 	{
-		initNumberPicker(view.findViewById(R.id.numberPickerMinutes), currentMinutes) { currentMinutes = it }
-		initNumberPicker(view.findViewById(R.id.numberPickerSeconds), currentSeconds) { currentSeconds = it }
+		initNumberPicker(view.findViewById(R.id.numberPicker_minutes), currentMinutes) { currentMinutes = it }
+		initNumberPicker(view.findViewById(R.id.numberPicker_seconds), currentSeconds) { currentSeconds = it }
 	}
 
 	private fun initNumberPicker(pickerView: NumberPicker, currentValue: Int, valueSetter: (Int) -> Unit) {
@@ -44,8 +44,6 @@ class DurationPreferenceDialogFragment : ExtendedPreferenceDialogFragmentCompat(
 	override fun onDialogClosed(positiveResult: Boolean)
 	{
 		if(!positiveResult) return
-		val newDuration = currentMinutes.minutes + currentSeconds.seconds
-		if(durationPreference.callChangeListener(newDuration))
-			durationPreference.duration = newDuration
+		durationPreference.setValue(currentMinutes.minutes + currentSeconds.seconds)
 	}
 }

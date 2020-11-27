@@ -80,6 +80,6 @@
     <string name="table_name_oo">OO</string>
     <string name="table_name_cg">CG</string>
     <string name="table_name_co">CO</string>
-    <string name="table_name_gov">Gov</string>
-    <string name="table_name_opp">Opp</string>
+    <string name="table_name_gov">GOV</string>
+    <string name="table_name_opp">OPP</string>
 </resources>

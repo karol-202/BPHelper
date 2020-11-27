@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 
-class FlowSharedPrefsDataStore<T>(private val flowSharedPreferences: FlowSharedPreferences,
-                                  private val serializer: KSerializer<T>,
-                                  private val keyName: String)
+class FlowSharedPreference<T>(private val flowSharedPreferences: FlowSharedPreferences,
+                              private val serializer: KSerializer<T>,
+                              private val keyName: String)
 {
 	fun get() = flowSharedPreferences.getString(keyName)
 			.asFlow()

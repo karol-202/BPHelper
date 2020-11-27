@@ -1,53 +1,81 @@
 package pl.karol202.bphelper.ui.settings
 
-import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
+import androidx.preference.TwoStatePreference
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import pl.karol202.bphelper.presentation.viewdata.SettingsKeys
 import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.extensions.format
+import pl.karol202.bphelper.ui.viewmodel.AndroidSettingsViewModel
 
 class SettingsFragment : PreferenceFragmentCompat()
 {
-	//SharedPreferences does not store a strong reference to listener thus the reference to it must be kept here.
-	private val onPreferenceChangeListener = SharedPreferences.OnSharedPreferenceChangeListener { _, _ -> updateAllPreferences() }
+	private val settingsViewModel by viewModel<AndroidSettingsViewModel>()
 
 	override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?)
 	{
-		setPreferencesFromResource(R.xml.preferences, rootKey)
-		updateAllPreferences()
-		preferenceScreen.sharedPreferences.registerOnSharedPreferenceChangeListener(onPreferenceChangeListener)
-	}
+		preferenceManager.preferenceDataStore = ViewModelPreferenceDataStore(settingsViewModel)
 
-	private fun updateAllPreferences() =
-		preferenceScreen.sharedPreferences.all.keys.mapNotNull { findPreference(it) }.forEach { updatePreference(it) }
+		setPreferences {
+			category {
+				setTitle(R.string.preference_speech_category)
 
-	private fun updatePreference(preference: Preference)
-	{
-		if(preference is DurationPreference)
-			preference.summary = preference.duration.format(requireContext())
+				duration {
+					key = SettingsKeys.SPEECH_DURATION
+					setTitle(R.string.preference_speech_duration)
+				}
+				duration {
+					key = SettingsKeys.SPEECH_DURATION_MAX
+					setTitle(R.string.preference_speech_duration_max)
+				}
+			}
 
-		if(preference.key == "poiStart")
-			preference.isEnabled = (findPreference("poiStartEnabled") as? SwitchPreferenceCompat)?.isChecked ?: true
-		else if(preference.key == "poiEnd")
-			preference.isEnabled = (findPreference("poiEndEnabled") as? SwitchPreferenceCompat)?.isChecked ?: true
-	}
+			category {
+				setTitle(R.string.preference_poi_start_category)
 
-	override fun onDestroy()
-	{
-		super.onDestroy()
-		preferenceScreen.sharedPreferences.unregisterOnSharedPreferenceChangeListener(onPreferenceChangeListener)
-	}
+				switch {
+					key = SettingsKeys.POI_START_ENABLED
+					setTitle(R.string.preference_poi_start_enabled)
+					setAfterPreferenceChangeListener { value ->
+						findPreference<Preference>(SettingsKeys.POI_START)?.isEnabled = value
+					}
+				}
+				duration {
+					key = SettingsKeys.POI_START
+					setTitle(R.string.preference_poi_start)
+				}
+			}
 
-	override fun onDisplayPreferenceDialog(preference: Preference?)
-	{
-		if(preference is DurationPreference)
-		{
-			val dialogFragment = DurationPreferenceDialogFragment.create(preference.key)
-			dialogFragment.setTargetFragment(this, 0)
-			dialogFragment.show(parentFragmentManager, "android.support.v7.preference.PreferenceFragment.DIALOG")
+			category {
+				setTitle(R.string.preference_poi_end_category)
+
+				switch {
+					key = SettingsKeys.POI_END_ENABLED
+					setTitle(R.string.preference_poi_end_enabled)
+					setAfterPreferenceChangeListener { value ->
+						findPreference<Preference>(SettingsKeys.POI_END)?.isEnabled = value
+					}
+				}
+				duration {
+					key = SettingsKeys.POI_END
+					setTitle(R.string.preference_poi_end)
+				}
+			}
 		}
-		else super.onDisplayPreferenceDialog(preference)
+	}
+
+	override fun onDisplayPreferenceDialog(preference: Preference?) = when(preference)
+	{
+		is DurationPreference -> showDurationPreferenceDialog(preference)
+		else -> super.onDisplayPreferenceDialog(preference)
+	}
+
+	private fun showDurationPreferenceDialog(preference: Preference)
+	{
+		val dialogFragment = DurationPreferenceDialogFragment.create(preference.key)
+		dialogFragment.setTargetFragment(this, 0)
+		dialogFragment.show(parentFragmentManager, "android.support.v7.preference.PreferenceFragment.DIALOG")
 	}
 }

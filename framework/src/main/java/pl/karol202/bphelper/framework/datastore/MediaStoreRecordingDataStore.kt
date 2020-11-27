@@ -11,7 +11,7 @@ import pl.karol202.bphelper.data.entity.RecordingEntity
 import pl.karol202.bphelper.data.entity.withUri
 import pl.karol202.bphelper.framework.extensions.doOnApi
 
-class RecordingDataStoreImpl(private val context: Context) : RecordingDataStore
+class MediaStoreRecordingDataStore(private val context: Context) : RecordingDataStore
 {
 	override fun createRecording(recording: NewRecordingEntity) =
 		context.contentResolver.insert(getAudioUri(), recording.toContentValues())?.let { uri ->

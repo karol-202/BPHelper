@@ -10,6 +10,7 @@ import pl.karol202.bphelper.presentation.viewdata.TableViewData
 import pl.karol202.bphelper.ui.components.ExtendedFragment
 import pl.karol202.bphelper.ui.adapter.TableMembersAdapter
 import pl.karol202.bphelper.ui.R
+import pl.karol202.bphelper.ui.extensions.ctx
 import pl.karol202.bphelper.ui.extensions.setArguments
 import pl.karol202.bphelper.ui.extensions.to
 

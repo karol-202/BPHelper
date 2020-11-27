@@ -6,4 +6,6 @@ import pl.karol202.bphelper.data.entity.SettingsEntity
 interface SettingsDataStore
 {
 	val settings: Flow<SettingsEntity>
+
+	suspend fun setSettings(settingsEntity: SettingsEntity)
 }

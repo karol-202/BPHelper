@@ -4,13 +4,13 @@ import kotlin.time.Duration
 import kotlin.time.minutes
 import kotlin.time.seconds
 
-class Settings(val tableConfigurationType: TableConfigurationType,
-               val speechDuration: Duration,
-               val speechDurationMax: Duration,
-               val poiStart: Duration,
-               val poiEnd: Duration,
-               val poiStartBellEnabled: Boolean,
-               val poiEndBellEnabled: Boolean)
+data class Settings(val tableConfigurationType: TableConfigurationType,
+                    val speechDuration: Duration,
+                    val speechDurationMax: Duration,
+                    val poiStart: Duration,
+                    val poiEnd: Duration,
+                    val poiStartBellEnabled: Boolean,
+                    val poiEndBellEnabled: Boolean)
 {
 	companion object
 	{

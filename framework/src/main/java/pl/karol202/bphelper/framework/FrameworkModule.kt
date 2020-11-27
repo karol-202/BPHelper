@@ -11,7 +11,7 @@ import pl.karol202.bphelper.data.datastore.RecordingDataStore
 import pl.karol202.bphelper.data.datastore.MemberDataStore
 import pl.karol202.bphelper.data.datastore.SettingsDataStore
 import pl.karol202.bphelper.framework.controller.*
-import pl.karol202.bphelper.framework.datastore.RecordingDataStoreImpl
+import pl.karol202.bphelper.framework.datastore.MediaStoreRecordingDataStore
 import pl.karol202.bphelper.framework.datastore.RoomMemberDataStore
 import pl.karol202.bphelper.framework.datastore.SharedPrefsSettingsDataStore
 import pl.karol202.bphelper.framework.room.LocalDatabase
@@ -26,7 +26,7 @@ fun frameworkModule() = module {
 
 	single<MemberDataStore> { RoomMemberDataStore(get()) }
 	single<SettingsDataStore> { SharedPrefsSettingsDataStore(get()) }
-	single<RecordingDataStore> { RecordingDataStoreImpl(androidContext()) }
+	single<RecordingDataStore> { MediaStoreRecordingDataStore(androidContext()) }
 
 	single<DecrementTimerController.Factory> { DecrementTimerControllerImpl.Factory }
 	single<IncrementTimerController.Factory> { IncrementTimerControllerImpl.Factory }

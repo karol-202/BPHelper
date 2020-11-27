@@ -5,6 +5,7 @@ import android.content.res.TypedArray
 import android.util.AttributeSet
 import androidx.preference.DialogPreference
 import pl.karol202.bphelper.ui.R
+import pl.karol202.bphelper.ui.extensions.format
 import kotlin.time.Duration
 import kotlin.time.milliseconds
 
@@ -12,10 +13,11 @@ class DurationPreference(context: Context, attrs: AttributeSet?, defStyleAttr: I
 	DialogPreference(context, attrs, defStyleAttr, defStyleRes)
 {
 	var duration: Duration = Duration.ZERO
-		set(value)
+		private set(value)
 		{
 			field = value
 			persistInt(value.inMilliseconds.toInt())
+			summary = value.format(preferenceManager.context)
 		}
 
 	constructor(context: Context) : this(context, null)
@@ -35,5 +37,10 @@ class DurationPreference(context: Context, attrs: AttributeSet?, defStyleAttr: I
 	{
 		val defaultValueInt = (defaultValue as? Int) ?: 0
 		duration = getPersistedInt(defaultValueInt).milliseconds
+	}
+
+	fun setValue(newDuration: Duration)
+	{
+		if(callChangeListener(newDuration)) duration = newDuration
 	}
 }

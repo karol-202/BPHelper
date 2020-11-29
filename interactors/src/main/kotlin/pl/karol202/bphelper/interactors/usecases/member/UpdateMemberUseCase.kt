@@ -1,6 +1,6 @@
 package pl.karol202.bphelper.interactors.usecases.member
 
-import pl.karol202.bphelper.domain.model.Member
+import pl.karol202.bphelper.domain.entity.Member
 
 interface UpdateMemberUseCase
 {

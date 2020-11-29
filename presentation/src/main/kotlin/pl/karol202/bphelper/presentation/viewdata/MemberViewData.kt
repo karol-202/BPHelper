@@ -1,6 +1,6 @@
 package pl.karol202.bphelper.presentation.viewdata
 
-import pl.karol202.bphelper.domain.model.Member
+import pl.karol202.bphelper.domain.entity.Member
 
 data class MemberViewData(val id: Long,
                           val name: String,

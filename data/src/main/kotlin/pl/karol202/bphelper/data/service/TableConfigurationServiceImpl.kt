@@ -1,5 +1,6 @@
 package pl.karol202.bphelper.data.service
 
+import pl.karol202.bphelper.domain.entity.*
 import pl.karol202.bphelper.domain.model.*
 import pl.karol202.bphelper.domain.service.TableConfigurationService
 import pl.karol202.bphelper.domain.util.Either

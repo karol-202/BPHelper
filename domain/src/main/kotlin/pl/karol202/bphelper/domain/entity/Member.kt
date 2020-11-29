@@ -1,8 +1,9 @@
-package pl.karol202.bphelper.domain.model
+package pl.karol202.bphelper.domain.entity
 
 data class Member(val id: Long,
                   val name: String,
-                  val presence: Presence)
+                  val presence: Presence
+)
 {
     enum class Presence
     {

@@ -1,26 +1,26 @@
-package pl.karol202.bphelper.data.entity
+package pl.karol202.bphelper.data.model
 
 import kotlinx.serialization.Serializable
-import pl.karol202.bphelper.domain.model.Settings
-import pl.karol202.bphelper.domain.model.TableConfigurationType
+import pl.karol202.bphelper.domain.entity.Settings
+import pl.karol202.bphelper.domain.entity.TableConfigurationType
 import kotlin.time.milliseconds
 
 @Serializable
-class SettingsEntity(val tableConfigurationTypeName: String,
-                     val speechDuration: Double,
-                     val speechDurationMax: Double,
-                     val poiStartEnabled: Boolean,
-                     val poiStart: Double,
-                     val poiEndEnabled: Boolean,
-                     val poiEnd: Double)
+class SettingsModel(val tableConfigurationTypeName: String,
+                    val speechDuration: Double,
+                    val speechDurationMax: Double,
+                    val poiStartEnabled: Boolean,
+                    val poiStart: Double,
+                    val poiEndEnabled: Boolean,
+                    val poiEnd: Double)
 {
 	companion object
 	{
-		val DEFAULT = Settings.DEFAULT.toEntity()
+		val DEFAULT = Settings.DEFAULT.toModel()
 	}
 }
 
-fun Settings.toEntity() = SettingsEntity(
+fun Settings.toModel() = SettingsModel(
 	tableConfigurationTypeName = tableConfigurationType.name,
 	speechDuration = speechDuration.inMilliseconds,
 	speechDurationMax = speechDurationMax.inMilliseconds,
@@ -29,7 +29,7 @@ fun Settings.toEntity() = SettingsEntity(
 	poiEndEnabled = poiEndBellEnabled,
 	poiEnd = poiEnd.inMilliseconds,
 )
-fun SettingsEntity.toModel() = Settings(
+fun SettingsModel.toEntity() = Settings(
 	tableConfigurationType = TableConfigurationType.findByName(tableConfigurationTypeName) ?: TableConfigurationType.DEFAULT,
 	speechDuration = speechDuration.milliseconds,
 	speechDurationMax = speechDurationMax.milliseconds,

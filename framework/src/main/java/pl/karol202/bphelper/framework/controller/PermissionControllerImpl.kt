@@ -4,16 +4,16 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import pl.karol202.bphelper.data.controller.PermissionController
-import pl.karol202.bphelper.data.entity.PermissionTypeEntity
+import pl.karol202.bphelper.data.model.PermissionTypeModel
 import pl.karol202.bphelper.framework.extensions.checkSelfPermissionCompat
 
 class PermissionControllerImpl(private val context: Context) : PermissionController
 {
-	override fun isPermissionGranted(permission: PermissionTypeEntity) =
+	override fun isPermissionGranted(permission: PermissionTypeModel) =
 		context.checkSelfPermissionCompat(permission.androidName) == PackageManager.PERMISSION_GRANTED
 
-	private val PermissionTypeEntity.androidName get() = when(this)
+	private val PermissionTypeModel.androidName get() = when(this)
 	{
-		PermissionTypeEntity.RECORDING -> Manifest.permission.RECORD_AUDIO
+		PermissionTypeModel.RECORDING -> Manifest.permission.RECORD_AUDIO
 	}
 }

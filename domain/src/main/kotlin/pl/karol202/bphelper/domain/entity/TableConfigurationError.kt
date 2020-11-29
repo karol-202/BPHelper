@@ -1,4 +1,4 @@
-package pl.karol202.bphelper.domain.model
+package pl.karol202.bphelper.domain.entity
 
 sealed class TableConfigurationError
 {

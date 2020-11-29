@@ -1,7 +1,7 @@
 package pl.karol202.bphelper.interactors.usecases.permission
 
 import kotlinx.coroutines.flow.Flow
-import pl.karol202.bphelper.domain.model.PermissionType
+import pl.karol202.bphelper.domain.entity.PermissionType
 
 interface GetPermissionRequestFlowUseCase
 {

@@ -1,7 +1,7 @@
 package pl.karol202.bphelper.presentation.viewdata
 
-import pl.karol202.bphelper.domain.model.Table
-import pl.karol202.bphelper.domain.model.TableType
+import pl.karol202.bphelper.domain.entity.Table
+import pl.karol202.bphelper.domain.entity.TableType
 import java.io.Serializable
 
 data class TableViewData(val role: Role,

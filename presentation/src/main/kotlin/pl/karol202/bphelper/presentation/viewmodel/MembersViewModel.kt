@@ -1,8 +1,8 @@
 package pl.karol202.bphelper.presentation.viewmodel
 
 import kotlinx.coroutines.flow.Flow
-import pl.karol202.bphelper.domain.model.Member
-import pl.karol202.bphelper.domain.model.TableConfigurationError
+import pl.karol202.bphelper.domain.entity.Member
+import pl.karol202.bphelper.domain.entity.TableConfigurationError
 import pl.karol202.bphelper.presentation.util.Event
 import pl.karol202.bphelper.presentation.viewdata.MemberViewData
 import pl.karol202.bphelper.presentation.viewdata.TableConfigurationErrorViewData

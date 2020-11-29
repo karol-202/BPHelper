@@ -1,6 +1,6 @@
 package pl.karol202.bphelper.interactors.usecases.settings
 
-import pl.karol202.bphelper.domain.model.Settings
+import pl.karol202.bphelper.domain.entity.Settings
 
 interface SetSettingsUseCase
 {

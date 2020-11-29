@@ -2,8 +2,8 @@ package pl.karol202.bphelper.data.service
 
 import kotlinx.coroutines.flow.*
 import pl.karol202.bphelper.data.controller.PermissionController
-import pl.karol202.bphelper.data.entity.toEntity
-import pl.karol202.bphelper.domain.model.PermissionType
+import pl.karol202.bphelper.data.model.toModel
+import pl.karol202.bphelper.domain.entity.PermissionType
 import pl.karol202.bphelper.domain.service.PermissionService
 
 class PermissionServiceImpl(private val permissionController: PermissionController) : PermissionService
@@ -29,5 +29,5 @@ class PermissionServiceImpl(private val permissionController: PermissionControll
 	}
 
 	private fun isPermissionGranted(permission: PermissionType) =
-		permissionController.isPermissionGranted(permission.toEntity())
+		permissionController.isPermissionGranted(permission.toModel())
 }

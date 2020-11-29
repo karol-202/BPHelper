@@ -1,6 +1,6 @@
 package pl.karol202.bphelper.interactors.usecases.permission
 
-import pl.karol202.bphelper.domain.model.PermissionType
+import pl.karol202.bphelper.domain.entity.PermissionType
 
 interface MarkPermissionRequestProcessedUseCase
 {

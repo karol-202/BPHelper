@@ -6,19 +6,19 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import pl.karol202.bphelper.data.datastore.RecordingDataStore
-import pl.karol202.bphelper.data.entity.NewRecordingEntity
-import pl.karol202.bphelper.data.entity.RecordingEntity
-import pl.karol202.bphelper.data.entity.withUri
+import pl.karol202.bphelper.data.model.NewRecordingModel
+import pl.karol202.bphelper.data.model.RecordingModel
+import pl.karol202.bphelper.data.model.withUri
 import pl.karol202.bphelper.framework.extensions.doOnApi
 
 class MediaStoreRecordingDataStore(private val context: Context) : RecordingDataStore
 {
-	override fun createRecording(recording: NewRecordingEntity) =
+	override fun createRecording(recording: NewRecordingModel) =
 		context.contentResolver.insert(getAudioUri(), recording.toContentValues())?.let { uri ->
 			recording.withUri(uri.toString())
 		}
 
-	override fun updateRecording(recording: RecordingEntity)
+	override fun updateRecording(recording: RecordingModel)
 	{
 		context.contentResolver.update(Uri.parse(recording.uri), recording.toContentValues(), null, null)
 	}
@@ -36,9 +36,9 @@ class MediaStoreRecordingDataStore(private val context: Context) : RecordingData
 		MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
 	})
 
-	private fun RecordingEntity.toContentValues() = createContentValues(name, extension, inProgress)
+	private fun RecordingModel.toContentValues() = createContentValues(name, extension, inProgress)
 
-	private fun NewRecordingEntity.toContentValues() = createContentValues(name, extension, inProgress)
+	private fun NewRecordingModel.toContentValues() = createContentValues(name, extension, inProgress)
 
 	private fun createContentValues(name: String, extension: String, pending: Boolean) = ContentValues().apply {
 		put(MediaStore.Audio.Media.DISPLAY_NAME, "$name.$extension")

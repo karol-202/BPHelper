@@ -1,7 +1,7 @@
 package pl.karol202.bphelper.interactors.usecases.member
 
 import kotlinx.coroutines.flow.Flow
-import pl.karol202.bphelper.domain.model.Member
+import pl.karol202.bphelper.domain.entity.Member
 
 interface GetMembersFlowUseCase
 {

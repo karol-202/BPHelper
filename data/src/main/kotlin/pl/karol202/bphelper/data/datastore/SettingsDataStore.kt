@@ -1,11 +1,11 @@
 package pl.karol202.bphelper.data.datastore
 
 import kotlinx.coroutines.flow.Flow
-import pl.karol202.bphelper.data.entity.SettingsEntity
+import pl.karol202.bphelper.data.model.SettingsModel
 
 interface SettingsDataStore
 {
-	val settings: Flow<SettingsEntity>
+	val settings: Flow<SettingsModel>
 
-	suspend fun setSettings(settingsEntity: SettingsEntity)
+	suspend fun setSettings(settings: SettingsModel)
 }

@@ -1,7 +1,7 @@
 package pl.karol202.bphelper.domain.service
 
 import kotlinx.coroutines.flow.Flow
-import pl.karol202.bphelper.domain.model.PermissionType
+import pl.karol202.bphelper.domain.entity.PermissionType
 
 interface PermissionService
 {

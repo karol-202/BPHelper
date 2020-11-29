@@ -1,8 +1,8 @@
 package pl.karol202.bphelper.domain.repository
 
-import pl.karol202.bphelper.domain.model.Member
 import kotlinx.coroutines.flow.Flow
-import pl.karol202.bphelper.domain.model.NewMember
+import pl.karol202.bphelper.domain.entity.Member
+import pl.karol202.bphelper.domain.entity.NewMember
 
 interface MemberRepository
 {

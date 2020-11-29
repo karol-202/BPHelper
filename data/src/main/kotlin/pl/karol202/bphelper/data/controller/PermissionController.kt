@@ -1,8 +1,8 @@
 package pl.karol202.bphelper.data.controller
 
-import pl.karol202.bphelper.data.entity.PermissionTypeEntity
+import pl.karol202.bphelper.data.model.PermissionTypeModel
 
 interface PermissionController
 {
-	fun isPermissionGranted(permission: PermissionTypeEntity): Boolean
+	fun isPermissionGranted(permission: PermissionTypeModel): Boolean
 }

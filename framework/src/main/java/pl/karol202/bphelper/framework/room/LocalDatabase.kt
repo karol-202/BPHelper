@@ -2,7 +2,6 @@ package pl.karol202.bphelper.framework.room
 
 import android.content.Context
 import androidx.room.*
-import pl.karol202.bphelper.data.entity.MemberEntity
 import pl.karol202.bphelper.framework.room.dao.MemberDao
 import pl.karol202.bphelper.framework.room.entity.MemberRoomEntity
 

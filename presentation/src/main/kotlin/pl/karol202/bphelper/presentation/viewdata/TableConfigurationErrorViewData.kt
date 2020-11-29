@@ -1,6 +1,6 @@
 package pl.karol202.bphelper.presentation.viewdata
 
-import pl.karol202.bphelper.domain.model.TableConfigurationError
+import pl.karol202.bphelper.domain.entity.TableConfigurationError
 
 sealed class TableConfigurationErrorViewData
 {

@@ -1,7 +1,7 @@
 package pl.karol202.bphelper.presentation.viewdata
 
-import pl.karol202.bphelper.domain.model.Settings
-import pl.karol202.bphelper.domain.model.TableConfigurationType
+import pl.karol202.bphelper.domain.entity.Settings
+import pl.karol202.bphelper.domain.entity.TableConfigurationType
 import kotlin.time.Duration
 import kotlin.time.minutes
 import kotlin.time.seconds

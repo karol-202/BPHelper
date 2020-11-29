@@ -4,8 +4,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import pl.karol202.bphelper.data.datastore.MemberDataStore
-import pl.karol202.bphelper.data.entity.MemberEntity
-import pl.karol202.bphelper.data.entity.NewMemberEntity
+import pl.karol202.bphelper.data.model.MemberModel
+import pl.karol202.bphelper.data.model.NewMemberModel
 import pl.karol202.bphelper.framework.room.dao.MemberDao
 import pl.karol202.bphelper.framework.room.entity.MemberRoomEntity
 import pl.karol202.bphelper.framework.room.entity.toEntity
@@ -15,12 +15,12 @@ class RoomMemberDataStore(private val memberDao: MemberDao) : MemberDataStore
 {
 	override val allMembers = memberDao.getAll().map { it.map(MemberRoomEntity::toEntity) }
 
-	override suspend fun addMember(member: NewMemberEntity) = withContext(Dispatchers.IO) {
+	override suspend fun addMember(member: NewMemberModel) = withContext(Dispatchers.IO) {
 		val createdId = memberDao.insert(member.toRoomEntity())
-		MemberEntity(createdId, member.name)
+		MemberModel(createdId, member.name)
 	}
 
-	override suspend fun updateMember(member: MemberEntity) = withContext(Dispatchers.IO) {
+	override suspend fun updateMember(member: MemberModel) = withContext(Dispatchers.IO) {
 		memberDao.update(member.toRoomEntity())
 	}
 

@@ -1,8 +1,8 @@
 package pl.karol202.bphelper.presentation.viewmodel.impl
 
 import kotlinx.coroutines.flow.*
-import pl.karol202.bphelper.domain.model.TableConfiguration
-import pl.karol202.bphelper.domain.model.TableConfigurationError
+import pl.karol202.bphelper.domain.entity.TableConfiguration
+import pl.karol202.bphelper.domain.entity.TableConfigurationError
 import pl.karol202.bphelper.domain.repository.MemberRepository
 import pl.karol202.bphelper.domain.repository.SettingsRepository
 import pl.karol202.bphelper.domain.service.TableConfigurationService

@@ -2,8 +2,8 @@ package pl.karol202.bphelper.presentation.viewmodel.impl
 
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.stateIn
-import pl.karol202.bphelper.domain.model.Settings
-import pl.karol202.bphelper.domain.model.TableConfigurationType
+import pl.karol202.bphelper.domain.entity.Settings
+import pl.karol202.bphelper.domain.entity.TableConfigurationType
 import pl.karol202.bphelper.interactors.usecases.settings.GetSettingsFlowUseCase
 import pl.karol202.bphelper.interactors.usecases.settings.SetSettingsUseCase
 import pl.karol202.bphelper.presentation.viewdata.SettingsKeys

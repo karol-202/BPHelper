@@ -1,6 +1,6 @@
 package pl.karol202.bphelper.presentation.viewdata
 
-import pl.karol202.bphelper.domain.model.PermissionType
+import pl.karol202.bphelper.domain.entity.PermissionType
 
 data class PermissionRequestViewData(val type: Type,
                                      val id: Int)

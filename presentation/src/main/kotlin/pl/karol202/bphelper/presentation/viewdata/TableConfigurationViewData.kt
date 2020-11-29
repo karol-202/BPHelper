@@ -1,6 +1,6 @@
 package pl.karol202.bphelper.presentation.viewdata
 
-import pl.karol202.bphelper.domain.model.TableConfiguration
+import pl.karol202.bphelper.domain.entity.TableConfiguration
 import java.io.Serializable
 
 sealed class TableConfigurationViewData : Serializable

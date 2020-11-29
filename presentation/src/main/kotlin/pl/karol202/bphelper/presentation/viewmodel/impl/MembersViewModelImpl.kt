@@ -3,7 +3,7 @@ package pl.karol202.bphelper.presentation.viewmodel.impl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
-import pl.karol202.bphelper.domain.model.Member
+import pl.karol202.bphelper.domain.entity.Member
 import pl.karol202.bphelper.interactors.usecases.member.AddMemberUseCase
 import pl.karol202.bphelper.interactors.usecases.member.GetMembersFlowUseCase
 import pl.karol202.bphelper.interactors.usecases.member.RemoveMemberUseCase

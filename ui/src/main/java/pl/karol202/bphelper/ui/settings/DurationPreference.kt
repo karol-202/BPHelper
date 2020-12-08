@@ -3,6 +3,7 @@ package pl.karol202.bphelper.ui.settings
 import android.content.Context
 import android.content.res.TypedArray
 import android.util.AttributeSet
+import androidx.annotation.StringRes
 import androidx.preference.DialogPreference
 import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.extensions.format

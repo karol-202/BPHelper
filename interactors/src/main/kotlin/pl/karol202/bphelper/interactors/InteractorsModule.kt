@@ -31,10 +31,10 @@ import pl.karol202.bphelper.interactors.usecases.preptimer.*
 import pl.karol202.bphelper.interactors.usecases.preptimer.impl.*
 import pl.karol202.bphelper.interactors.usecases.recording.*
 import pl.karol202.bphelper.interactors.usecases.recording.impl.*
-import pl.karol202.bphelper.interactors.usecases.settings.GetSettingsFlowUseCase
 import pl.karol202.bphelper.interactors.usecases.settings.GetSettingsUseCase
-import pl.karol202.bphelper.interactors.usecases.settings.impl.GetSettingsFlowUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.settings.UpdateSettingsUseCase
 import pl.karol202.bphelper.interactors.usecases.settings.impl.GetSettingsUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.settings.impl.UpdateSettingsUseCaseImpl
 import pl.karol202.bphelper.interactors.usecases.sound.PlaySoundUseCase
 import pl.karol202.bphelper.interactors.usecases.sound.impl.PlaySoundUseCaseImpl
 import pl.karol202.bphelper.interactors.usecases.table.CheckIfTableConfigurationPossibleUseCase
@@ -50,7 +50,7 @@ fun interactorsModule() = module {
 	single<RemoveMemberUseCase> { RemoveMemberUseCaseImpl(get()) }
 
 	single<GetSettingsUseCase> { GetSettingsUseCaseImpl(get()) }
-	single<GetSettingsFlowUseCase> { GetSettingsFlowUseCaseImpl(get()) }
+	single<UpdateSettingsUseCase> { UpdateSettingsUseCaseImpl(get()) }
 
 	single<DrawTableConfigurationUseCase> { DrawTableConfigurationUseCaseImpl(get(), get(), get()) }
 	single<CheckIfTableConfigurationPossibleUseCase> { CheckIfTableConfigurationPossibleUseCaseImpl(get(), get(), get()) }

@@ -7,5 +7,7 @@ interface SettingsRepository
 {
 	val settings: Flow<Settings>
 
+	fun getSettings(): Settings
+
 	suspend fun setSettings(settings: Settings)
 }

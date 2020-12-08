@@ -5,17 +5,20 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 
-class FlowSharedPreference<T>(private val flowSharedPreferences: FlowSharedPreferences,
+class FlowSharedPreference<T>(flowSharedPreferences: FlowSharedPreferences,
                               private val serializer: KSerializer<T>,
-                              private val keyName: String)
+                              keyName: String)
 {
-	fun get() = flowSharedPreferences.getString(keyName)
-			.asFlow()
-			.map { if(it.isNotBlank()) Json.decodeFromString(serializer, it) else null }
+	private val preference = flowSharedPreferences.getString(keyName)
+
+	val asFlow = preference.asFlow().map { it.deserialize() }
+
+	fun get() = preference.get().deserialize()
+
+	private fun String.deserialize() = takeIf { it.isNotBlank() }?.let { Json.decodeFromString(serializer, it) }
 
 	suspend fun set(value: T)
 	{
-		val serialized = Json.encodeToString(serializer, value)
-		flowSharedPreferences.getString(keyName).setAndCommit(serialized)
+		preference.setAndCommit(Json.encodeToString(serializer, value))
 	}
 }

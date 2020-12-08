@@ -12,7 +12,9 @@ class SharedPrefsSettingsDataStore(preferences: FlowSharedPreferences) : Setting
 {
 	private val delegate = FlowSharedPreference(preferences, SettingsModel.serializer(), SETTINGS_KEY)
 
-	override val settings get() = delegate.get().map { it ?: SettingsModel.DEFAULT }
+	override val settings get() = delegate.asFlow.map { it ?: SettingsModel.DEFAULT }
+
+	override fun getSettings() = delegate.get() ?: SettingsModel.DEFAULT
 
 	override suspend fun setSettings(settings: SettingsModel) = delegate.set(settings)
 }

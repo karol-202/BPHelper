@@ -7,5 +7,7 @@ interface SettingsDataStore
 {
 	val settings: Flow<SettingsModel>
 
+	fun getSettings(): SettingsModel
+
 	suspend fun setSettings(settings: SettingsModel)
 }

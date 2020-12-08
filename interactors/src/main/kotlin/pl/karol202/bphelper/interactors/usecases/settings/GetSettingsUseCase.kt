@@ -4,5 +4,5 @@ import pl.karol202.bphelper.domain.entity.Settings
 
 interface GetSettingsUseCase
 {
-	suspend operator fun invoke(): Settings
+	operator fun invoke(): Settings
 }

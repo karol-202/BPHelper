@@ -11,5 +11,7 @@ class SettingsRepositoryImpl(private val settingsDataStore: SettingsDataStore) :
 {
 	override val settings = settingsDataStore.settings.map { it.toEntity() }
 
+	override fun getSettings() = settingsDataStore.getSettings().toEntity()
+
 	override suspend fun setSettings(settings: Settings) = settingsDataStore.setSettings(settings.toModel())
 }

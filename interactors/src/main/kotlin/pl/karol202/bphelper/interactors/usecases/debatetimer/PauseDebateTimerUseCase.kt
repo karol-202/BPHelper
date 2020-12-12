@@ -1,10 +1,10 @@
 package pl.karol202.bphelper.interactors.usecases.debatetimer
 
-import kotlinx.coroutines.flow.Flow
 import pl.karol202.bphelper.domain.service.DebateTimerService
-import kotlin.time.Duration
+import pl.karol202.bphelper.interactors.usecases.UseCase0
 
-interface PauseDebateTimerUseCase
-{
-	operator fun invoke()
+class PauseDebateTimerUseCase(override val function: () -> Unit) : UseCase0<Unit>
+
+fun pauseDebateTimerUseCaseFactory(debateTimerService: DebateTimerService) = PauseDebateTimerUseCase {
+	debateTimerService.pause()
 }

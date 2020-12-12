@@ -1,87 +1,65 @@
 package pl.karol202.bphelper.interactors
 
 import org.koin.dsl.module
-import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerActiveFlowUseCase
-import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerOvertimeBellEventFlowUseCase
-import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerOvertimeFlowUseCase
-import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerPoiBellEventFlowUseCase
-import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerPoiFlowUseCase
-import pl.karol202.bphelper.interactors.usecases.debatetimer.GetDebateTimerValueFlowUseCase
-import pl.karol202.bphelper.interactors.usecases.debatetimer.PauseDebateTimerUseCase
-import pl.karol202.bphelper.interactors.usecases.debatetimer.ResetDebateTimerUseCase
-import pl.karol202.bphelper.interactors.usecases.debatetimer.StartDebateTimerUseCase
-import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.GetDebateTimerActiveFlowUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.GetDebateTimerOvertimeBellEventFlowUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.GetDebateTimerOvertimeFlowUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.GetDebateTimerPoiBellEventFlowUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.GetDebateTimerPoiFlowUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.GetDebateTimerValueFlowUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.PauseDebateTimerUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.ResetDebateTimerUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.debatetimer.impl.StartDebateTimerUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.debatetimer.*
 import pl.karol202.bphelper.interactors.usecases.member.*
 import pl.karol202.bphelper.interactors.usecases.member.impl.*
-import pl.karol202.bphelper.interactors.usecases.notification.ShowPrepTimerFinishNotificationUseCase
-import pl.karol202.bphelper.interactors.usecases.notification.impl.ShowPrepTimerFinishNotificationUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.permission.GetPermissionRequestFlowUseCase
-import pl.karol202.bphelper.interactors.usecases.permission.MarkPermissionRequestProcessedUseCase
-import pl.karol202.bphelper.interactors.usecases.permission.impl.GetPermissionRequestFlowUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.permission.impl.MarkPermissionRequestProcessedUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.notification.showPrepTimerFinishNotificationUseCaseFactory
+import pl.karol202.bphelper.interactors.usecases.permission.getPermissionRequestFlowUseCaseFactory
+import pl.karol202.bphelper.interactors.usecases.permission.markPermissionRequestProcessedUseCaseFactory
 import pl.karol202.bphelper.interactors.usecases.preptimer.*
 import pl.karol202.bphelper.interactors.usecases.preptimer.impl.*
 import pl.karol202.bphelper.interactors.usecases.recording.*
 import pl.karol202.bphelper.interactors.usecases.recording.impl.*
-import pl.karol202.bphelper.interactors.usecases.settings.GetSettingsUseCase
-import pl.karol202.bphelper.interactors.usecases.settings.UpdateSettingsUseCase
-import pl.karol202.bphelper.interactors.usecases.settings.impl.GetSettingsUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.settings.impl.UpdateSettingsUseCaseImpl
-import pl.karol202.bphelper.interactors.usecases.sound.PlaySoundUseCase
-import pl.karol202.bphelper.interactors.usecases.sound.impl.PlaySoundUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.settings.getSettingsUseCaseFactory
+import pl.karol202.bphelper.interactors.usecases.settings.updateSettingsUseCaseFactory
+import pl.karol202.bphelper.interactors.usecases.sound.playSoundUseCaseFactory
 import pl.karol202.bphelper.interactors.usecases.table.CheckIfTableConfigurationPossibleUseCase
 import pl.karol202.bphelper.interactors.usecases.table.DrawTableConfigurationUseCase
-import pl.karol202.bphelper.interactors.usecases.table.impl.CheckIfTableConfigurationPossibleUseCaseImpl
+import pl.karol202.bphelper.interactors.usecases.table.checkIfTableConfigurationPossibleUseCaseFactory
+import pl.karol202.bphelper.interactors.usecases.table.drawTableConfigurationUseCaseFactory
 import pl.karol202.bphelper.interactors.usecases.table.impl.DrawTableConfigurationUseCaseImpl
 
 fun interactorsModule() = module {
-	single<GetMembersUseCase> { GetMembersUseCaseImpl(get()) }
-	single<GetMembersFlowUseCase> { GetMembersFlowUseCaseImpl(get()) }
-	single<AddMemberUseCase> { AddMemberUseCaseImpl(get()) }
-	single<UpdateMemberUseCase> { UpdateMemberUseCaseImpl(get()) }
-	single<RemoveMemberUseCase> { RemoveMemberUseCaseImpl(get()) }
+	single { getMembersUseCaseFactory(get()) }
+	single { getMembersFlowUseCaseFactory(get()) }
+	single { addMemberUseCaseFactory(get()) }
+	single { updateMemberUseCaseFactory(get()) }
+	single { removeMemberUseCaseFactory(get()) }
 
-	single<GetSettingsUseCase> { GetSettingsUseCaseImpl(get()) }
-	single<UpdateSettingsUseCase> { UpdateSettingsUseCaseImpl(get()) }
+	single { getSettingsUseCaseFactory(get()) }
+	single { updateSettingsUseCaseFactory(get()) }
 
-	single<DrawTableConfigurationUseCase> { DrawTableConfigurationUseCaseImpl(get(), get(), get()) }
-	single<CheckIfTableConfigurationPossibleUseCase> { CheckIfTableConfigurationPossibleUseCaseImpl(get(), get(), get()) }
+	single { drawTableConfigurationUseCaseFactory(get(), get(), get()) }
+	single { checkIfTableConfigurationPossibleUseCaseFactory(get(), get(), get()) }
 
-	single<GetPrepTimerDurationFlowUseCase> { GetPrepTimerDurationFlowUseCaseImpl(get()) }
-	single<GetPrepTimerActiveFlowUseCase> { GetPrepTimerActiveFlowUseCaseImpl(get()) }
-	single<GetPrepTimerFinishNotificationEventFlowUseCase> { GetPrepTimerFinishNotificationEventFlowUseCaseImpl(get()) }
-	single<SetPrepTimerDurationUseCase> { SetPrepTimerDurationUseCaseImpl(get()) }
-	single<StartPrepTimerUseCase> { StartPrepTimerUseCaseImpl(get()) }
-	single<StopPrepTimerUseCase> { StopPrepTimerUseCaseImpl(get()) }
+	single { getPrepTimerDurationFlowUseCaseFactory(get()) }
+	single { getPrepTimerActiveFlowUseCaseFactory(get()) }
+	single { getPrepTimerFinishNotificationEventFlowUseCaseFactory(get()) }
+	single { setPrepTimerDurationUseCaseFactory(get()) }
+	single { startPrepTimerUseCaseFactory(get()) }
+	single { stopPrepTimerUseCaseFactory(get()) }
 
-	single<ShowPrepTimerFinishNotificationUseCase> { ShowPrepTimerFinishNotificationUseCaseImpl(get()) }
+	single { showPrepTimerFinishNotificationUseCaseFactory(get()) }
 
-	single<GetDebateTimerValueFlowUseCase> { GetDebateTimerValueFlowUseCaseImpl(get()) }
-	single<GetDebateTimerActiveFlowUseCase> { GetDebateTimerActiveFlowUseCaseImpl(get()) }
-	single<GetDebateTimerOvertimeFlowUseCase> { GetDebateTimerOvertimeFlowUseCaseImpl(get()) }
-	single<GetDebateTimerOvertimeBellEventFlowUseCase> { GetDebateTimerOvertimeBellEventFlowUseCaseImpl(get()) }
-	single<GetDebateTimerPoiFlowUseCase> { GetDebateTimerPoiFlowUseCaseImpl(get()) }
-	single<GetDebateTimerPoiBellEventFlowUseCase> { GetDebateTimerPoiBellEventFlowUseCaseImpl(get()) }
-	single<StartDebateTimerUseCase> { StartDebateTimerUseCaseImpl(get()) }
-	single<PauseDebateTimerUseCase> { PauseDebateTimerUseCaseImpl(get()) }
-	single<ResetDebateTimerUseCase> { ResetDebateTimerUseCaseImpl(get()) }
+	single { getDebateTimerValueFlowUseCaseFactory(get()) }
+	single { getDebateTimerActiveFlowUseCaseFactory(get()) }
+	single { getDebateTimerOvertimeFlowUseCaseFactory(get()) }
+	single { getDebateTimerOvertimeBellEventFlowUseCaseFactory(get()) }
+	single { getDebateTimerPoiFlowUseCaseFactory(get()) }
+	single { getDebateTimerPoiBellEventFlowUseCaseFactory(get()) }
+	single { startDebateTimerUseCaseFactory(get()) }
+	single { pauseDebateTimerUseCaseFactory(get()) }
+	single { resetDebateTimerUseCaseFactory(get()) }
 
-	single<PlaySoundUseCase> { PlaySoundUseCaseImpl(get()) }
+	single { playSoundUseCaseFactory(get()) }
 
-	single<GetRecordingFlowUseCase> { GetRecordingFlowUseCaseImpl(get()) }
-	single<GetRecordingEventFlowUseCase> { GetRecordingEventFlowUseCaseImpl(get()) }
-	single<StartRecordingUseCase> { StartRecordingUseCaseImpl(get()) }
-	single<StopRecordingUseCase> { StopRecordingUseCaseImpl(get()) }
-	single<IsRecordingNameAvailableUseCase> { IsRecordingNameAvailableUseCaseImpl(get()) }
+	single { getRecordingFlowUseCaseFactory(get()) }
+	single { getRecordingEventFlowUseCaseFactory(get()) }
+	single { startRecordingUseCaseFactory(get()) }
+	single { stopRecordingUseCaseFactory(get()) }
+	single { isRecordingNameAvailableUseCaseFactory(get()) }
 
-	single<MarkPermissionRequestProcessedUseCase> { MarkPermissionRequestProcessedUseCaseImpl(get()) }
-	single<GetPermissionRequestFlowUseCase> { GetPermissionRequestFlowUseCaseImpl(get()) }
+	single { markPermissionRequestProcessedUseCaseFactory(get()) }
+	single { getPermissionRequestFlowUseCaseFactory(get()) }
 }

@@ -32,7 +32,7 @@ fun interactorsModule() = module {
 	single { getPrepTimerValueFlowUseCaseFactory(get()) }
 	single { getPrepTimerValueUseCaseFactory(get()) }
 	single { setPrepTimerValueUseCaseFactory(get()) }
-	single { showNotificationWhenTimerStopsUseCaseFactory(get(), get()) }
+	single { showNotificationWhenPrepTimerStopsUseCaseFactory(get(), get()) }
 	single { togglePrepTimerUseCaseFactory(get()) }
 
 	single { showPrepTimerFinishNotificationUseCaseFactory(get()) }
@@ -40,16 +40,15 @@ fun interactorsModule() = module {
 	single { getDebateTimerValueFlowUseCaseFactory(get()) }
 	single { getDebateTimerActiveFlowUseCaseFactory(get()) }
 	single { getDebateTimerOvertimeFlowUseCaseFactory(get()) }
-	single { getDebateTimerOvertimeBellEventFlowUseCaseFactory(get()) }
-	single { getDebateTimerPoiFlowUseCaseFactory(get()) }
-	single { getDebateTimerPoiBellEventFlowUseCaseFactory(get()) }
-	single { startDebateTimerUseCaseFactory(get()) }
-	single { pauseDebateTimerUseCaseFactory(get()) }
+	single { playBellWhenDebateTimerOvertimeUseCaseFactory(get(), get()) }
+	single { playBellWhenDebateTimerPoiUseCaseFactory(get(), get()) }
+	single { toggleDebateTimerUseCaseFactory(get()) }
 	single { resetDebateTimerUseCaseFactory(get()) }
 
 	single { playSoundUseCaseFactory(get()) }
 
-	single { getRecordingFlowUseCaseFactory(get()) }
+	single { getRecordingActiveFlowUseCaseFactory(get()) }
+	single { getRecordingActiveUseCaseFactory(get()) }
 	single { getRecordingEventFlowUseCaseFactory(get()) }
 	single { startRecordingUseCaseFactory(get()) }
 	single { stopRecordingUseCaseFactory(get()) }

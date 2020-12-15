@@ -4,19 +4,15 @@ import android.content.Context
 import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
 import kotlinx.android.synthetic.main.dialog_recording_name.*
+import pl.karol202.bphelper.presentation.viewdata.RecordingNameValidityViewData
 import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.extensions.addAfterTextChangedListener
 
 class RecordingNameDialogBuilder(context: Context,
-                                 private val nameValidator: (String) -> Validity,
+                                 private val nameValidator: (String) -> RecordingNameValidityViewData,
                                  private val onApply: (String) -> Unit) :
 	CustomDialogBuilder(context, R.layout.dialog_recording_name)
 {
-	enum class Validity
-	{
-		VALID, EMPTY, BUSY
-	}
-
 	init
 	{
 		initEditText()
@@ -29,9 +25,9 @@ class RecordingNameDialogBuilder(context: Context,
 	{
 		textInputLayout_recording_name.error = when(nameValidator(name))
 		{
-			Validity.VALID -> null
-			Validity.EMPTY -> context.getString(R.string.text_filename_empty)
-			Validity.BUSY -> context.getString(R.string.text_filename_busy)
+			RecordingNameValidityViewData.VALID -> null
+			RecordingNameValidityViewData.EMPTY -> context.getString(R.string.text_filename_empty)
+			RecordingNameValidityViewData.BUSY -> context.getString(R.string.text_filename_busy)
 		}
 	}
 
@@ -42,14 +38,14 @@ class RecordingNameDialogBuilder(context: Context,
 		setNegativeButton(R.string.action_cancel, null)
 	}
 
-	override fun show() = super.show().apply {
+	override fun show(): AlertDialog = super.show().apply {
 		getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener { checkAndApply(this) }
 	}
 
 	private fun checkAndApply(dialog: AlertDialog)
 	{
 		val name = edit_recording_name.text.toString()
-		if(nameValidator(name) != Validity.VALID) return
+		if(nameValidator(name) != RecordingNameValidityViewData.VALID) return
 		onApply(name)
 		dialog.dismiss()
 	}

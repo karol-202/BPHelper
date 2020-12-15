@@ -1,6 +1,7 @@
 package pl.karol202.bphelper.domain.service
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 interface RecordingService
 {
@@ -9,7 +10,7 @@ interface RecordingService
 		FINISH, ERROR
 	}
 
-	val recording: Flow<Boolean>
+	val active: StateFlow<Boolean>
 	val event: Flow<Event>
 
 	fun start(recordingName: String)

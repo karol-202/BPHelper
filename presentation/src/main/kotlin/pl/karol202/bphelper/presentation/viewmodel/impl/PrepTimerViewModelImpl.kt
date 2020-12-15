@@ -3,12 +3,12 @@ package pl.karol202.bphelper.presentation.viewmodel.impl
 import kotlinx.coroutines.flow.*
 import pl.karol202.bphelper.interactors.usecases.preptimer.*
 import pl.karol202.bphelper.presentation.viewmodel.PrepTimerViewModel
-import pl.karol202.bphelper.presentation.viewmodel.PrepTimerViewModel.DurationSetDialogRequest
+import pl.karol202.bphelper.presentation.viewmodel.PrepTimerViewModel.ValueSetDialogResponse
 import kotlin.time.Duration
 
 class PrepTimerViewModelImpl(getPrepTimerValueFlowUseCase: GetPrepTimerValueFlowUseCase,
                              getPrepTimerActiveFlowUseCase: GetPrepTimerActiveFlowUseCase,
-                             private val showNotificationWhenTimerStopsUseCase: ShowNotificationWhenTimerStopsUseCase,
+                             private val showNotificationWhenPrepTimerStopsUseCase: ShowNotificationWhenPrepTimerStopsUseCase,
                              private val togglePrepTimerUseCase: TogglePrepTimerUseCase,
                              private val getCanSetPrepTimerValueUseCase: GetCanSetPrepTimerValueUseCase,
                              private val getPrepTimerValueUseCase: GetPrepTimerValueUseCase,
@@ -17,20 +17,20 @@ class PrepTimerViewModelImpl(getPrepTimerValueFlowUseCase: GetPrepTimerValueFlow
 {
 	override val timerValue = getPrepTimerValueFlowUseCase()
 	override val timerActive = getPrepTimerActiveFlowUseCase()
-	override val durationSetDialogRequest = MutableSharedFlow<DurationSetDialogRequest>()
+	override val valueSetDialogResponse = MutableSharedFlow<ValueSetDialogResponse>()
 
 	init
 	{
 		showNotificationWhenTimerStops()
 	}
 
-	private fun showNotificationWhenTimerStops() = launch { showNotificationWhenTimerStopsUseCase() }
+	private fun showNotificationWhenTimerStops() = launch { showNotificationWhenPrepTimerStopsUseCase() }
 
 	override fun toggle() = launch { togglePrepTimerUseCase() }
 
-	override fun showDurationSetDialog() = launch {
+	override fun requestValueSetDialog() = launch {
 		if(getCanSetPrepTimerValueUseCase())
-			durationSetDialogRequest.emit(DurationSetDialogRequest(initialValue = getPrepTimerValueUseCase()))
+			valueSetDialogResponse.emit(ValueSetDialogResponse(initialValue = getPrepTimerValueUseCase()))
 	}
 
 	override fun setDuration(duration: Duration) = launch { setPrepTimerValueUseCase(duration) }

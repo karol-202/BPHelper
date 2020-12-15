@@ -23,11 +23,8 @@ class DebateTimerServiceImpl(private val incrementTimerControllerFactory: Increm
 
 	private var timer = createTimer(Duration.ZERO)
 
-	private val _value = MutableStateFlow(Duration.ZERO)
-	private val _active = MutableStateFlow(false)
-
-	override val value: Flow<Duration> = _value
-	override val active: Flow<Boolean> = _active
+	override val value = MutableStateFlow(Duration.ZERO)
+	override val active = MutableStateFlow(false)
 
 	/* Boxing Duration is a workaround for KT-43249 (compiler bug related to wrong code generated for suspend lambdas with
 	inline class parameters). Should be resolved in 1.4.30  */
@@ -40,8 +37,6 @@ class DebateTimerServiceImpl(private val incrementTimerControllerFactory: Increm
 		}
 	}.distinctUntilChanged()
 
-	override val overtimeBellEvent = overtime.filter { it != Overtime.NONE }
-
 	// As above
 	override val poi = value.map { Box(it) }.combine(settingsRepository.settings) { value, settings ->
 		when
@@ -52,7 +47,11 @@ class DebateTimerServiceImpl(private val incrementTimerControllerFactory: Increm
 		}
 	}.distinctUntilChanged()
 
-	override val poiBellEvent = poi.combine(settingsRepository.settings) { poi, settings -> poi to settings }
+	override val overtimeBellEvent = overtime
+		.filter { it != Overtime.NONE }
+
+	override val poiBellEvent = poi
+		.combine(settingsRepository.settings) { poi, settings -> poi to settings }
 		.filter { (poi, settings) ->
 			(poi == PoiStatus.NOW && settings.poiStartBellEnabled) || (poi == PoiStatus.AFTER && settings.poiEndBellEnabled)
 		}
@@ -60,39 +59,39 @@ class DebateTimerServiceImpl(private val incrementTimerControllerFactory: Increm
 
 	override fun start()
 	{
-		_active.value = true
-		updateTimer(_value.value)
+		active.value = true
+		updateTimer(value.value)
 		timer.start()
 	}
 
 	override fun pause()
 	{
 		timer.stop()
-		_active.value = false
+		active.value = false
 	}
 
 	override fun reset()
 	{
 		updateTimer(Duration.ZERO)
-		_active.value = false
+		active.value = false
 	}
 
 	private fun onTick(durationMillis: Long)
 	{
-		_value.value = durationMillis.milliseconds
+		value.value = durationMillis.milliseconds
 	}
 
 	private fun onFinish()
 	{
-		_value.value = Duration.ZERO
-		_active.value = false
+		value.value = Duration.ZERO
+		active.value = false
 	}
 
 	private fun updateTimer(initialDuration: Duration)
 	{
 		timer.stop()
 		timer = createTimer(initialDuration)
-		_value.value = initialDuration
+		value.value = initialDuration
 	}
 
 	private fun createTimer(initialDuration: Duration) =

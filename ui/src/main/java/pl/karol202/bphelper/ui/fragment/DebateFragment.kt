@@ -15,6 +15,7 @@ import pl.karol202.bphelper.presentation.util.collectIn
 import pl.karol202.bphelper.presentation.viewdata.RecordingEventViewData
 import pl.karol202.bphelper.presentation.viewdata.RecordingStatusViewData
 import pl.karol202.bphelper.presentation.viewdata.TimerStatusViewData
+import pl.karol202.bphelper.presentation.viewmodel.DebateViewModel
 import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.components.ExtendedFragment
 import pl.karol202.bphelper.ui.dialog.RecordingNameDialogBuilder
@@ -44,6 +45,7 @@ class DebateFragment : ExtendedFragment()
 		observeTimerOvertime()
 		observeRecordingStatus()
 		observeRecordingEvent()
+		observeDialogResponse()
 
 		initButtons()
 	}
@@ -73,17 +75,19 @@ class DebateFragment : ExtendedFragment()
 		showRecordingEventSnackbar(event)
 	}
 
+	private fun observeDialogResponse() = debateViewModel.dialogResponse.collectIn(lifecycleScope) {
+		when(it)
+		{
+			is DebateViewModel.DialogResponse.RecordingStopDialogResponse -> showRecordingStopAlert()
+			is DebateViewModel.DialogResponse.FilenameChooseDialogResponse -> showFilenameAlert()
+		}
+	}
+
 	private fun initButtons()
 	{
 		button_debate_time_toggle.setOnClickListener { debateViewModel.toggleTimer() }
 		button_debate_time_stop.setOnClickListener { debateViewModel.resetTimer() }
-		button_debate_recording.setOnClickListener { toggleRecording() }
-	}
-
-	private fun toggleRecording() = when(debateViewModel.currentRecordingStatus)
-	{
-		RecordingStatusViewData.ACTIVE -> showRecordingStopAlert()
-		RecordingStatusViewData.STOPPED -> showFilenameAlert()
+		button_debate_recording.setOnClickListener { debateViewModel.requestRecordingToggle() }
 	}
 
 	private fun showRecordingStopAlert()
@@ -99,12 +103,7 @@ class DebateFragment : ExtendedFragment()
 	{
 		RecordingNameDialogBuilder(
 			context = ctx,
-			nameValidator = { name -> when
-			{
-				name.isEmpty() -> RecordingNameDialogBuilder.Validity.EMPTY
-				!debateViewModel.isRecordingNameAvailable(name) -> RecordingNameDialogBuilder.Validity.BUSY
-				else -> RecordingNameDialogBuilder.Validity.VALID
-			} },
+			nameValidator = { debateViewModel.checkRecordingNameValidity(it) },
 			onApply = { debateViewModel.startRecording(it) }
 		).show()
 	}

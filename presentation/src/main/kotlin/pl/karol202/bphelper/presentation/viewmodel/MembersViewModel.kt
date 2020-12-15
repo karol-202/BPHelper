@@ -1,12 +1,8 @@
 package pl.karol202.bphelper.presentation.viewmodel
 
 import kotlinx.coroutines.flow.Flow
-import pl.karol202.bphelper.domain.entity.Member
-import pl.karol202.bphelper.domain.entity.TableConfigurationError
-import pl.karol202.bphelper.presentation.util.Event
 import pl.karol202.bphelper.presentation.viewdata.MemberViewData
 import pl.karol202.bphelper.presentation.viewdata.TableConfigurationErrorViewData
-import java.io.Closeable
 
 interface MembersViewModel : ViewModel
 {
@@ -18,7 +14,7 @@ interface MembersViewModel : ViewModel
 	}
 
 	val allMembers: Flow<List<MemberViewData>>
-	val tableDrawResult: Flow<Event<TableDrawResult>>
+	val tableDrawResult: Flow<TableDrawResult>
 
 	fun addMember(name: String)
 

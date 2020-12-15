@@ -1,6 +1,7 @@
 package pl.karol202.bphelper.domain.service
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 import kotlin.time.Duration
 
 interface DebateTimerService
@@ -15,11 +16,11 @@ interface DebateTimerService
 		BEFORE, NOW, AFTER
 	}
 
-	val value: Flow<Duration>
-	val active: Flow<Boolean>
+	val value: StateFlow<Duration>
+	val active: StateFlow<Boolean>
 	val overtime: Flow<Overtime>
-	val overtimeBellEvent: Flow<Overtime>
 	val poi: Flow<PoiStatus>
+	val overtimeBellEvent: Flow<Overtime>
 	val poiBellEvent: Flow<PoiStatus>
 
 	fun start()

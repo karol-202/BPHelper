@@ -28,6 +28,7 @@ class PrepTimerFragment : ExtendedFragment(), DurationPickerFragment.OnDurationS
 		super.onViewCreated(view, savedInstanceState)
 		observeTimerValue()
 		observeTimerActive()
+		observeValueSetDialogResponse()
 
 		initTimerText()
 		initToggleButton()
@@ -41,15 +42,13 @@ class PrepTimerFragment : ExtendedFragment(), DurationPickerFragment.OnDurationS
 		button_prep_timer_start.setText(if(active) R.string.button_prep_timer_stop else R.string.button_prep_timer_start)
 	}
 
-	private fun initTimerText() = text_prep_timer.setOnClickListener { showDurationPickerDialog() }
+	private fun observeValueSetDialogResponse() = prepTimerViewModel.valueSetDialogResponse.collectIn(lifecycleScope) {
+		DurationPickerFragment.create(it.initialValue, this).show(parentFragmentManager)
+	}
+
+	private fun initTimerText() = text_prep_timer.setOnClickListener { prepTimerViewModel.requestValueSetDialog() }
 
 	private fun initToggleButton() = button_prep_timer_start.setOnClickListener { prepTimerViewModel.toggle() }
-
-	private fun showDurationPickerDialog()
-	{
-		if(!prepTimerViewModel.canSetDuration) return
-		DurationPickerFragment.create(prepTimerViewModel.currentTimerValue, this).show(parentFragmentManager)
-	}
 
 	override fun onDurationSet(duration: Duration) = prepTimerViewModel.setDuration(duration)
 }

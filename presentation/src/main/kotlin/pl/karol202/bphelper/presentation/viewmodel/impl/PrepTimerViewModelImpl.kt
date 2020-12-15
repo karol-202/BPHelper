@@ -1,38 +1,37 @@
 package pl.karol202.bphelper.presentation.viewmodel.impl
 
 import kotlinx.coroutines.flow.*
-import pl.karol202.bphelper.interactors.usecases.notification.ShowPrepTimerFinishNotificationUseCase
 import pl.karol202.bphelper.interactors.usecases.preptimer.*
-import pl.karol202.bphelper.presentation.util.collectIn
 import pl.karol202.bphelper.presentation.viewmodel.PrepTimerViewModel
+import pl.karol202.bphelper.presentation.viewmodel.PrepTimerViewModel.DurationSetDialogRequest
 import kotlin.time.Duration
 
-class PrepTimerViewModelImpl(getPrepTimerDurationFlowUseCase: GetPrepTimerDurationFlowUseCase,
+class PrepTimerViewModelImpl(getPrepTimerValueFlowUseCase: GetPrepTimerValueFlowUseCase,
                              getPrepTimerActiveFlowUseCase: GetPrepTimerActiveFlowUseCase,
-                             private val getPrepTimerFinishNotificationEventFlowUseCase: GetPrepTimerFinishNotificationEventFlowUseCase,
-                             private val startPrepTimerUseCase: StartPrepTimerUseCase,
-                             private val stopPrepTimerUseCase: StopPrepTimerUseCase,
-                             private val setPrepTimerDurationUseCase: SetPrepTimerDurationUseCase,
-                             private val showPrepTimerFinishNotificationUseCase: ShowPrepTimerFinishNotificationUseCase) :
+                             private val showNotificationWhenTimerStopsUseCase: ShowNotificationWhenTimerStopsUseCase,
+                             private val togglePrepTimerUseCase: TogglePrepTimerUseCase,
+                             private val getCanSetPrepTimerValueUseCase: GetCanSetPrepTimerValueUseCase,
+                             private val getPrepTimerValueUseCase: GetPrepTimerValueUseCase,
+                             private val setPrepTimerValueUseCase: SetPrepTimerValueUseCase) :
 	BaseViewModel(), PrepTimerViewModel
 {
-	override val timerValue = getPrepTimerDurationFlowUseCase().stateIn(viewModelScope, SharingStarted.Eagerly, Duration.ZERO)
-	override val timerActive = getPrepTimerActiveFlowUseCase().stateIn(viewModelScope, SharingStarted.Eagerly, false)
-
-	override val currentTimerValue get() = timerValue.value
-	override val canSetDuration get() = !timerActive.value
+	override val timerValue = getPrepTimerValueFlowUseCase()
+	override val timerActive = getPrepTimerActiveFlowUseCase()
+	override val durationSetDialogRequest = MutableSharedFlow<DurationSetDialogRequest>()
 
 	init
 	{
 		showNotificationWhenTimerStops()
 	}
 
-	private fun showNotificationWhenTimerStops() =
-		getPrepTimerFinishNotificationEventFlowUseCase().collectIn(viewModelScope) { showPrepTimerFinishNotificationUseCase() }
+	private fun showNotificationWhenTimerStops() = launch { showNotificationWhenTimerStopsUseCase() }
 
-	override fun toggle() = launch {
-		if(!timerActive.value) startPrepTimerUseCase() else stopPrepTimerUseCase()
+	override fun toggle() = launch { togglePrepTimerUseCase() }
+
+	override fun showDurationSetDialog() = launch {
+		if(getCanSetPrepTimerValueUseCase())
+			durationSetDialogRequest.emit(DurationSetDialogRequest(initialValue = getPrepTimerValueUseCase()))
 	}
 
-	override fun setDuration(duration: Duration) = launch { setPrepTimerDurationUseCase(duration) }
+	override fun setDuration(duration: Duration) = launch { setPrepTimerValueUseCase(duration) }
 }

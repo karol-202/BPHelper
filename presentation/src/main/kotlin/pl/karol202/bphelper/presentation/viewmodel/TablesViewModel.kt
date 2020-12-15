@@ -9,8 +9,8 @@ import pl.karol202.bphelper.presentation.viewdata.TableConfigurationViewData
 
 interface TablesViewModel : ViewModel
 {
-	val tableConfiguration: Flow<TableConfigurationViewData>
-	val error: Flow<Event<TableConfigurationErrorViewData>>
+	val tableConfiguration: Flow<TableConfigurationViewData?>
+	val error: Flow<TableConfigurationErrorViewData>
 
 	fun draw()
 }

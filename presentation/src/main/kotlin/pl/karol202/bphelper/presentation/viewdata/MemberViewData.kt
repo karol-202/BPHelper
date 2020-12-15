@@ -8,7 +8,7 @@ data class MemberViewData(val id: Long,
                           val ironman: Boolean)
 
 fun Member.toViewData() = MemberViewData(id, name, presence.isPresent, presence.isIronman)
-fun MemberViewData.toModel() = Member(id, name, when
+fun MemberViewData.toEntity() = Member(id, name, when
 {
     present && ironman -> Member.Presence.IRONMAN
     present -> Member.Presence.PRESENT

@@ -33,7 +33,7 @@ class TablesFragment : ExtendedFragment()
 	}
 
 	private fun observeTableConfiguration() = tablesViewModel.tableConfiguration.collectIn(lifecycleScope) { configuration ->
-		replaceContent(configuration)
+		if(configuration != null) replaceContent(configuration)
 	}
 
 	private fun observeError() = tablesViewModel.error.collectIn(lifecycleScope) {

@@ -5,13 +5,15 @@ import kotlin.time.Duration
 
 interface PrepTimerViewModel : ViewModel
 {
+	data class DurationSetDialogRequest(val initialValue: Duration)
+
 	val timerValue: Flow<Duration>
 	val timerActive: Flow<Boolean>
-
-	val currentTimerValue: Duration
-	val canSetDuration: Boolean
+	val durationSetDialogRequest: Flow<DurationSetDialogRequest>
 
 	fun toggle()
+
+	fun showDurationSetDialog()
 
 	fun setDuration(duration: Duration)
 }

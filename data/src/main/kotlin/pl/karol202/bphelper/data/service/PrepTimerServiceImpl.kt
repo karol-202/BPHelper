@@ -1,6 +1,5 @@
 package pl.karol202.bphelper.data.service
 
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.map
@@ -17,44 +16,42 @@ class PrepTimerServiceImpl(private val decrementTimerControllerFactory: Decremen
 {
 	private var timer = createTimer(INITIAL_DURATION)
 
-	private val _value = MutableStateFlow(INITIAL_DURATION)
-	private val _active = MutableStateFlow(false)
+	override val value = MutableStateFlow(INITIAL_DURATION)
+	override val active = MutableStateFlow(false)
 
-	override val value: Flow<Duration> = _value
-	override val active: Flow<Boolean> = _active
-	override val finishNotificationEvent = _value.filter { !it.isPositive() }.map { Unit }
+	override val finishNotificationEvent = value.filter { !it.isPositive() }.map { Unit }
 
 	override fun start()
 	{
-		_active.value = true
-		updateTimer(_value.value)
+		active.value = true
+		updateTimer(value.value)
 		timer.start()
 	}
 
 	override fun stop()
 	{
 		timer.stop()
-		_active.value = false
+		active.value = false
 	}
 
-	override fun setDuration(duration: Duration) = updateTimer(duration)
+	override fun setValue(duration: Duration) = updateTimer(duration)
 
 	private fun onTick(durationMillis: Long)
 	{
-		_value.value = durationMillis.milliseconds
+		value.value = durationMillis.milliseconds
 	}
 
 	private fun onFinish()
 	{
-		_value.value = Duration.ZERO
-		_active.value = false
+		value.value = Duration.ZERO
+		active.value = false
 	}
 
 	private fun updateTimer(initialDuration: Duration)
 	{
 		timer.stop()
 		timer = createTimer(initialDuration)
-		_value.value = initialDuration
+		value.value = initialDuration
 	}
 
 	private fun createTimer(initialDuration: Duration) =

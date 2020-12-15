@@ -19,6 +19,6 @@ class PermissionViewModelImpl(getPermissionRequestFlowUseCase: GetPermissionRequ
 	private fun getNextRequestId() = requestCounter++
 
 	override fun markPermissionRequestProcessed(permission: PermissionRequestViewData.Type) = launch {
-		markPermissionRequestProcessedUseCase(permission.toModel())
+		markPermissionRequestProcessedUseCase(permission.toEntity())
 	}
 }

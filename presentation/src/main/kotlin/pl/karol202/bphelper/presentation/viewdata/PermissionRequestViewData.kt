@@ -18,7 +18,7 @@ fun PermissionType.toViewDataType() = when(this)
 	PermissionType.RECORDING -> PermissionRequestViewData.Type.RECORDING
 }
 
-fun PermissionRequestViewData.Type.toModel() = when(this)
+fun PermissionRequestViewData.Type.toEntity() = when(this)
 {
 	PermissionRequestViewData.Type.RECORDING -> PermissionType.RECORDING
 }

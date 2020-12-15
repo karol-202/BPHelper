@@ -11,7 +11,7 @@ import pl.karol202.bphelper.interactors.usecases.member.UpdateMemberUseCase
 import pl.karol202.bphelper.interactors.usecases.table.CheckIfTableConfigurationPossibleUseCase
 import pl.karol202.bphelper.presentation.util.Event
 import pl.karol202.bphelper.presentation.viewdata.MemberViewData
-import pl.karol202.bphelper.presentation.viewdata.toModel
+import pl.karol202.bphelper.presentation.viewdata.toEntity
 import pl.karol202.bphelper.presentation.viewdata.toViewData
 import pl.karol202.bphelper.presentation.viewmodel.MembersViewModel
 import pl.karol202.bphelper.presentation.viewmodel.MembersViewModel.TableDrawResult
@@ -30,7 +30,7 @@ class MembersViewModelImpl(getMembersFlowUseCase: GetMembersFlowUseCase,
 
 	override fun addMember(name: String) = launch { addMemberUseCase(name) }
 
-	override fun updateMember(member: MemberViewData) = launch { updateMemberUseCase(member.toModel()) }
+	override fun updateMember(member: MemberViewData) = launch { updateMemberUseCase(member.toEntity()) }
 
 	override fun removeMember(memberId: Long) = launch { removeMemberUseCase(memberId) }
 

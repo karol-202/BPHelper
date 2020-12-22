@@ -10,7 +10,7 @@ class PlayBellWhenDebateTimerOvertimeUseCase(override val function: suspend () -
 
 fun playBellWhenDebateTimerOvertimeUseCaseFactory(debateTimerService: DebateTimerService,
                                                   playSoundUseCase: PlaySoundUseCase) =
-	PlayBellWhenDebateTimerPoiUseCase {
+	PlayBellWhenDebateTimerOvertimeUseCase {
 		debateTimerService.overtimeBellEvent.collect { overtime ->
 			when(overtime)
 			{

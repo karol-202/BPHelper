@@ -13,10 +13,13 @@ class RecordingNameDialogBuilder(context: Context,
                                  private val onApply: (String) -> Unit) :
 	CustomDialogBuilder(context, R.layout.dialog_recording_name)
 {
+	private val currentName get() = edit_recording_name.text.toString()
+
 	init
 	{
 		initEditText()
 		initDialog()
+		updateNameValidity(currentName)
 	}
 
 	private fun initEditText() = edit_recording_name.addAfterTextChangedListener { updateNameValidity(it) }
@@ -44,7 +47,7 @@ class RecordingNameDialogBuilder(context: Context,
 
 	private fun checkAndApply(dialog: AlertDialog)
 	{
-		val name = edit_recording_name.text.toString()
+		val name = currentName
 		if(nameValidator(name) != RecordingNameValidityViewData.VALID) return
 		onApply(name)
 		dialog.dismiss()

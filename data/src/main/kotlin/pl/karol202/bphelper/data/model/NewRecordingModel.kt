@@ -1,7 +1,6 @@
 package pl.karol202.bphelper.data.model
 
 data class NewRecordingModel(val name: String,
-                             val extension: String,
-                             val inProgress: Boolean)
+                             val extension: String)
 
-fun NewRecordingModel.withUri(uri: String) = RecordingModel(uri, name, extension, inProgress)
+fun NewRecordingModel.withUri(uri: String) = RecordingModel(uri, name, extension)

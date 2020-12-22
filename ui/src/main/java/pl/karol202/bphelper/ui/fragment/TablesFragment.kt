@@ -8,10 +8,10 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import pl.karol202.bphelper.presentation.util.collectIn
 import pl.karol202.bphelper.presentation.viewdata.TableConfigurationViewData
 import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.components.ExtendedFragment
+import pl.karol202.bphelper.ui.extensions.collectIn
 import pl.karol202.bphelper.ui.viewmodel.AndroidTablesViewModel
 
 class TablesFragment : ExtendedFragment()

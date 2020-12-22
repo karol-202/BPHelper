@@ -20,8 +20,8 @@
     <string name="text_configuration_invalid">Invalid configuration</string>
     <string name="text_ironman">Ironman</string>
     <string name="text_loading">Loading…</string>
-    <string name="text_filename_empty">Filename is empty</string>
-    <string name="text_filename_busy">Name is busy. File will be overwritten</string>
+    <string name="text_filename_empty">Name is empty</string>
+    <string name="text_filename_busy">Name is busy</string>
 	<string name="text_recording_storage_error">Cannot save file</string>
 	<string name="text_recording_saved">Recording saved</string>
     <string name="text_recording_error">Recording error</string>

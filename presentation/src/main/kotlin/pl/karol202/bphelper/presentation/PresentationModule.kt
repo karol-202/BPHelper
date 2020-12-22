@@ -9,7 +9,7 @@ fun presentationModule() = module {
 	single<TablesViewModel> { TablesViewModelImpl(get()) }
 	single<PrepTimerViewModel> { PrepTimerViewModelImpl(get(), get(), get(), get(), get(), get(), get()) }
 	single<DebateViewModel> { DebateViewModelImpl(get(), get(), get(), get(), get(), get(), get(), get(), get(), get(),
-	                                              get(), get(), get(), get()) }
+	                                              get(), get(), get()) }
 	single<PermissionViewModel> { PermissionViewModelImpl(get(), get()) }
 	single<SettingsViewModel> { SettingsViewModelImpl(get(), get()) }
 }

@@ -6,13 +6,18 @@ import android.app.Service
 import android.content.Context
 import android.content.Intent
 import android.media.MediaRecorder
+import android.net.Uri
 import android.os.Build
 import android.os.IBinder
+import android.os.ParcelFileDescriptor
+import android.util.Log
 import org.koin.android.ext.android.inject
+import pl.karol202.bphelper.data.controller.LoggingController
 import pl.karol202.bphelper.framework.controller.NotificationControllerImpl
 import pl.karol202.bphelper.framework.extensions.doOnApi
 import pl.karol202.bphelper.framework.listener.OnRecordingStopListener
 import pl.karol202.bphelper.framework.listener.ParcelableOnRecordingStopListener
+import java.io.FileDescriptor
 
 class RecordingAndroidService : Service()
 {
@@ -44,13 +49,16 @@ class RecordingAndroidService : Service()
 	    }
     }
 
+	// TODO Find a better way then requiring specific implementation
 	private val notificationController by inject<NotificationControllerImpl>()
+	private val loggingController by inject<LoggingController>()
 
 	private var recordingListener: OnRecordingStopListener? = null
 
 	private val mediaRecorder = MediaRecorder()
 	private var started = false
 	private var stopped = false
+	private var fileDescriptor: ParcelFileDescriptor? = null
 
 	override fun onBind(intent: Intent?): IBinder? = null
 
@@ -107,21 +115,29 @@ class RecordingAndroidService : Service()
 
 	private fun startRecording(uri: String) = try
 	{
+		fileDescriptor = contentResolver.openFileDescriptor(Uri.parse(uri), "w")
+
 		mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
 		mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AAC_ADTS)
 		mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-		mediaRecorder.setOutputFile(uri)
+		mediaRecorder.setOutputFile(fileDescriptor?.fileDescriptor)
 		mediaRecorder.prepare()
 		mediaRecorder.start()
 	}
-	catch(e: Exception) { stop(true) }
+	catch(e: Exception)
+	{
+		loggingController.log(e)
+		stop(error = true)
+	}
 
 	private fun stopRecording() = try
 	{
 		mediaRecorder.stop()
 		mediaRecorder.release()
+
+		fileDescriptor?.close()
+		fileDescriptor = null
 	}
-	catch(e: Exception) { e.printStackTrace() }
+	catch(e: Exception) { loggingController.log(e) }
 	// Probably an exception related to stopping without having started due to exception in startRecording()
-	// TODO Do better logging
 }

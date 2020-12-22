@@ -5,7 +5,11 @@ plugins {
 tasks {
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions {
-            freeCompilerArgs = listOf("-Xopt-in=kotlin.time.ExperimentalTime")
+            jvmTarget = JavaVersion.VERSION_1_8.toString()
+            freeCompilerArgs = listOf("-Xopt-in=kotlin.time.ExperimentalTime",
+                                      "-Xjvm-default=all")
+            // Using -Xjvm-default=all here because of bug related to
+            // wrong code generation when using inline classes with default methods
         }
     }
 }

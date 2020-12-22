@@ -7,7 +7,5 @@ interface RecordingDataStore
 {
 	fun createRecording(recording: NewRecordingModel): RecordingModel?
 
-	fun updateRecording(recording: RecordingModel)
-
-	fun isNameAvailable(name: String): Boolean
+	fun isNameAvailable(name: String, extension: String): Boolean
 }

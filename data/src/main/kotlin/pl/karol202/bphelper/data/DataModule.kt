@@ -23,4 +23,5 @@ fun dataModule() = module {
 	single<SoundService> { SoundServiceImpl(get()) }
 	single<RecordingService> { RecordingServiceImpl(get(), get()) }
 	single<PermissionService> { PermissionServiceImpl(get()) }
+	single<LoggingService> { LoggingServiceImpl(get()) }
 }

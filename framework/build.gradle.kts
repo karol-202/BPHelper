@@ -43,6 +43,9 @@ dependencies {
     implementation("androidx.room:room-ktx:2.2.5")
     kapt("androidx.room:room-compiler:2.2.5")
 
+    implementation("com.google.firebase:firebase-core:18.0.0")
+    implementation("com.google.firebase:firebase-crashlytics:17.2.2")
+
     implementation("org.koin:koin-androidx-viewmodel:2.2.0")
 
     implementation("com.github.tfcporciuncula:flow-preferences:1.3.3")

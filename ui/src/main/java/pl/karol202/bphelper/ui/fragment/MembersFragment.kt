@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_members.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import pl.karol202.bphelper.presentation.util.collectIn
 import pl.karol202.bphelper.presentation.viewdata.MemberViewData
 import pl.karol202.bphelper.presentation.viewdata.TableConfigurationErrorViewData
 import pl.karol202.bphelper.presentation.viewmodel.MembersViewModel
@@ -42,14 +41,13 @@ class MembersFragment : Fragment()
 
 		initRecyclerView()
 		initDrawButton()
-		//updateErrorBanner()
 	}
 
 	private fun observeMembers() = membersViewModel.allMembers.collectIn(lifecycleScope) { members ->
 		membersAdapter.members = members
 	}
 
-	private fun observeTableDrawResult() = membersViewModel.tableDrawResult.handleEventsIn(lifecycleScope) { result ->
+	private fun observeTableDrawResult() = membersViewModel.tableDrawResult.collectIn(lifecycleScope) { result ->
 		when(result)
 		{
 			is MembersViewModel.TableDrawResult.GoToTables -> navigateToTablesFragment()

@@ -34,4 +34,5 @@ fun frameworkModule() = module {
 	single<SoundController> { SoundControllerImpl(androidContext()) }
 	single<RecordingController> { RecordingControllerImpl(androidContext()) }
 	single<PermissionController> { PermissionControllerImpl(androidContext()) }
+	single<LoggingController> { LoggingControllerImpl() }
 }

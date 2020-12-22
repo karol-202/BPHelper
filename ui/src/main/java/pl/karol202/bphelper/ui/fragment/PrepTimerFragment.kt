@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import kotlinx.android.synthetic.main.fragment_prep_timer.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import pl.karol202.bphelper.presentation.util.collectIn
 import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.components.ExtendedFragment
 import pl.karol202.bphelper.ui.dialog.fragment.DurationPickerFragment
+import pl.karol202.bphelper.ui.extensions.collectIn
 import pl.karol202.bphelper.ui.extensions.ctx
 import pl.karol202.bphelper.ui.extensions.format
 import pl.karol202.bphelper.ui.viewmodel.AndroidPrepTimerViewModel

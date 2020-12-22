@@ -6,12 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.lifecycleScope
+import androidx.transition.Fade
+import androidx.transition.TransitionInflater
 import androidx.transition.TransitionManager
 import androidx.vectordrawable.graphics.drawable.AnimatedVectorDrawableCompat
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_debate.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import pl.karol202.bphelper.presentation.util.collectIn
 import pl.karol202.bphelper.presentation.viewdata.RecordingEventViewData
 import pl.karol202.bphelper.presentation.viewdata.RecordingStatusViewData
 import pl.karol202.bphelper.presentation.viewdata.TimerStatusViewData
@@ -32,6 +33,9 @@ class DebateFragment : ExtendedFragment()
 	}
 	private val drawablePauseToPlay by lazy {
 		AnimatedVectorDrawableCompat.create(ctx, R.drawable.anim_pause_to_play_white_24dp)
+	}
+	private val buttonsTransition by lazy {
+		TransitionInflater.from(ctx).inflateTransition(R.transition.debate_buttons)
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
@@ -137,7 +141,7 @@ class DebateFragment : ExtendedFragment()
 			constraints.applyTo(constraintLayout_debate)
 		}
 
-		TransitionManager.beginDelayedTransition(view as ViewGroup)
+		TransitionManager.beginDelayedTransition(view as ViewGroup, buttonsTransition)
 		when(status)
 		{
 			TimerStatusViewData.ACTIVE -> {
@@ -146,6 +150,7 @@ class DebateFragment : ExtendedFragment()
 					button_debate_time_toggle.icon = drawablePlayToPause?.apply { start() }
 				button_debate_time_toggle.setText(R.string.button_debate_timer_pause)
 				button_debate_time_stop.isClickable = true
+				button_debate_time_stop.visibility = View.VISIBLE
 			}
 			TimerStatusViewData.PAUSED -> {
 				setStartButtonConstraints(stopped = false)
@@ -153,6 +158,7 @@ class DebateFragment : ExtendedFragment()
 					button_debate_time_toggle.icon = drawablePauseToPlay?.apply { start() }
 				button_debate_time_toggle.setText(R.string.button_debate_timer_resume)
 				button_debate_time_stop.isClickable = true
+				button_debate_time_stop.visibility = View.VISIBLE
 			}
 			TimerStatusViewData.STOPPED -> {
 				setStartButtonConstraints(stopped = true)
@@ -160,6 +166,7 @@ class DebateFragment : ExtendedFragment()
 					button_debate_time_toggle.icon = drawablePauseToPlay?.apply { start() }
 				button_debate_time_toggle.setText(R.string.button_debate_timer_start)
 				button_debate_time_stop.isClickable = false
+				button_debate_time_stop.visibility = View.GONE
 			}
 		}
 	}

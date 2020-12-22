@@ -11,10 +11,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import pl.karol202.bphelper.presentation.util.collectIn
 import pl.karol202.bphelper.presentation.viewdata.PermissionRequestViewData
 import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.extensions.androidName
+import pl.karol202.bphelper.ui.extensions.collectIn
 import pl.karol202.bphelper.ui.extensions.findByAndroidName
 import pl.karol202.bphelper.ui.viewmodel.AndroidPermissionViewModel
 

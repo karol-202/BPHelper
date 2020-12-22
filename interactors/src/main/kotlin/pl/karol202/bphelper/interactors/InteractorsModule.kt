@@ -50,7 +50,7 @@ fun interactorsModule() = module {
 	single { getRecordingActiveFlowUseCaseFactory(get()) }
 	single { getRecordingActiveUseCaseFactory(get()) }
 	single { getRecordingEventFlowUseCaseFactory(get()) }
-	single { startRecordingUseCaseFactory(get()) }
+	single { startRecordingUseCaseFactory(get(), get()) }
 	single { stopRecordingUseCaseFactory(get()) }
 	single { isRecordingNameAvailableUseCaseFactory(get()) }
 

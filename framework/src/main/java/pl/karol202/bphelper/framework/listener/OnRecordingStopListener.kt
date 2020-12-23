@@ -1,7 +1,7 @@
 package pl.karol202.bphelper.framework.listener
 
 import android.os.*
-import kotlinx.android.parcel.Parcelize
+import kotlinx.parcelize.Parcelize
 
 fun interface OnRecordingStopListener
 {

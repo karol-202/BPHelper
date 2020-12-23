@@ -1,48 +1,48 @@
 package pl.karol202.bphelper.ui.dialog
 
 import android.content.Context
-import android.content.DialogInterface
 import androidx.appcompat.app.AlertDialog
-import kotlinx.android.synthetic.main.dialog_recording_name.*
 import pl.karol202.bphelper.presentation.viewdata.RecordingNameValidityViewData
 import pl.karol202.bphelper.ui.R
+import pl.karol202.bphelper.ui.components.ExtendedAlertDialog
+import pl.karol202.bphelper.ui.databinding.DialogRecordingNameBinding
 import pl.karol202.bphelper.ui.extensions.addAfterTextChangedListener
+import pl.karol202.bphelper.ui.extensions.setNegativeButton
+import pl.karol202.bphelper.ui.extensions.setPositiveButton
+import pl.karol202.bphelper.ui.extensions.viewBinding
 
 class RecordingNameDialogBuilder(context: Context,
                                  private val nameValidator: (String) -> RecordingNameValidityViewData,
-                                 private val onApply: (String) -> Unit) :
-	CustomDialogBuilder(context, R.layout.dialog_recording_name)
+                                 private val onApply: (String) -> Unit) : ExtendedAlertDialog(context)
 {
-	private val currentName get() = edit_recording_name.text.toString()
+	private val views by viewBinding(DialogRecordingNameBinding::inflate)
+
+	private val currentName get() = views.editRecordingName.text.toString()
 
 	init
 	{
+		setTitle(R.string.alert_recording_name_title)
+		initButtons()
 		initEditText()
-		initDialog()
 		updateNameValidity(currentName)
 	}
 
-	private fun initEditText() = edit_recording_name.addAfterTextChangedListener { updateNameValidity(it) }
+	private fun initButtons()
+	{
+		setPositiveButton(R.string.action_record) { _, _ -> checkAndApply(this) }
+		setNegativeButton(R.string.action_cancel, null)
+	}
+
+	private fun initEditText() = views.editRecordingName.addAfterTextChangedListener { updateNameValidity(it) }
 
 	private fun updateNameValidity(name: String)
 	{
-		textInputLayout_recording_name.error = when(nameValidator(name))
+		views.textInputLayoutRecordingName.error = when(nameValidator(name))
 		{
 			RecordingNameValidityViewData.VALID -> null
 			RecordingNameValidityViewData.EMPTY -> context.getString(R.string.text_filename_empty)
 			RecordingNameValidityViewData.BUSY -> context.getString(R.string.text_filename_busy)
 		}
-	}
-
-	private fun initDialog()
-	{
-		setTitle(R.string.alert_recording_name_title)
-		setPositiveButton(R.string.action_record, null)
-		setNegativeButton(R.string.action_cancel, null)
-	}
-
-	override fun show(): AlertDialog = super.show().apply {
-		getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener { checkAndApply(this) }
 	}
 
 	private fun checkAndApply(dialog: AlertDialog)

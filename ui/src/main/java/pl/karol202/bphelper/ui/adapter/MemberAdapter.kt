@@ -3,14 +3,11 @@ package pl.karol202.bphelper.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
-import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.item_member.*
 import pl.karol202.bphelper.presentation.viewdata.MemberViewData
-import pl.karol202.bphelper.ui.R
+import pl.karol202.bphelper.ui.databinding.ItemMemberBinding
+import pl.karol202.bphelper.ui.databinding.ItemNoMemberBinding
 import pl.karol202.bphelper.ui.extensions.ctx
 
 class MemberAdapter(private val onMemberAdd: () -> Unit,
@@ -23,48 +20,43 @@ class MemberAdapter(private val onMemberAdd: () -> Unit,
 		abstract fun bind(member: M)
 	}
 
-	private inner class MemberViewHolder(override val containerView: View) : ViewHolder<MemberViewData>(containerView),
-	                                                                         LayoutContainer
+	private inner class MemberViewHolder(private val views: ItemMemberBinding) : ViewHolder<MemberViewData>(views.root)
 	{
-		private val checkMemberPresent = check_member_present as CheckBox
-		private val checkMemberIronman = check_member_ironman as CheckBox
-
 		init
 		{
-			containerView.setOnClickListener {
-				checkMemberPresent.isChecked = !checkMemberPresent.isChecked
+			views.root.setOnClickListener {
+				views.checkMemberPresent.isChecked = !views.checkMemberPresent.isChecked
 			}
 		}
 
 		override fun bind(member: MemberViewData)
 		{
-			text_member_name.text = member.name
+			views.textMemberName.text = member.name
 
-			checkMemberPresent.setOnCheckedChangeListener(null)
-			checkMemberPresent.isChecked = member.present
-			checkMemberPresent.setOnCheckedChangeListener { _, checked ->
+			views.checkMemberPresent.setOnCheckedChangeListener(null)
+			views.checkMemberPresent.isChecked = member.present
+			views.checkMemberPresent.setOnCheckedChangeListener { _, checked ->
 				onMemberUpdate(member.copy(present = checked))
 			}
 
-			checkMemberIronman.setOnCheckedChangeListener(null)
-			checkMemberIronman.visibility = if(member.present) View.VISIBLE else View.GONE
-			checkMemberIronman.isChecked = member.ironman
-			checkMemberIronman.setOnCheckedChangeListener { _, checked ->
+			views.checkMemberIronman.setOnCheckedChangeListener(null)
+			views.checkMemberIronman.visibility = if(member.present) View.VISIBLE else View.GONE
+			views.checkMemberIronman.isChecked = member.ironman
+			views.checkMemberIronman.setOnCheckedChangeListener { _, checked ->
 				onMemberUpdate(member.copy(ironman = checked))
 			}
 
-			button_member_delete.setOnClickListener {
+			views.buttonMemberDelete.setOnClickListener {
 				onMemberRemove(member)
 			}
 		}
 	}
 
-	private inner class ViewHolderNoMember(override val containerView: View) : ViewHolder<MemberViewData?>(containerView),
-	                                                                           LayoutContainer
+	private inner class ViewHolderNoMember(views: ItemNoMemberBinding) : ViewHolder<MemberViewData?>(views.root)
 	{
 		init
 		{
-			containerView.setOnClickListener { onMemberAdd() }
+			views.root.setOnClickListener { onMemberAdd() }
 		}
 
 		override fun bind(member: MemberViewData?) { }
@@ -99,10 +91,8 @@ class MemberAdapter(private val onMemberAdd: () -> Unit,
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<MemberViewData>
 	{
 		val inflater = LayoutInflater.from(parent.ctx)
-		fun inflate(@LayoutRes layout: Int) = inflater.inflate(layout, parent, false)
-
-		return if(viewType == TYPE_MEMBER) MemberViewHolder(inflate(R.layout.item_member))
-		else ViewHolderNoMember(inflate(R.layout.item_no_member))
+		return if(viewType == TYPE_MEMBER) MemberViewHolder(ItemMemberBinding.inflate(inflater, parent, false))
+		else ViewHolderNoMember(ItemNoMemberBinding.inflate(inflater, parent, false))
 	}
 
 	override fun getItemCount() = members.size + 1

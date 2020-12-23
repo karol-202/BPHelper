@@ -13,7 +13,7 @@ object Versions
 	const val ANDROID_RECYCLERVIEW = "1.1.0"
 	const val ANDROID_GRIDLAYOUT = "1.0.0"
 	const val ANDROID_CONSTRAINTLAYOUT = "2.0.4"
-	const val ANDROID_VIEWMODEL = "2.2.0"
+	const val ANDROID_LIFECYCLE = "2.2.0"
 	const val ANDROID_NAVIGATION = "2.3.2"
 	const val ANDROID_MATERIAL = "1.2.1"
 

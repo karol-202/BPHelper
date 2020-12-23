@@ -1,9 +1,6 @@
 plugins {
     id(Plugins.ANDROID_APP)
     id(Plugins.KOTLIN_ANDROID)
-    id(Plugins.KOTLIN_ANDROID_EXTENSIONS)
-    id(Plugins.KOTLIN_KAPT)
-    id(Plugins.ANDROID_NAVIGATION)
     id(Plugins.GOOGLE_SERVICES)
     id(Plugins.FIREBASE_CRASHLYTICS)
 }
@@ -35,10 +32,6 @@ android {
         freeCompilerArgs = listOf(OptIn.EXPERIMENTAL_TIME,
                                   OptIn.EXPERIMENTAL_COROUTINES_API)
     }
-}
-
-androidExtensions {
-    isExperimental = true
 }
 
 dependencies {

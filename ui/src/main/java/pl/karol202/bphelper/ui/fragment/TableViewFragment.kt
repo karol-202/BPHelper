@@ -1,20 +1,19 @@
 package pl.karol202.bphelper.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_table.*
 import pl.karol202.bphelper.presentation.viewdata.TableViewData
-import pl.karol202.bphelper.ui.components.ExtendedFragment
-import pl.karol202.bphelper.ui.adapter.TableMembersAdapter
 import pl.karol202.bphelper.ui.R
+import pl.karol202.bphelper.ui.adapter.TableMembersAdapter
+import pl.karol202.bphelper.ui.components.ExtendedFragment
+import pl.karol202.bphelper.ui.components.viewBinding
+import pl.karol202.bphelper.ui.databinding.FragmentTableBinding
 import pl.karol202.bphelper.ui.extensions.ctx
 import pl.karol202.bphelper.ui.extensions.setArguments
 import pl.karol202.bphelper.ui.extensions.to
 
-class TableViewFragment : ExtendedFragment()
+class TableViewFragment : ExtendedFragment(R.layout.fragment_table)
 {
 	companion object
 	{
@@ -24,17 +23,16 @@ class TableViewFragment : ExtendedFragment()
 
 	private val table by argumentsOrThrow<TableViewData>()
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-		inflater.inflate(R.layout.fragment_table, container, false)
+	private val views by viewBinding(FragmentTableBinding::bind)
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?)
 	{
 		super.onViewCreated(view, savedInstanceState)
 
-		text_table_name.text = getString(table.roleName)
+		views.textTableName.text = getString(table.roleName)
 
-		recycler_table.layoutManager = LinearLayoutManager(ctx)
-		recycler_table.adapter = TableMembersAdapter(table.members)
+		views.recyclerTable.layoutManager = LinearLayoutManager(ctx)
+		views.recyclerTable.adapter = TableMembersAdapter(table.members)
 	}
 
 	private val TableViewData.roleName get() = when(role)

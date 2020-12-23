@@ -1,7 +1,6 @@
 plugins {
     id(Plugins.ANDROID_LIBRARY)
     id(Plugins.KOTLIN_ANDROID)
-    id(Plugins.KOTLIN_ANDROID_EXTENSIONS)
     id(Plugins.ANDROID_NAVIGATION)
 }
 
@@ -22,10 +21,10 @@ android {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
         freeCompilerArgs = listOf(OptIn.EXPERIMENTAL_TIME)
     }
-}
 
-androidExtensions {
-    isExperimental = true
+    buildFeatures {
+        viewBinding = true
+    }
 }
 
 dependencies {
@@ -41,7 +40,8 @@ dependencies {
     implementation(Deps.ANDROID_GRIDLAYOUT)
     implementation(Deps.ANDROID_CONSTRAINTLAYOUT)
     implementation(Deps.ANDROID_PREFERENCE)
-    implementation(Deps.ANDROID_VIEWMODEL_KTX)
+    implementation(Deps.ANDROID_LIFECYCLE_JAVA8)
+    implementation(Deps.ANDROID_LIFECYCLE_VIEWMODEL_KTX)
 
     implementation(Deps.ANDROID_NAVIGATION_FRAGMENT_KTX)
     implementation(Deps.ANDROID_NAVIGATION_UI_KTX)

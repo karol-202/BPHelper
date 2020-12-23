@@ -1,51 +1,42 @@
 package pl.karol202.bphelper.ui.dialog
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
 import android.widget.NumberPicker
-import kotlinx.android.extensions.LayoutContainer
-import kotlinx.android.synthetic.main.dialog_duration_picker.*
+import androidx.annotation.StringRes
 import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.components.ExtendedAlertDialog
+import pl.karol202.bphelper.ui.databinding.DialogDurationPickerBinding
+import pl.karol202.bphelper.ui.extensions.setNegativeButton
+import pl.karol202.bphelper.ui.extensions.setPositiveButton
+import pl.karol202.bphelper.ui.extensions.viewBinding
 import kotlin.time.Duration
 import kotlin.time.minutes
 import kotlin.time.seconds
 
 class DurationPickerDialog(context: Context,
-                           private val onDurationSetListener: ((duration: Duration) -> Unit)? = null,
-                           initialDuration: Duration = Duration.ZERO) : ExtendedAlertDialog(context),
-                                                                        LayoutContainer
+                           title: String?,
+                           initialDuration: Duration = Duration.ZERO,
+                           private val onDurationSetListener: ((duration: Duration) -> Unit)? = null) :
+	ExtendedAlertDialog(context)
 {
-	@SuppressLint("InflateParams")
-	override val containerView: View = LayoutInflater.from(context).inflate(R.layout.dialog_duration_picker, null)
-
 	private var currentMinutes by instanceStateOr { initialDuration.inMinutes.toInt() }
 	private var currentSeconds by instanceStateOr { initialDuration.inSeconds.toInt() % 60 }
 
-	private val numberPickerMinutes = (this as LayoutContainer).numberPicker_minutes
-	private val numberPickerSeconds = (this as LayoutContainer).numberPicker_seconds
+	private val views by viewBinding(DialogDurationPickerBinding::inflate)
 
 	init
 	{
-		setTitle(R.string.alert_set_prep_time)
-		setView(containerView)
+		setTitle(title)
+		setView(views.root)
 		initButtons()
-	}
-
-	override fun onCreate(savedInstanceState: Bundle?)
-	{
-		super.onCreate(savedInstanceState)
-
 		initNumberPickers()
 	}
 
 	private fun initNumberPickers()
 	{
-		initNumberPicker(numberPickerMinutes, currentMinutes) { currentMinutes = it }
-		initNumberPicker(numberPickerSeconds, currentSeconds) { currentSeconds = it }
+		initNumberPicker(views.numberPickerMinutes, currentMinutes) { currentMinutes = it }
+		initNumberPicker(views.numberPickerSeconds, currentSeconds) { currentSeconds = it }
 	}
 
 	private fun initNumberPicker(pickerView: NumberPicker, currentValue: Int, valueSetter: (Int) -> Unit) {
@@ -58,9 +49,9 @@ class DurationPickerDialog(context: Context,
 
 	private fun initButtons()
 	{
-		setButton(BUTTON_POSITIVE, context.getString(R.string.action_ok)) { _, _ -> onDurationSetListener?.invoke(getDuration()) }
-		setButton(BUTTON_NEGATIVE, context.getString(R.string.action_cancel)) { _, _ -> }
+		setPositiveButton(R.string.action_ok) { _, _ -> onDurationSetListener?.invoke(getDuration()) }
+		setNegativeButton(R.string.action_cancel, null)
 	}
 
-	private fun getDuration() = numberPickerMinutes.value.minutes + numberPickerSeconds.value.seconds
+	private fun getDuration() = views.numberPickerMinutes.value.minutes + views.numberPickerSeconds.value.seconds
 }

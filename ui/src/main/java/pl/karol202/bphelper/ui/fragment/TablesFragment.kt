@@ -14,14 +14,11 @@ import pl.karol202.bphelper.ui.components.ExtendedFragment
 import pl.karol202.bphelper.ui.extensions.collectIn
 import pl.karol202.bphelper.ui.viewmodel.AndroidTablesViewModel
 
-class TablesFragment : ExtendedFragment()
+class TablesFragment : ExtendedFragment(R.layout.fragment_tables_container)
 {
 	private val navController by lazy { NavHostFragment.findNavController(this) }
 
 	private val tablesViewModel by viewModel<AndroidTablesViewModel>()
-
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-		inflater.inflate(R.layout.fragment_tables_container, container, false)
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?)
 	{

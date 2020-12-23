@@ -1,6 +1,7 @@
 package pl.karol202.bphelper.ui.dialog.fragment
 
 import android.os.Bundle
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import pl.karol202.bphelper.ui.components.ExtendedDialogFragment
@@ -23,21 +24,24 @@ class DurationPickerFragment : ExtendedDialogFragment()
 	{
 		private const val TAG = "duration_picker_fragment"
 
-		fun <L> create(initialDuration: Duration, onDurationSetListener: L?)
+		fun <L> create(title: String?, initialDuration: Duration, onDurationSetListener: L?)
 				where L : Fragment,
 				      L : OnDurationSetListener =
-			DurationPickerFragment().setArguments(DurationPickerFragment::initialDuration to
-					                                      initialDuration.toLongMilliseconds()).apply {
+			DurationPickerFragment().setArguments(
+				DurationPickerFragment::initialDuration to initialDuration.toLongMilliseconds(),
+				DurationPickerFragment::title to title
+			).apply {
 				setTargetFragment(onDurationSetListener, -1)
 			}
 	}
 
+	private val title by arguments<String>()
 	private val initialDuration by argumentsOr(0) map { it.milliseconds }
 
 	private val onDurationSetListener by lazy { targetFragment as? OnDurationSetListener }
 
 	override fun onCreateDialog(savedInstanceState: Bundle?) =
-		DurationPickerDialog(ctx, { onDurationSet(it) }, initialDuration)
+		DurationPickerDialog(ctx, title, initialDuration) { onDurationSet(it) }
 
 	fun show(fragmentManager: FragmentManager) = show(fragmentManager, TAG)
 

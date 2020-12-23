@@ -1,26 +1,25 @@
 package pl.karol202.bphelper.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import kotlinx.android.synthetic.main.fragment_members.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import pl.karol202.bphelper.presentation.viewdata.MemberViewData
 import pl.karol202.bphelper.presentation.viewdata.TableConfigurationErrorViewData
 import pl.karol202.bphelper.presentation.viewmodel.MembersViewModel
 import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.adapter.MemberAdapter
+import pl.karol202.bphelper.ui.components.viewBinding
+import pl.karol202.bphelper.ui.databinding.FragmentMembersBinding
 import pl.karol202.bphelper.ui.dialog.MemberAddDialogBuilder
 import pl.karol202.bphelper.ui.extensions.*
 import pl.karol202.bphelper.ui.viewmodel.AndroidMembersViewModel
 
-class MembersFragment : Fragment()
+class MembersFragment : Fragment(R.layout.fragment_members)
 {
 	private val navController by lazy { NavHostFragment.findNavController(this) }
 
@@ -30,8 +29,7 @@ class MembersFragment : Fragment()
 	                                           onMemberUpdate = { membersViewModel.updateMember(it) },
 	                                           onMemberRemove = { showMemberRemoveDialog(it) })
 
-	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
-		inflater.inflate(R.layout.fragment_members, container, false)
+	private val views by viewBinding(FragmentMembersBinding::bind)
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?)
 	{
@@ -57,15 +55,15 @@ class MembersFragment : Fragment()
 
 	private fun initRecyclerView()
 	{
-		recycler_members.layoutManager = LinearLayoutManager(ctx)
-		recycler_members.adapter = membersAdapter
-		recycler_members.addItemDecoration(DividerItemDecoration(ctx, DividerItemDecoration.VERTICAL))
-		recycler_members.simpleItemAnimator?.supportsChangeAnimations = false
+		views.recyclerMembers.layoutManager = LinearLayoutManager(ctx)
+		views.recyclerMembers.adapter = membersAdapter
+		views.recyclerMembers.addItemDecoration(DividerItemDecoration(ctx, DividerItemDecoration.VERTICAL))
+		views.recyclerMembers.simpleItemAnimator?.supportsChangeAnimations = false
 	}
 
 	private fun initDrawButton()
 	{
-		button_draw.setOnClickListener {
+		views.buttonDraw.setOnClickListener {
 			membersViewModel.tryToDrawTables()
 		}
 	}
@@ -95,9 +93,8 @@ class MembersFragment : Fragment()
 			    name.isBlank() -> MemberAddDialogBuilder.Validity.EMPTY
 			    else -> MemberAddDialogBuilder.Validity.VALID
 		    } },
-		    onApply = { name ->
-			    membersViewModel.addMember(name)
-		    }).show()
+		    onApply = { membersViewModel.addMember(it) }
+		).show()
 	}
 
 	private fun showMemberRemoveDialog(member: MemberViewData)
@@ -105,9 +102,7 @@ class MembersFragment : Fragment()
 		alertDialog {
 			setTitle(getString(R.string.alert_remove_member_title))
 			setMessage(getString(R.string.alert_remove_member, member.name))
-			setPositiveButton(R.string.action_remove) { _, _ ->
-				membersViewModel.removeMember(member.id)
-			}
+			setPositiveButton(R.string.action_remove) { _, _ -> membersViewModel.removeMember(member.id) }
 			setNegativeButton(R.string.action_cancel, null)
 		}.show()
 	}

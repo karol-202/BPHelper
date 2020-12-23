@@ -8,8 +8,6 @@
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
-
-        <item name="selectableItemBackgroundBorderless">?android:attr/selectableItemBackground</item>
     </style>
     <style name="AppTheme" parent="Base.AppTheme"/>
 

@@ -18,7 +18,6 @@ android {
         applicationId = "pl.karol202.bphelper"
         versionCode = 6
         versionName = "1.0.5"
-        multiDexEnabled = true
     }
 
     buildTypes["release"].apply {

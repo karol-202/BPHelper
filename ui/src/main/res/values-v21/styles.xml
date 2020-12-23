@@ -1,6 +1,0 @@
-<resources>
-    <style name="Base.V21.AppTheme" parent="Base.AppTheme">
-        <item name="selectableItemBackgroundBorderless">?android:attr/selectableItemBackgroundBorderless</item>
-    </style>
-    <style name="AppTheme" parent="Base.V21.AppTheme"/>
-</resources>

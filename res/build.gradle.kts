@@ -1,13 +1,13 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
+    id(Plugins.ANDROID_LIBRARY)
+    id(Plugins.KOTLIN_ANDROID)
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdkVersion(AndroidConf.SDK_COMPILE)
 
     defaultConfig {
-        minSdkVersion(17)
-        targetSdkVersion(30)
+        minSdkVersion(AndroidConf.SDK_MIN)
+        targetSdkVersion(AndroidConf.SDK_TARGET)
     }
 }

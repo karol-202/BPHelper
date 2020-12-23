@@ -1,14 +1,14 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.jetbrains.kotlin.jvm")
+    id(Plugins.KOTLIN_JVM)
 }
 
 tasks {
     withType<KotlinCompile> {
         kotlinOptions {
-            freeCompilerArgs = listOf("-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                                      "-Xopt-in=kotlin.time.ExperimentalTime")
+            freeCompilerArgs = listOf(OptIn.EXPERIMENTAL_COROUTINES_API,
+                                      OptIn.EXPERIMENTAL_TIME)
         }
     }
 }
@@ -16,9 +16,8 @@ tasks {
 dependencies {
     implementation(project(":interactors"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.10")
+    implementation(Deps.KOTLIN_STDLIB)
+    implementation(Deps.KOTLIN_COROUTINES_CORE)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
-
-    implementation("org.koin:koin-core:2.2.0")
+    implementation(Deps.KOIN_CORE)
 }

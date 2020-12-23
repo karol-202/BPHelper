@@ -1,17 +1,17 @@
 plugins {
-    id("com.android.library")
-    id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.kapt")
-    id("org.jetbrains.kotlin.android.extensions")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.4.10"
+    id(Plugins.ANDROID_LIBRARY)
+    id(Plugins.KOTLIN_ANDROID)
+    id(Plugins.KOTLIN_KAPT)
+    id(Plugins.KOTLIN_ANDROID_EXTENSIONS)
+    id(Plugins.KOTLIN_SERIALIZATION)
 }
 
 android {
-    compileSdkVersion(30)
+    compileSdkVersion(AndroidConf.SDK_COMPILE)
 
     defaultConfig {
-        minSdkVersion(17)
-        targetSdkVersion(30)
+        minSdkVersion(AndroidConf.SDK_MIN)
+        targetSdkVersion(AndroidConf.SDK_TARGET)
     }
 
     kapt {
@@ -26,7 +26,7 @@ android {
     }
 
     kotlinOptions {
-        freeCompilerArgs = listOf("-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi")
+        freeCompilerArgs = listOf(OptIn.EXPERIMENTAL_COROUTINES_API)
     }
 }
 
@@ -34,19 +34,19 @@ dependencies {
     implementation(project(":data"))
     implementation(project(":res"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.10")
+    implementation(Deps.KOTLIN_STDLIB)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
+    implementation(Deps.KOTLIN_SERIALIZATION_JSON)
 
-    implementation("androidx.preference:preference:1.1.1")
+    implementation(Deps.ANDROID_PREFERENCE)
 
-    implementation("androidx.room:room-ktx:2.2.5")
-    kapt("androidx.room:room-compiler:2.2.5")
+    implementation(Deps.ANDROID_ROOM_KTX)
+    kapt(Deps.ANDROID_ROOM_COMPILER)
 
-    implementation("com.google.firebase:firebase-core:18.0.0")
-    implementation("com.google.firebase:firebase-crashlytics:17.2.2")
+    implementation(Deps.FIREBASE_CORE)
+    implementation(Deps.FIREBASE_CRASHLYTICS)
 
-    implementation("org.koin:koin-androidx-viewmodel:2.2.0")
+    implementation(Deps.KOIN_VIEWMODEL)
 
-    implementation("com.github.tfcporciuncula:flow-preferences:1.3.3")
+    implementation(Deps.FLOWPREFERENCES)
 }

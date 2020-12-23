@@ -1,8 +1,0 @@
-include ':domain'
-include ':data'
-include ':framework'
-include ':interactors'
-include ':presentation'
-include ':ui'
-include ':res'
-include ':app'

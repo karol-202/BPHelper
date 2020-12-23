@@ -1,17 +1,17 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.jetbrains.kotlin.jvm")
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.4.10"
+    id(Plugins.KOTLIN_JVM)
+    id(Plugins.KOTLIN_SERIALIZATION)
 }
 
 tasks {
     withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = "1.8"
-            freeCompilerArgs = listOf("-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                                      "-Xopt-in=kotlinx.coroutines.FlowPreview",
-                                      "-Xopt-in=kotlin.time.ExperimentalTime")
+            jvmTarget = JavaVersion.VERSION_1_8.toString()
+            freeCompilerArgs = listOf(OptIn.EXPERIMENTAL_COROUTINES_API,
+                                      OptIn.FLOW_PREVIEW,
+                                      OptIn.EXPERIMENTAL_TIME)
         }
     }
 }
@@ -19,10 +19,10 @@ tasks {
 dependencies {
     implementation(project(":domain"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.10")
+    implementation(Deps.KOTLIN_STDLIB)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.0.1")
+    implementation(Deps.KOTLIN_COROUTINES_CORE)
+    implementation(Deps.KOTLIN_SERIALIZATION_JSON)
 
-    implementation("org.koin:koin-core:2.2.0")
+    implementation(Deps.KOIN_CORE)
 }

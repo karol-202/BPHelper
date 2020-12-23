@@ -36,7 +36,7 @@ class MediaStoreRecordingDataStore(private val context: Context) : RecordingData
 
 	private fun NewRecordingModel.toContentValues() = createContentValues(name, extension)
 
-	@SuppressWarnings("deprecation")
+	@Suppress("deprecation")
 	private fun createContentValues(name: String, extension: String) = ContentValues().apply {
 		put(MediaStore.Audio.Media.DISPLAY_NAME, getFileName(name, extension))
 		put(MediaStore.Audio.Media.TITLE, name)

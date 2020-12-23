@@ -1,17 +1,18 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    id("org.jetbrains.kotlin.jvm")
+    id(Plugins.KOTLIN_JVM)
 }
 
 tasks {
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    withType<KotlinCompile> {
         kotlinOptions {
-            freeCompilerArgs = listOf("-Xopt-in=kotlin.time.ExperimentalTime")
+            freeCompilerArgs = listOf(OptIn.EXPERIMENTAL_TIME)
         }
     }
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.10")
-
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
+    implementation(Deps.KOTLIN_STDLIB)
+    implementation(Deps.KOTLIN_COROUTINES_CORE)
 }

@@ -1,13 +1,15 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-    id("org.jetbrains.kotlin.jvm")
+    id(Plugins.KOTLIN_JVM)
 }
 
 tasks {
-    withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    withType<KotlinCompile> {
         kotlinOptions {
             jvmTarget = JavaVersion.VERSION_1_8.toString()
-            freeCompilerArgs = listOf("-Xopt-in=kotlin.time.ExperimentalTime",
-                                      "-Xjvm-default=all")
+            freeCompilerArgs = listOf(OptIn.EXPERIMENTAL_TIME,
+                                      CompilerArgs.DEFAULT_ALL)
             // Using -Xjvm-default=all here because of bug related to
             // wrong code generation when using inline classes with default methods
         }
@@ -17,9 +19,8 @@ tasks {
 dependencies {
     api(project(":domain"))
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.4.10")
+    implementation(Deps.KOTLIN_STDLIB)
+    implementation(Deps.KOTLIN_COROUTINES_CORE)
 
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1")
-
-    implementation("org.koin:koin-core:2.2.0")
+    implementation(Deps.KOIN_CORE)
 }

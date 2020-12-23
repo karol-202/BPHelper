@@ -11,17 +11,18 @@
     <string name="alert_remove_member">Czy na pewno chcesz usunąć %s?</string>
     <string name="alert_cannot_draw_title">Nie można losować</string>
     <string name="alert_set_prep_time">Ile czasu na przygotowanie?</string>
-	<string name="alert_recording_name_title">Podaj nazwę pliku</string>
+	<string name="alert_recording_name_title">Podaj nazwę nagrania</string>
 	<string name="alert_recording_stop_title">Na pewno chcesz zakończyć nagrywanie?</string>
 
     <string name="text_no_member">Dodaj członka</string>
-    <string name="text_hint_member_name">Nazwa</string>
+    <string name="text_member_name_hint">Nazwa</string>
     <string name="text_member_name_empty_error">Nazwa nie może być pusta</string>
     <string name="text_configuration_invalid">Niewłaściwa konfiguracja</string>
     <string name="text_ironman">Ironman</string>
     <string name="text_loading">Ładowanie…</string>
     <string name="text_filename_empty">Nazwa pusta</string>
     <string name="text_filename_busy">Nazwa zajęta</string>
+    <string name="text_recording_name_hint">Nazwa</string>
 	<string name="text_recording_storage_error">Nie można zapisać pliku</string>
 	<string name="text_recording_saved">Nagranie zapisane</string>
     <string name="text_recording_error">Błąd nagrywania</string>

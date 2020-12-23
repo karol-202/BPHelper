@@ -22,14 +22,14 @@ class RecordingNameDialogBuilder(context: Context,
 	init
 	{
 		setTitle(R.string.alert_recording_name_title)
+		setView(views.root)
 		initButtons()
 		initEditText()
-		updateNameValidity(currentName)
 	}
 
 	private fun initButtons()
 	{
-		setPositiveButton(R.string.action_record) { _, _ -> checkAndApply(this) }
+		setPositiveButton(R.string.action_record) { _, _ -> checkAndApply() }
 		setNegativeButton(R.string.action_cancel, null)
 	}
 
@@ -45,11 +45,11 @@ class RecordingNameDialogBuilder(context: Context,
 		}
 	}
 
-	private fun checkAndApply(dialog: AlertDialog)
+	private fun checkAndApply()
 	{
-		val name = currentName
-		if(nameValidator(name) != RecordingNameValidityViewData.VALID) return
-		onApply(name)
-		dialog.dismiss()
+		updateNameValidity(currentName)
+		if(nameValidator(currentName) != RecordingNameValidityViewData.VALID) return
+		onApply(currentName)
+		dismiss()
 	}
 }

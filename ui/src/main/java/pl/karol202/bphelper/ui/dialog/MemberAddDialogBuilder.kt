@@ -1,8 +1,6 @@
 package pl.karol202.bphelper.ui.dialog
 
 import android.content.Context
-import android.content.DialogInterface
-import androidx.appcompat.app.AlertDialog
 import pl.karol202.bphelper.ui.R
 import pl.karol202.bphelper.ui.components.ExtendedAlertDialog
 import pl.karol202.bphelper.ui.databinding.DialogMemberAddBinding
@@ -22,9 +20,12 @@ class MemberAddDialogBuilder(context: Context,
 
 	private val views by viewBinding(DialogMemberAddBinding::inflate)
 
+	private val currentName get() = views.editMemberName.text.toString()
+
 	init
 	{
 		setTitle(R.string.alert_add_member_title)
+		setView(views.root)
 		initButtons()
 		initEditText()
 	}
@@ -51,10 +52,9 @@ class MemberAddDialogBuilder(context: Context,
 
 	private fun checkAndApply()
 	{
-		val name = views.editMemberName.text.toString()
-		updateNameValidity(name)
-		if(nameValidator(name) != Validity.VALID) return
-		onApply(name)
+		updateNameValidity(currentName)
+		if(nameValidator(currentName) != Validity.VALID) return
+		onApply(currentName)
 		dismiss()
 	}
 }
